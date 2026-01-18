@@ -43,11 +43,11 @@ export default function Header() {
                             <NavigationMenuList>
                                 {menuItems.map((item) => (
                                     <NavigationMenuItem key={item.href}>
-                                        <Link href={item.href} legacyBehavior passHref>
-                                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                        <NavigationMenuLink asChild>
+                                            <Link href={item.href} className={navigationMenuTriggerStyle()}>
                                                 {item.label}
-                                            </NavigationMenuLink>
-                                        </Link>
+                                            </Link>
+                                        </NavigationMenuLink>
                                     </NavigationMenuItem>
                                 ))}
                             </NavigationMenuList>
