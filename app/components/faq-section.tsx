@@ -94,7 +94,7 @@ export default function FAQ() {
             answer: (
                 <div className="space-y-2">
                     <p>
-                        Pelo nosso perfil oficial do instagram @ortoqbank Suporte via e-mail
+                        Pelo nosso perfil oficial do instagram @orto.club Suporte via e-mail
                         ortoqbank@gmail.com
                     </p>
                 </div>
