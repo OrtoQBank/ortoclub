@@ -1,75 +1,59 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2 } from 'lucide-react';
+'use client';
 
-export default function MethodologySection() {
-    const steps = [
-        {
-            number: '1',
-            title: 'Fundamentos Teóricos',
-            description: 'Base sólida com conceitos atualizados da ortodontia moderna'
-        },
-        {
-            number: '2',
-            title: 'Prática Intensiva',
-            description: 'Aplicação prática dos conhecimentos em casos reais'
-        },
-        {
-            number: '3',
-            title: 'Mentoria Personalizada',
-            description: 'Acompanhamento individual para acelerar seu desenvolvimento'
-        },
-        {
-            number: '4',
-            title: 'Networking',
-            description: 'Conexão com profissionais de todo o Brasil'
-        }
-    ];
+import { CircleCheckIcon } from 'lucide-react';
+import Image from 'next/image';
 
+import { Button } from '@/components/ui/button';
+
+const scrollToPricing = () => {
+    const pricingSection = document.querySelector('#pricing');
+    if (pricingSection) {
+        pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+};
+
+export default function HeroSection() {
     return (
-        <section id="metodologia" className="py-20 px-4">
-            <div className="container mx-auto">
-                <h2 className="text-4xl font-bold text-center mb-4">
-                    <span style={{ color: 'var(--blue-brand)' }}>METODOLOGIA</span>
-                </h2>
-                <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-                    Nossa abordagem única combina teoria, prática e acompanhamento contínuo
-                </p>
-
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6">
-                        {steps.map((step) => (
-                            <Card key={step.number} className="border-l-4" style={{ borderLeftColor: 'var(--blue-brand)' }}>
-                                <CardContent className="flex gap-4 p-6">
-                                    <Badge
-                                        className="shrink-0 w-12 h-12 flex items-center justify-center text-lg font-bold"
-                                        style={{ backgroundColor: 'var(--blue-brand)' }}
-                                    >
-                                        {step.number}
-                                    </Badge>
-                                    <div>
-                                        <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                                            <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--blue-brand)' }} />
-                                            {step.title}
-                                        </h3>
-                                        <p className="text-muted-foreground">{step.description}</p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-
-                    <div className="relative">
-                        <div className="bg-muted rounded-2xl p-8 min-h-[500px] flex items-center justify-center">
-                            <div className="space-y-8">
-                                <div className="flex gap-4 items-center">
-                                    <Card className="w-32 h-32 transform -rotate-6 shadow-md" />
-                                    <Card className="w-32 h-32 transform rotate-6 shadow-md" />
-                                </div>
-                                <div className="flex gap-4 items-center justify-center">
-                                    <Card className="w-32 h-32 transform rotate-3 shadow-md" />
-                                    <Card className="w-32 h-32 transform -rotate-3 shadow-md" />
-                                </div>
+        <section className="w-full bg-white py-12 md:py-18">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="mx-auto max-w-7xl">
+                    <div className="grid items-center justify-center gap-4 lg:grid-cols-12">
+                        <div className="flex flex-col justify-center space-y-4 lg:col-span-4">
+                            <h1 className="text-brand-blue text-center text-3xl font-bold sm:text-4xl md:text-start md:text-4xl lg:text-5xl">
+                                A melhor preparação para o seu TEOT e TEPOT
+                            </h1>
+                            <ul className="space-y-4 text-base text-gray-700 sm:text-lg md:text-start">
+                                {[
+                                    'Provas antigas corrigidas e comentadas',
+                                    'Questões inéditas reforçando os principais temas das provas',
+                                    'Comentários completos e ilustrados',
+                                    'Feedback detalhado de acordo com cada matéria',
+                                ].map(text => (
+                                    <li key={text} className="flex items-center gap-3">
+                                        <CircleCheckIcon className="text-brand-blue h-6 w-6 flex-shrink-0" />
+                                        <span className="flex-1">{text}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                                <Button
+                                    size="lg"
+                                    onClick={scrollToPricing}
+                                    className="cursor-pointer"
+                                >
+                                    Comprar Acesso
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="flex justify-center lg:col-span-8">
+                            <div>
+                                <Image
+                                    src="/hero.png"
+                                    alt="OrtoQBank plataforma em múltiplos dispositivos mostrando questões e estatísticas"
+                                    width={800}
+                                    height={600}
+                                    priority
+                                />
                             </div>
                         </div>
                     </div>
