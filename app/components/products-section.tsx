@@ -38,7 +38,7 @@ export default function ProductsSection() {
         {
             title: 'Mão Qbank',
             description: 'Base sólida em ortodontia convencional',
-            image: '/maoqbank.jpeg',
+            image: '/maoq-bank.jpeg',
             href: '/mao-qbank'
         }
     ];
