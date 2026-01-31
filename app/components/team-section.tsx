@@ -1,147 +1,253 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, User } from 'lucide-react';
+import Image from 'next/image';
+import { useState, useRef, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function TeamSection() {
-    const [currentIndex, setCurrentIndex] = useState(0);
+interface StaffMember {
+    name: string;
+    description: string[];
+    imageUrl: string;
+}
 
-    const teamMembers = [
-        {
-            name: 'Dr. João Silva',
-            role: 'Ortodontista Sênior',
-            specialty: 'Especialista em TEOT',
-            bio: 'Mais de 15 anos de experiência em ortodontia'
-        },
-        {
-            name: 'Dra. Maria Santos',
-            role: 'Coordenadora Acadêmica',
-            specialty: 'Mestre em Ortodontia',
-            bio: 'Dedicada ao ensino e pesquisa há 10 anos'
-        },
-        {
-            name: 'Dr. Pedro Costa',
-            role: 'Instrutor Principal',
-            specialty: 'Especialista em Casos Complexos',
-            bio: 'Reconhecido internacionalmente por suas técnicas'
-        },
-        {
-            name: 'Dra. Ana Oliveira',
-            role: 'Mentora',
-            specialty: 'Ortodontia Estética',
-            bio: 'Focada em resultados estéticos excepcionais'
-        },
-        {
-            name: 'Dr. Carlos Mendes',
-            role: 'Consultor Técnico',
-            specialty: 'Biomecânica Avançada',
-            bio: 'PhD em mecânica ortodôntica'
+const staffMembers: StaffMember[] = [
+    {
+        name: 'Daniel Duarte Perini',
+        description: [
+            'Médico - USP',
+            'Ortopedista - IOT HC-FMUSP',
+            'Fellowship Cirurgia da Coluna',
+        ],
+        imageUrl: '/medico1.jpg',
+    },
+    {
+        name: 'Vitor Ricardo Moraes',
+        description: [
+            'Médico - FMRP-USP',
+            'Ortopedista - IOT HC-FMUSP',
+            'Fellowship Cirurgia do Joelho',
+        ],
+        imageUrl: '/medico2.jpg',
+    },
+    {
+        name: 'Rodrigo Astolfi',
+        description: [
+            'Médico - FMRP-USP',
+            'Ortopedista - IOT HC-FMUSP',
+            'Fellowship Cirurgia do Joelho',
+        ],
+        imageUrl: '/medico1.jpg',
+    },
+    {
+        name: 'Dr. Alejandro Cedeño',
+        description: [
+            'Infectologista - HC FMUSP',
+            'Doutorando em Ciências Médicas',
+            'Especialista em Doenças Infecciosas',
+        ],
+        imageUrl: '/medico2.jpg',
+    },
+    {
+        name: 'Dra. Laura Coimbra',
+        description: [
+            'Médica - UFOP',
+            'Residência em Pediatria - UNICAMP',
+            'Especialista em Pediatria',
+        ],
+        imageUrl: '/medico1.jpg',
+    },
+    {
+        name: 'Dr. David Nunes',
+        description: [
+            'Médico - UFTM',
+            'Residência em Cardiologia',
+            'Instituto Dante Pazzanese',
+        ],
+        imageUrl: '/medico2.jpg',
+    },
+    {
+        name: 'Dr. Renato Nemoto',
+        description: [
+            'Médico - FAMUC',
+            'Cardiologista - INCOR',
+            'Preceptor do INCOR',
+        ],
+        imageUrl: '/medico1.jpg',
+    },
+    {
+        name: 'Dr. Hugo',
+        description: [
+            'Ortopedista - IOT FMUSP',
+            'Especialista em Cirurgia',
+            'Fellow em Trauma',
+        ],
+        imageUrl: '/medico2.jpg',
+    },
+    {
+        name: 'Dr. Henrique Dalmolin',
+        description: [
+            'Reumatologia - FMUSP',
+            'Preceptoria - HC/FMUSP',
+            'Especialista em Autoimunes',
+        ],
+        imageUrl: '/medico1.jpg',
+    },
+    {
+        name: 'Dra. Nicole Kemberly',
+        description: [
+            'Médica - FMUSP',
+            'Ginecologia e Obstetrícia',
+            'Preceptora - HC/FMUSP',
+        ],
+        imageUrl: '/medico2.jpg',
+    },
+    {
+        name: 'Dra. Tayrine Mazotti',
+        description: [
+            'Médica - HC/FMUSP',
+            'Preceptoria em Medicina',
+            'Especialista em Clínica Médica',
+        ],
+        imageUrl: '/medico1.jpg',
+    },
+];
+
+// Divide os membros em duas filas
+const firstRow = staffMembers.slice(0, 6);
+const secondRow = staffMembers.slice(6, 11);
+
+function StaffCard({ member }: { member: StaffMember }) {
+    return (
+        <div className="border-brand-blue/20 w-[280px] flex-shrink-0 overflow-hidden rounded-lg border bg-white shadow-lg">
+            <div className="overflow-hidden">
+                <Image
+                    src={member.imageUrl || '/placeholder.svg'}
+                    alt={`Foto de ${member.name}`}
+                    width={280}
+                    height={280}
+                    className="h-[280px] w-[280px] object-cover"
+                />
+            </div>
+            <div className="p-4">
+                <h3 className="text-brand-blue mb-2 text-lg font-semibold">
+                    {member.name}
+                </h3>
+                <ul className="list-disc space-y-1 pl-4 text-xs text-gray-600">
+                    {member.description.map((point, i) => (
+                        <li key={i}>{point}</li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}
+
+export default function StaffSection() {
+    const [isPaused, setIsPaused] = useState(false);
+    const [offset1, setOffset1] = useState(0);
+    const [offset2, setOffset2] = useState(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Animação automática
+    useEffect(() => {
+        if (isPaused) return;
+
+        const interval1 = setInterval(() => {
+            setOffset1((prev) => {
+                const cardWidth = 280 + 24; // width + gap
+                const maxOffset = cardWidth * 6;
+                if (prev <= -maxOffset) return 0;
+                return prev - 1;
+            });
+        }, 50);
+
+        const interval2 = setInterval(() => {
+            setOffset2((prev) => {
+                const cardWidth = 280 + 24;
+                const maxOffset = cardWidth * 5;
+                if (prev >= 0) return -maxOffset;
+                return prev + 1;
+            });
+        }, 60);
+
+        return () => {
+            clearInterval(interval1);
+            clearInterval(interval2);
+        };
+    }, [isPaused]);
+
+    const scroll = (direction: 'left' | 'right') => {
+        const scrollAmount = 300;
+        if (direction === 'left') {
+            setOffset1((prev) => prev - scrollAmount);
+            setOffset2((prev) => prev - scrollAmount);
+        } else {
+            setOffset1((prev) => prev + scrollAmount);
+            setOffset2((prev) => prev + scrollAmount);
         }
-    ];
-
-    const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % teamMembers.length);
-    };
-
-    const prevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
     };
 
     return (
-        <section id="equipe" className="py-20 px-4 bg-muted/50">
-            <div className="container mx-auto">
-                <h2 className="text-4xl font-bold text-center mb-4">
-                    <span style={{ color: 'var(--blue-brand)' }}>NOSSA EQUIPE</span>
+        <section className="bg-white py-12 md:py-16">
+            <div className="container mx-auto px-4">
+                <h2 className="text-brand-blue mb-12 text-center text-3xl font-bold md:text-4xl">
+                    Nossa Equipe
                 </h2>
-                <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-                    Profissionais renomados dedicados ao seu sucesso
-                </p>
 
-                <div className="relative max-w-6xl mx-auto">
-                    <div className="flex items-center justify-center gap-4 overflow-hidden">
-                        <Button
-                            onClick={prevSlide}
-                            variant="outline"
-                            size="icon"
-                            className="shrink-0 rounded-full"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                        </Button>
+                <div 
+                    ref={containerRef}
+                    className="carousel-container relative space-y-8"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                >
+                    {/* Seta esquerda */}
+                    <button
+                        onClick={() => scroll('left')}
+                        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
+                        aria-label="Scroll para esquerda"
+                    >
+                        <ChevronLeft className="h-6 w-6 text-brand-blue" />
+                    </button>
 
-                        <div className="flex gap-6 w-full justify-center">
-                            {teamMembers.map((member, index) => {
-                                const isActive = index === currentIndex;
-                                const isVisible =
-                                    index === currentIndex ||
-                                    index === (currentIndex + 1) % teamMembers.length ||
-                                    index === (currentIndex + 2) % teamMembers.length;
+                    {/* Seta direita */}
+                    <button
+                        onClick={() => scroll('right')}
+                        className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
+                        aria-label="Scroll para direita"
+                    >
+                        <ChevronRight className="h-6 w-6 text-brand-blue" />
+                    </button>
 
-                                if (!isVisible) return null;
-
-                                return (
-                                    <Card
-                                        key={index}
-                                        className={`overflow-hidden transition-all duration-300 ${isActive ? 'w-80 opacity-100 scale-105' : 'w-64 opacity-60 scale-95'
-                                            }`}
-                                    >
-                                        <div
-                                            className="h-48 flex items-center justify-center"
-                                            style={{ backgroundColor: 'var(--blue-brand)' }}
-                                        >
-                                            <Avatar className="w-24 h-24 border-4 border-white">
-                                                <AvatarFallback className="bg-white" style={{ color: 'var(--blue-brand)' }}>
-                                                    <User className="w-12 h-12" />
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        </div>
-                                        <CardHeader>
-                                            <CardTitle>{member.name}</CardTitle>
-                                            <CardDescription>
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="mb-2"
-                                                    style={{ backgroundColor: 'var(--blue-brand)', color: 'white' }}
-                                                >
-                                                    {member.role}
-                                                </Badge>
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <p className="text-sm font-medium mb-2">{member.specialty}</p>
-                                            <p className="text-sm text-muted-foreground">{member.bio}</p>
-                                        </CardContent>
-                                    </Card>
-                                );
-                            })}
+                    <div className="overflow-hidden">
+                        {/* Primeira fila - move para a esquerda */}
+                        <div className="relative overflow-hidden">
+                            <div 
+                                className="flex gap-6 transition-transform"
+                                style={{ 
+                                    transform: `translateX(${offset1}px)`,
+                                    transition: isPaused ? 'transform 0.3s ease' : 'none'
+                                }}
+                            >
+                                {[...firstRow, ...firstRow, ...firstRow].map((member, index) => (
+                                    <StaffCard key={`row1-${index}`} member={member} />
+                                ))}
+                            </div>
                         </div>
 
-                        <Button
-                            onClick={nextSlide}
-                            variant="outline"
-                            size="icon"
-                            className="shrink-0 rounded-full"
-                        >
-                            <ChevronRight className="w-5 h-5" />
-                        </Button>
-                    </div>
-
-                    <div className="flex justify-center gap-2 mt-8">
-                        {teamMembers.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setCurrentIndex(index)}
-                                className={`h-2 rounded-full transition-all ${index === currentIndex ? 'w-8' : 'w-2'
-                                    }`}
-                                style={{
-                                    backgroundColor: index === currentIndex ? 'var(--blue-brand)' : '#d1d5db'
+                        {/* Segunda fila - move para a direita */}
+                        <div className="relative mt-8 overflow-hidden">
+                            <div 
+                                className="flex gap-6 transition-transform"
+                                style={{ 
+                                    transform: `translateX(${offset2}px)`,
+                                    transition: isPaused ? 'transform 0.3s ease' : 'none'
                                 }}
-                                aria-label={`Ir para slide ${index + 1}`}
-                            />
-                        ))}
+                            >
+                                {[...secondRow, ...secondRow, ...secondRow].map((member, index) => (
+                                    <StaffCard key={`row2-${index}`} member={member} />
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
