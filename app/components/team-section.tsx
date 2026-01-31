@@ -188,13 +188,13 @@ export default function StaffSection() {
     };
 
     return (
-        <section className="bg-white py-12 md:py-16">
+        <section className="bg-gradient-to-br from-gray-50 to-blue-50py-12 md:py-16">
             <div className="container mx-auto px-4">
                 <h2 className="text-brand-blue mb-12 text-center text-3xl font-bold md:text-4xl">
                     Nossa Equipe
                 </h2>
 
-                <div 
+                <div
                     ref={containerRef}
                     className="carousel-container relative space-y-8"
                     onMouseEnter={() => setIsPaused(true)}
@@ -221,9 +221,9 @@ export default function StaffSection() {
                     <div className="overflow-hidden">
                         {/* Primeira fila - move para a esquerda */}
                         <div className="relative overflow-hidden">
-                            <div 
+                            <div
                                 className="flex gap-6 transition-transform"
-                                style={{ 
+                                style={{
                                     transform: `translateX(${offset1}px)`,
                                     transition: isPaused ? 'transform 0.3s ease' : 'none'
                                 }}
@@ -236,9 +236,9 @@ export default function StaffSection() {
 
                         {/* Segunda fila - move para a direita */}
                         <div className="relative mt-8 overflow-hidden">
-                            <div 
+                            <div
                                 className="flex gap-6 transition-transform"
-                                style={{ 
+                                style={{
                                     transform: `translateX(${offset2}px)`,
                                     transition: isPaused ? 'transform 0.3s ease' : 'none'
                                 }}

@@ -32,7 +32,7 @@ export default function ProductsSection() {
         {
             title: 'SBCJ Qbank',
             description: 'Base sólida em ortodontia convencional',
-            image: '/ortoclub-teot.png',
+            image: '/mao-qbank.jpeg',
             href: '/sbcj-qbank'
         },
         {
@@ -44,7 +44,7 @@ export default function ProductsSection() {
     ];
 
     return (
-        <section id="produtos" className="py-20 px-4 bg-muted/50">
+        <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <h2 className="text-4xl font-bold text-center mb-12">
