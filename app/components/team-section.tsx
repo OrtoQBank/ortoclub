@@ -1,260 +1,273 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useRef, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface StaffMember {
-    name: string;
-    description: string[];
-    imageUrl: string;
+  id: number;
+  name: string;
+  description: string[];
+  imageUrl: string;
 }
 
 const staffMembers: StaffMember[] = [
-    {
-        name: 'Daniel Duarte Perini',
-        description: [
-            'Médico - USP',
-            'Ortopedista - IOT HC-FMUSP',
-            'Fellowship Cirurgia da Coluna',
-        ],
-        imageUrl: '/medico1.jpg',
-    },
-    {
-        name: 'Vitor Ricardo Moraes',
-        description: [
-            'Médico - FMRP-USP',
-            'Ortopedista - IOT HC-FMUSP',
-            'Fellowship Cirurgia do Joelho',
-        ],
-        imageUrl: '/medico2.jpg',
-    },
-    {
-        name: 'Rodrigo Astolfi',
-        description: [
-            'Médico - FMRP-USP',
-            'Ortopedista - IOT HC-FMUSP',
-            'Fellowship Cirurgia do Joelho',
-        ],
-        imageUrl: '/medico1.jpg',
-    },
-    {
-        name: 'Dr. Alejandro Cedeño',
-        description: [
-            'Infectologista - HC FMUSP',
-            'Doutorando em Ciências Médicas',
-            'Especialista em Doenças Infecciosas',
-        ],
-        imageUrl: '/medico2.jpg',
-    },
-    {
-        name: 'Dra. Laura Coimbra',
-        description: [
-            'Médica - UFOP',
-            'Residência em Pediatria - UNICAMP',
-            'Especialista em Pediatria',
-        ],
-        imageUrl: '/medico1.jpg',
-    },
-    {
-        name: 'Dr. David Nunes',
-        description: [
-            'Médico - UFTM',
-            'Residência em Cardiologia',
-            'Instituto Dante Pazzanese',
-        ],
-        imageUrl: '/medico2.jpg',
-    },
-    {
-        name: 'Dr. Renato Nemoto',
-        description: [
-            'Médico - FAMUC',
-            'Cardiologista - INCOR',
-            'Preceptor do INCOR',
-        ],
-        imageUrl: '/medico1.jpg',
-    },
-    {
-        name: 'Dr. Hugo',
-        description: [
-            'Ortopedista - IOT FMUSP',
-            'Especialista em Cirurgia',
-            'Fellow em Trauma',
-        ],
-        imageUrl: '/medico2.jpg',
-    },
-    {
-        name: 'Dr. Henrique Dalmolin',
-        description: [
-            'Reumatologia - FMUSP',
-            'Preceptoria - HC/FMUSP',
-            'Especialista em Autoimunes',
-        ],
-        imageUrl: '/medico1.jpg',
-    },
-    {
-        name: 'Dra. Nicole Kemberly',
-        description: [
-            'Médica - FMUSP',
-            'Ginecologia e Obstetrícia',
-            'Preceptora - HC/FMUSP',
-        ],
-        imageUrl: '/medico2.jpg',
-    },
-    {
-        name: 'Dra. Tayrine Mazotti',
-        description: [
-            'Médica - HC/FMUSP',
-            'Preceptoria em Medicina',
-            'Especialista em Clínica Médica',
-        ],
-        imageUrl: '/medico1.jpg',
-    },
+  {
+    id: 1,
+    name: 'Daniel Duarte Perini',
+    imageUrl: '/medico1.jpg',
+    description: ['Médico - USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia da Coluna'],
+  },
+  {
+    id: 2,
+    name: 'Vitor Ricardo Moraes',
+    imageUrl: '/medico2.jpg',
+    description: ['Médico - FMRP-USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia do Joelho'],
+  },
+  {
+    id: 3,
+    name: 'Rodrigo Astolfi',
+    imageUrl: '/rodrigo-astolfi.webp',
+    description: [
+      'Cirurgia do Pé e Tornozelo (IOT-HCFMUSP)',
+      'Médico pela Faculdade de Medicina da USP',
+      'Ortopedista pela Faculdade de Medicina da USP',
+      'Fellowship Cirurgia do Joelho',
+      'Mestre pela Universidade Federal do Ceará',
+      '⁠Doutor pela Universidade Federal do Ceará',
+    ],
+  },
+  {
+    id: 4,
+    name: 'Dr. Diogo Kenzo Takazono',
+    imageUrl: '/diogo-kenzo.webp',
+    description: [
+      'Cirurgia da Mão e Microcirurgia (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina da USP',
+    ],
+  },
+  {
+    id: 5,
+    name: 'Dr. Thales Augusto Tomé',
+    imageUrl: '/thales-augusto.webp',
+    description: [
+      'Cirurgia da Mão e Microcirurgia (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina da USP',
+    ],
+  },
+  {
+    id: 6,
+    name: 'Dr. Felippi Guisard Cordeiro',
+    imageUrl: '/felippi-guisard.webp',
+    description: [
+      'Ortopedia Pediátrica (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina da USP',
+    ],
+  },
+  {
+    id: 7,
+    name: 'Dr. João Victor Belfort',
+    imageUrl: '/joao-victor.webp',
+    description: [
+      'Cirurgia do Joelho (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina da UFPE',
+    ],
+  },
+  {
+    id: 8,
+    name: 'Dr. Vinícius Antônio Santos Aragão',
+    imageUrl: '/vinicius-antonio.webp',
+    description: [
+      'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina da UFS',
+    ],
+  },
+  {
+    id: 9,
+    name: 'Dr. Gil Goulart Choi',
+    imageUrl: '/gil-goulart.webp',
+    description: [
+      'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina da USP',
+    ],
+  },
+  {
+    id: 10,
+    name: 'Dr. Gustavo Lage',
+    imageUrl: '/gustavo-lage.webp',
+    description: [
+      'Cirurgia do Quadril (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Ciências Médicas da Santa Casa de São Paulo',
+    ],
+  },
+  {
+    id: 11,
+    name: 'Dr. Lucas Capello Smarieri',
+    imageUrl: '/lucas-capello.webp',
+    description: [
+      'Cirurgia do Ombro e Cotovelo (IOT-HCFMUSP)',
+      'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
+      'Médico pela Faculdade de Medicina de Ribeirão Preto da USP',
+    ],
+  },
+  {
+    id: 12,
+    name: 'Dr. Giovanni Fornino',
+    imageUrl: '/giovanni-fornino.webp',
+    description: [
+      'Cirurgia do Pé e Tornozelo (IOT-HCFMUSP)',
+      'Ortopedista pela Faculdade de Ciências Médicas da Santa Casa de São Paulo',
+      'Médico pela Faculdade de Ciências Médicas da Santa Casa de São Paulo',
+    ],
+  },
 ];
 
-// Divide os membros em duas filas
-const firstRow = staffMembers.slice(0, 6);
-const secondRow = staffMembers.slice(6, 11);
-
 function StaffCard({ member }: { member: StaffMember }) {
-    return (
-        <div className="border-brand-blue/20 w-[240px] sm:w-[280px] flex-shrink-0 overflow-hidden rounded-lg border bg-white shadow-lg">
-            <div className="overflow-hidden">
-                <Image
-                    src={member.imageUrl || '/placeholder.svg'}
-                    alt={`Foto de ${member.name}`}
-                    width={280}
-                    height={280}
-                    className="h-[240px] w-[240px] sm:h-[280px] sm:w-[280px] object-cover"
-                />
-            </div>
-            <div className="p-3 sm:p-4">
-                <h3 className="text-brand-blue mb-2 text-base sm:text-lg font-semibold">
-                    {member.name}
-                </h3>
-                <ul className="list-disc space-y-1 pl-4 text-xs text-gray-600">
-                    {member.description.map((point, i) => (
-                        <li key={i}>{point}</li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
+  return (
+    <div className="border-brand-blue/20 w-[240px] sm:w-[280px] flex-shrink-0 overflow-hidden rounded-lg border bg-white shadow-lg">
+      <div className="overflow-hidden">
+        <Image
+          src={member.imageUrl || '/placeholder.svg'}
+          alt={`Foto de ${member.name}`}
+          width={280}
+          height={280}
+          className="h-[240px] w-[240px] sm:h-[280px] sm:w-[280px] object-cover"
+        />
+      </div>
+      <div className="p-3 sm:p-4">
+        <h3 className="text-brand-blue mb-2 text-base sm:text-lg font-semibold">{member.name}</h3>
+        <ul className="list-disc space-y-1 pl-4 text-xs text-gray-600">
+          {member.description.map((point, i) => (
+            <li key={i}>{point}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 export default function StaffSection() {
-    const [isPaused, setIsPaused] = useState(false);
-    const [offset1, setOffset1] = useState(0);
-    const [offset2, setOffset2] = useState(0);
-    const containerRef = useRef<HTMLDivElement>(null);
+  // ✅ primeira fila fixa com 1,2,3
+  const firstRow = useMemo(() => staffMembers.slice(0, 3), []);
 
-    // Animação automática
-    useEffect(() => {
-        if (isPaused) return;
+  // ✅ segunda fila: resto (4..12) em carrossel infinito por clique
+  const baseRow = useMemo(() => staffMembers.filter((m) => m.id > 3), []);
+  const [items, setItems] = useState<StaffMember[]>(baseRow);
 
-        const interval1 = setInterval(() => {
-            setOffset1((prev) => {
-                const cardWidth = window.innerWidth < 640 ? 240 + 16 : 280 + 24; // width + gap
-                const maxOffset = cardWidth * 6;
-                if (prev <= -maxOffset) return 0;
-                return prev - 1;
-            });
-        }, 50);
+  const [translate, setTranslate] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const directionRef = useRef<'left' | 'right'>('right');
 
-        const interval2 = setInterval(() => {
-            setOffset2((prev) => {
-                const cardWidth = window.innerWidth < 640 ? 240 + 16 : 280 + 24;
-                const maxOffset = cardWidth * 5;
-                if (prev >= 0) return -maxOffset;
-                return prev + 1;
-            });
-        }, 60);
+  const getStep = useCallback(() => {
+    // card + gap (gap-4=16px | md:gap-6=24px)
+    if (typeof window === 'undefined') return 280 + 24;
+    return window.innerWidth < 640 ? 240 + 16 : 280 + 24;
+  }, []);
 
-        return () => {
-            clearInterval(interval1);
-            clearInterval(interval2);
-        };
-    }, [isPaused]);
-
-    const scroll = (direction: 'left' | 'right') => {
-        const scrollAmount = 300;
-        if (direction === 'left') {
-            setOffset1((prev) => prev - scrollAmount);
-            setOffset2((prev) => prev - scrollAmount);
-        } else {
-            setOffset1((prev) => prev + scrollAmount);
-            setOffset2((prev) => prev + scrollAmount);
-        }
+  // se mudar de tamanho (mobile/desktop), mantém alinhado
+  useEffect(() => {
+    const onResize = () => {
+      if (!animating) setTranslate(0);
     };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [animating]);
 
-    return (
-        <section className="py-12 md:py-16 ">
-            <div className="container mx-auto px-4">
+  const scroll = useCallback(
+    (dir: 'left' | 'right') => {
+      if (animating) return;
 
-                <h2 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
-                    Nossa Equipe
-                </h2>
+      directionRef.current = dir;
+      setAnimating(true);
 
-                <div
-                    ref={containerRef}
-                    className="carousel-container relative space-y-6 md:space-y-8"
-                    onMouseEnter={() => setIsPaused(true)}
-                    onMouseLeave={() => setIsPaused(false)}
-                    onTouchStart={() => setIsPaused(true)}
-                    onTouchEnd={() => setIsPaused(false)}
-                >
-                    {/* Seta esquerda */}
-                    <button
-                        onClick={() => scroll('left')}
-                        className="absolute left-1 md:left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 md:p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
-                        aria-label="Scroll para esquerda"
-                    >
-                        <ChevronLeft className="h-4 w-4 md:h-6 md:w-6 text-brand-blue" />
-                    </button>
+      const step = getStep();
+      setTranslate(dir === 'right' ? -step : step);
+    },
+    [animating, getStep]
+  );
 
-                    {/* Seta direita */}
-                    <button
-                        onClick={() => scroll('right')}
-                        className="absolute right-1 md:right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 md:p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
-                        aria-label="Scroll para direita"
-                    >
-                        <ChevronRight className="h-4 w-4 md:h-6 md:w-6 text-brand-blue" />
-                    </button>
+  const onTransitionEnd = useCallback(() => {
+    if (!animating) return;
 
-                    <div className="overflow-hidden">
-                        {/* Primeira fila - move para a esquerda */}
-                        <div className="relative overflow-hidden">
-                            <div
-                                className="flex gap-4 md:gap-6 transition-transform"
-                                style={{
-                                    transform: `translateX(${offset1}px)`,
-                                    transition: isPaused ? 'transform 0.3s ease' : 'none'
-                                }}
-                            >
-                                {[...firstRow, ...firstRow, ...firstRow].map((member, index) => (
-                                    <StaffCard key={`row1-${index}`} member={member} />
-                                ))}
-                            </div>
-                        </div>
+    setItems((prev) => {
+      if (prev.length <= 1) return prev;
 
-                        {/* Segunda fila - move para a direita */}
-                        <div className="relative mt-6 md:mt-8 overflow-hidden">
-                            <div
-                                className="flex gap-4 md:gap-6 transition-transform"
-                                style={{
-                                    transform: `translateX(${offset2}px)`,
-                                    transition: isPaused ? 'transform 0.3s ease' : 'none'
-                                }}
-                            >
-                                {[...secondRow, ...secondRow, ...secondRow].map((member, index) => (
-                                    <StaffCard key={`row2-${index}`} member={member} />
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      if (directionRef.current === 'right') {
+        // move primeiro para o final
+        const [first, ...rest] = prev;
+        return [...rest, first];
+      } else {
+        // move último para o começo
+        const last = prev[prev.length - 1];
+        const rest = prev.slice(0, -1);
+        return [last, ...rest];
+      }
+    });
 
+    // reseta sem animar (não dá “reh”)
+    setTranslate(0);
+    setAnimating(false);
+  }, [animating]);
+
+  return (
+    <section className="py-12 md:py-16">
+      <div className="container mx-auto px-4">
+        <h2 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
+          Nossa Equipe
+        </h2>
+
+        <div className="relative space-y-6 md:space-y-8">
+          {/* Primeira fila - estática (1,2,3) */}
+          <div className="overflow-hidden">
+            <div className="flex justify-center gap-4 md:gap-6">
+              {firstRow.map((member) => (
+                <StaffCard key={member.id} member={member} />
+              ))}
             </div>
-        </section >
-    );
+          </div>
+
+          {/* Segunda fila - carrossel infinito */}
+          <div className="relative overflow-hidden">
+            {/* setas só para a segunda fila */}
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-1 md:left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 md:p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
+              aria-label="Scroll para esquerda"
+            >
+              <ChevronLeft className="h-4 w-4 md:h-6 md:w-6 text-brand-blue" />
+            </button>
+
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-1 md:right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 md:p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
+              aria-label="Scroll para direita"
+            >
+              <ChevronRight className="h-4 w-4 md:h-6 md:w-6 text-brand-blue" />
+            </button>
+
+            <div
+              className="flex gap-4 md:gap-6 will-change-transform"
+              onTransitionEnd={onTransitionEnd}
+              style={{
+                transform: `translateX(${translate}px)`,
+                transition: animating ? 'transform 0.25s ease' : 'none',
+              }}
+            >
+              {items.map((member) => (
+                <StaffCard key={member.id} member={member} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
+
