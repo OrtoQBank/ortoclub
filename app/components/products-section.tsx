@@ -15,7 +15,7 @@ export default function ProductsSection() {
             title: 'TEOT Aulas',
             description: 'Construa sua marca pessoal no mercado ortodôntico',
             image: '/teot-aulas.jpeg',
-            href: '/teot-aulas'
+            href: '/teot-video'
         },
         {
             title: 'Mentoria Aulas',
@@ -44,15 +44,15 @@ export default function ProductsSection() {
     ];
 
     return (
-        <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
+        <section className="py-12 md:py-20 px-4 ">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
-                    <h2 className="text-4xl font-bold text-center mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
                         <span className="text-brand-blue">Nossos Produtos</span>
                     </h2>
 
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {products.map((product, index) => (
                             <div key={index} className="flex flex-col gap-4">
                                 <Card className="overflow-hidden hover:shadow-lg transition-shadow p-0 border-0">

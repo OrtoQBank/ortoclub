@@ -149,9 +149,9 @@ export default function FAQ() {
     ];
 
     return (
-        <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-12 md:py-16">
-            <div className="container mx-auto px-4">
-                <h2 className="text-brand-blue-brand mb-8 text-center text-3xl font-bold md:text-4xl">
+        <section className=" py-12 md:py-16">
+            <div className="container mx-auto  px-4">
+                <h2 className="text-3xl font-bold md:text-4xl mb-8 md:mb-12 text-center text-brand-blue">
                     Perguntas Frequentes
                 </h2>
                 <div className="mx-auto max-w-3xl">

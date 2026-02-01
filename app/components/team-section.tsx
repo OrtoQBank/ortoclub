@@ -118,18 +118,18 @@ const secondRow = staffMembers.slice(6, 11);
 
 function StaffCard({ member }: { member: StaffMember }) {
     return (
-        <div className="border-brand-blue/20 w-[280px] flex-shrink-0 overflow-hidden rounded-lg border bg-white shadow-lg">
+        <div className="border-brand-blue/20 w-[240px] sm:w-[280px] flex-shrink-0 overflow-hidden rounded-lg border bg-white shadow-lg">
             <div className="overflow-hidden">
                 <Image
                     src={member.imageUrl || '/placeholder.svg'}
                     alt={`Foto de ${member.name}`}
                     width={280}
                     height={280}
-                    className="h-[280px] w-[280px] object-cover"
+                    className="h-[240px] w-[240px] sm:h-[280px] sm:w-[280px] object-cover"
                 />
             </div>
-            <div className="p-4">
-                <h3 className="text-brand-blue mb-2 text-lg font-semibold">
+            <div className="p-3 sm:p-4">
+                <h3 className="text-brand-blue mb-2 text-base sm:text-lg font-semibold">
                     {member.name}
                 </h3>
                 <ul className="list-disc space-y-1 pl-4 text-xs text-gray-600">
@@ -154,7 +154,7 @@ export default function StaffSection() {
 
         const interval1 = setInterval(() => {
             setOffset1((prev) => {
-                const cardWidth = 280 + 24; // width + gap
+                const cardWidth = window.innerWidth < 640 ? 240 + 16 : 280 + 24; // width + gap
                 const maxOffset = cardWidth * 6;
                 if (prev <= -maxOffset) return 0;
                 return prev - 1;
@@ -163,7 +163,7 @@ export default function StaffSection() {
 
         const interval2 = setInterval(() => {
             setOffset2((prev) => {
-                const cardWidth = 280 + 24;
+                const cardWidth = window.innerWidth < 640 ? 240 + 16 : 280 + 24;
                 const maxOffset = cardWidth * 5;
                 if (prev >= 0) return -maxOffset;
                 return prev + 1;
@@ -188,41 +188,44 @@ export default function StaffSection() {
     };
 
     return (
-        <section className="bg-gradient-to-br from-gray-50 to-blue-50py-12 md:py-16">
+        <section className="py-12 md:py-16 ">
             <div className="container mx-auto px-4">
-                <h2 className="text-brand-blue mb-12 text-center text-3xl font-bold md:text-4xl">
+
+                <h2 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
                     Nossa Equipe
                 </h2>
 
                 <div
                     ref={containerRef}
-                    className="carousel-container relative space-y-8"
+                    className="carousel-container relative space-y-6 md:space-y-8"
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
+                    onTouchStart={() => setIsPaused(true)}
+                    onTouchEnd={() => setIsPaused(false)}
                 >
                     {/* Seta esquerda */}
                     <button
                         onClick={() => scroll('left')}
-                        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
+                        className="absolute left-1 md:left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 md:p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
                         aria-label="Scroll para esquerda"
                     >
-                        <ChevronLeft className="h-6 w-6 text-brand-blue" />
+                        <ChevronLeft className="h-4 w-4 md:h-6 md:w-6 text-brand-blue" />
                     </button>
 
                     {/* Seta direita */}
                     <button
                         onClick={() => scroll('right')}
-                        className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
+                        className="absolute right-1 md:right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 md:p-3 shadow-lg transition-all hover:bg-white hover:scale-110"
                         aria-label="Scroll para direita"
                     >
-                        <ChevronRight className="h-6 w-6 text-brand-blue" />
+                        <ChevronRight className="h-4 w-4 md:h-6 md:w-6 text-brand-blue" />
                     </button>
 
                     <div className="overflow-hidden">
                         {/* Primeira fila - move para a esquerda */}
                         <div className="relative overflow-hidden">
                             <div
-                                className="flex gap-6 transition-transform"
+                                className="flex gap-4 md:gap-6 transition-transform"
                                 style={{
                                     transform: `translateX(${offset1}px)`,
                                     transition: isPaused ? 'transform 0.3s ease' : 'none'
@@ -235,9 +238,9 @@ export default function StaffSection() {
                         </div>
 
                         {/* Segunda fila - move para a direita */}
-                        <div className="relative mt-8 overflow-hidden">
+                        <div className="relative mt-6 md:mt-8 overflow-hidden">
                             <div
-                                className="flex gap-6 transition-transform"
+                                className="flex gap-4 md:gap-6 transition-transform"
                                 style={{
                                     transform: `translateX(${offset2}px)`,
                                     transition: isPaused ? 'transform 0.3s ease' : 'none'
@@ -250,7 +253,8 @@ export default function StaffSection() {
                         </div>
                     </div>
                 </div>
+
             </div>
-        </section>
+        </section >
     );
 }
