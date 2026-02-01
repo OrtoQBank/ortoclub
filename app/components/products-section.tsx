@@ -1,9 +1,34 @@
+'use client';
+
+import { useQueryState, parseAsString } from 'nuqs';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from '@/components/ui/dialog';
 import Image from 'next/image';
 import Link from 'next/link';
+import EmailCollectionForm from './email-collection-form';
+
+// Produtos que ainda não têm landing page disponível
+const VIP_ONLY_PRODUCTS = [
+    '/mentoria-video',
+    '/sbcj-qbank',
+    '/mao-qbank',
+    '/gestao-video',
+];
 
 export default function ProductsSection() {
+    // Estado gerenciado pela URL - ex: ?produto=Mentoria%20Aulas
+    const [selectedProduct, setSelectedProduct] = useQueryState(
+        'produto',
+        parseAsString.withDefault('')
+    );
+
     const products = [
         {
             title: 'OrtoQbank',
@@ -27,7 +52,7 @@ export default function ProductsSection() {
             title: 'Gestão Aulas',
             description: 'Base sólida em ortodontia convencional',
             image: '/gestao-aulas.jpeg',
-            href: '/orto-qbank'
+            href: '/gestao-video'
         },
         {
             title: 'SBCJ Qbank',
@@ -43,6 +68,20 @@ export default function ProductsSection() {
         }
     ];
 
+    const isVipOnly = (href: string) => VIP_ONLY_PRODUCTS.includes(href);
+
+    const isModalOpen = selectedProduct !== '';
+
+    const handleVipClick = (productTitle: string) => {
+        setSelectedProduct(productTitle);
+    };
+
+    const handleCloseModal = (open: boolean) => {
+        if (!open) {
+            setSelectedProduct('');
+        }
+    };
+
     return (
         <section className="py-12 md:py-20 px-4 ">
             <div className="container mx-auto">
@@ -51,12 +90,11 @@ export default function ProductsSection() {
                         <span className="text-brand-blue">Nossos Produtos</span>
                     </h2>
 
-
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {products.map((product, index) => (
                             <div key={index} className="flex flex-col gap-4">
                                 <Card className="overflow-hidden hover:shadow-lg transition-shadow p-0 border-0">
-                                    <div className="relative w-full aspect-[3/4]">
+                                    <div className="relative w-full aspect-3/4">
                                         <Image
                                             src={product.image}
                                             alt={product.title}
@@ -65,16 +103,44 @@ export default function ProductsSection() {
                                         />
                                     </div>
                                 </Card>
-                                <Link href={product.href}>
-                                    <Button className="w-full">
-                                        Comprar Acesso
+                                {isVipOnly(product.href) ? (
+                                    <Button
+                                        className="w-full  text-white font-semibold bg-brand-blue hover:bg-brand-blue/90"
+                                        onClick={() => handleVipClick(product.title)}
+                                    >
+                                        ENTRAR PARA A LISTA VIP
                                     </Button>
-                                </Link>
+                                ) : (
+                                    <Link href={product.href}>
+                                        <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90">
+                                            Comprar Acesso
+                                        </Button>
+                                    </Link>
+                                )}
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
+
+            <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="text-center">
+                        <DialogTitle className="text-xl font-bold text-gray-900 text-center">
+                            Preencha os campos para confirmar sua vaga!
+                        </DialogTitle>
+                        <DialogDescription className="text-center">
+                            Seus dados estão seguros.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <EmailCollectionForm
+                        productName={selectedProduct || undefined}
+                        onSuccess={() => {
+                            setTimeout(() => setSelectedProduct(''), 2000);
+                        }}
+                    />
+                </DialogContent>
+            </Dialog>
         </section>
     );
 }
