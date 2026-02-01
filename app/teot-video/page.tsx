@@ -1,7 +1,13 @@
+import Cta2Section from "./_components/cta2-section";
+import Hero2Section from "./_components/hero2-section";
+import Video2Section from "./_components/video2-section";
+
 export default function TeotVideo() {
     return (
         <div>
-            <h1>TEOT Video</h1>
+            <Hero2Section />
+            <Video2Section />
+            <Cta2Section />
         </div>
     );
 }
