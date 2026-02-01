@@ -13,39 +13,67 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
-import { Menu } from 'lucide-react';
+import { Menu, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function Header() {
-    const menuItems = [
-        {
-            href: '#produtos', label: 'Produtos'
+    const products = [
+        { title: 'OrtoQbank', href: '/orto-qbank' },
+        { title: 'TEOT Aulas', href: '/teot-video' },
+        { title: 'Mentoria Aulas', href: '/mentoria-video' },
+        { title: 'Gestão Aulas', href: '/gestao-video' },
+        { title: 'SBCJ Qbank', href: '/sbcj-qbank' },
+        { title: 'Mão Qbank', href: '/mao-qbank' },
+    ];
 
-        },
+    const menuItems = [
         { href: '#metodologia', label: 'Metodologia' },
         { href: '#equipe', label: 'Nossa Equipe' },
         { href: '#faq', label: 'FAQ' },
     ];
 
     return (
-        <header className="bg-brand-blue sticky top-0 z-50 text-white font-(family-name:--font-sifonn-pro)">
-            <div className="container mx-auto flex items-center justify-between px-4 py-4">
+        <header className="bg-brand-blue sticky top-0 z-50 text-white ">
+            <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
                 {/* Logo e Nome - Lado Esquerdo */}
                 <Link href="/" className="flex items-center gap-2">
-                    <Image src="/logo-transparente.png" alt="OrtoClub" width={32} height={32} />
-                    <span className="font-sifonn translate-y-1 text-2xl font-bold">OrtoClub</span>
+                    <Image src="/logo-transparente.png" alt="OrtoClub" width={28} height={28} className="md:w-8 md:h-8" />
+                    <span className="font-(family-name:--font-sifonn-pro) translate-y-1 text-xl md:text-2xl font-bold">OrtoClub</span>
                 </Link>
 
                 {/* Desktop Navigation - Lado Direito */}
                 <div className="hidden md:flex items-center gap-6">
                     <NavigationMenu>
                         <NavigationMenuList>
+                            <NavigationMenuItem>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger className="inline-flex h-9 items-center justify-center px-4 py-2 text-md font-medium text-white hover:opacity-80 transition-opacity">
+                                        Produtos
+                                        <ChevronDown className="ml-1 h-4 w-4" />
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="bg-white">
+                                        {products.map((product) => (
+                                            <DropdownMenuItem key={product.href} asChild>
+                                                <Link href={product.href} className="cursor-pointer">
+                                                    {product.title}
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        ))}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </NavigationMenuItem>
                             {menuItems.map((item) => (
                                 <NavigationMenuItem key={item.href}>
                                     <NavigationMenuLink asChild>
                                         <Link
                                             href={item.href}
-                                            className="inline-flex h-9 items-center justify-center px-4 py-2 text-sm font-medium text-white hover:opacity-80 transition-opacity"
+                                            className="inline-flex h-9 items-center justify-center px-4 py-2 text-md font-medium text-white hover:opacity-80 transition-opacity"
                                         >
                                             {item.label}
                                         </Link>
@@ -67,26 +95,40 @@ export default function Header() {
                 {/* Mobile Navigation */}
                 <Sheet>
                     <SheetTrigger asChild className="md:hidden">
-                        <Button variant="ghost" size="icon">
-                            <Menu className="h-6 w-6" />
+                        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+                            <Menu className="h-5 w-5 md:h-6 md:w-6" />
                             <span className="sr-only">Toggle menu</span>
                         </Button>
                     </SheetTrigger>
-                    <SheetContent>
+                    <SheetContent side="right" className="w-[280px] sm:w-[350px]">
                         <div className="flex flex-col gap-4 mt-8">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger className="text-base md:text-lg font-medium hover:text-brand-blue transition-colors py-2 flex items-center justify-between">
+                                    Produtos
+                                    <ChevronDown className="h-4 w-4" />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="bg-white w-full">
+                                    {products.map((product) => (
+                                        <DropdownMenuItem key={product.href} asChild>
+                                            <Link href={product.href} className="cursor-pointer">
+                                                {product.title}
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                             {menuItems.map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className="text-lg font-medium hover:text-(--blue-brand) transition-colors"
+                                    className="text-base md:text-lg font-medium hover:text-brand-blue transition-colors py-2"
                                 >
                                     {item.label}
                                 </Link>
                             ))}
                             <Button
                                 asChild
-                                style={{ backgroundColor: 'var(--blue-brand)' }}
-                                className="hover:opacity-90 mt-4"
+                                className="bg-brand-blue hover:bg-brand-blue/90 mt-4"
                             >
                                 <Link href="#aluno">Área do Aluno</Link>
                             </Button>
