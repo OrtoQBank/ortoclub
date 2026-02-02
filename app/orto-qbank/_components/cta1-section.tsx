@@ -1,5 +1,5 @@
 import Image from 'next/image';
-
+import Link from "next/link";
 export default function Cta1Section() {
     return (
       <section className="py-12 md:py-20 px-4">
@@ -10,6 +10,7 @@ export default function Cta1Section() {
               <div className="md:col-span-1">
                 <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
                   <div className="aspect-3/4 relative">
+                  
                     <Image
                       src="/produto_a.webp"
                       alt="Método de estudo OrtoClub"
@@ -18,30 +19,25 @@ export default function Cta1Section() {
                     />
                   </div>
                 </div>
-              </div>
+                <p className="text-base text-center pb-2">
+                      + de 4000 questões comentadas por especialistas da USP
+                    </p>
+              </div> 
+              
   
               {/* CTA CENTRAL */}
               <div className="md:col-span-1 flex flex-col items-center justify-center text-center py-8">
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-                  Pronto para começar?
-                </h2>
-
-                <p className="mt-3 text-muted-foreground text-lg max-w-md">
-                  Entre na lista de espera e receba em primeira mão as datas, condições e vagas disponíveis.
-                </p>
-  
+                
                 <div className="mt-8">
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-primary-foreground font-semibold text-lg shadow-md hover:opacity-95 transition"
-                  >
-                    Entrar na lista de espera
-                  </a>
+                  <Link
+                href="/orto-qbank"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-primary-foreground font-semibold text-lg shadow-md hover:opacity-95 transition"
+            >
+              Comprar Produto Ortoqbank
+          </Link>
                 </div>
 
-                <p className="mt-4 text-sm text-muted-foreground">
-                  Sem compromisso. Você será avisado quando abrirmos novas vagas.
-                </p>
+              
               </div>
   
               {/* CARD IMAGEM DIREITA */}
@@ -52,10 +48,13 @@ export default function Cta1Section() {
                       src="/produto_b.webp"
                       alt="Plataforma OrtoClub QBank"
                       fill
-                      className="object-contain"
+                      className="object-contain"  
                     />
                   </div>
                 </div>
+                <p className="text-base text-center pb-2">
+                Simulados e trilhas personalizadas!
+                    </p>
               </div>
             </div>
   
