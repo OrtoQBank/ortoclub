@@ -11,10 +11,10 @@ export default function Cta1Section() {
                 <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
                   <div className="aspect-3/4 relative">
                     <Image
-                      src="/mao-qbank.jpeg"
+                      src="/produto_a.webp"
                       alt="Método de estudo OrtoClub"
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
                 </div>
@@ -49,10 +49,10 @@ export default function Cta1Section() {
                 <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
                   <div className="aspect-3/4 relative">
                     <Image
-                      src="/ortoqbank.jpeg"
+                      src="/produto_b.webp"
                       alt="Plataforma OrtoClub QBank"
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
                 </div>
