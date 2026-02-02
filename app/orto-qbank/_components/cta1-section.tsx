@@ -25,7 +25,7 @@ export default function Cta1Section() {
               </div> 
               
   
-              {/* CTA CENTRL */}
+              {/* CTA CENTRaL */}
               <div className="md:col-span-1 flex flex-col items-center justify-center text-center py-8">
                 
                 <div className="mt-8">
