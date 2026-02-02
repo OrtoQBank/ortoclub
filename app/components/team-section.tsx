@@ -16,13 +16,14 @@ const staffMembers: StaffMember[] = [
     id: 1,
     name: 'Daniel Duarte Perini',
     imageUrl: '/medico1.jpg',
-    description: ['Médico - USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia da Coluna'],
+    description: [
+      '7° lugar TEOT 2025','Médico - USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia da Coluna'],
   },
   {
     id: 2,
     name: 'Vitor Ricardo Moraes',
     imageUrl: '/medico2.jpg',
-    description: ['Médico - FMRP-USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia do Joelho'],
+    description: ['1° lugar TEOT 2025','Médico - FMRP-USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia do Joelho'],
   },
   {
     id: 3,
@@ -32,14 +33,12 @@ const staffMembers: StaffMember[] = [
       'Cirurgia do Pé e Tornozelo (IOT-HCFMUSP)',
       'Médico pela Faculdade de Medicina da USP',
       'Ortopedista pela Faculdade de Medicina da USP',
-      'Fellowship Cirurgia do Joelho',
-      'Mestre pela Universidade Federal do Ceará',
-      '⁠Doutor pela Universidade Federal do Ceará',
+      'Mestre e Doutor pela Universidade Federal do Ceará',
     ],
   },
   {
     id: 4,
-    name: 'Dr. Diogo Kenzo Takazono',
+    name: 'Diogo Kenzo Takazono',
     imageUrl: '/diogo-kenzo.webp',
     description: [
       'Cirurgia da Mão e Microcirurgia (IOT-HCFMUSP)',
@@ -49,7 +48,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 5,
-    name: 'Dr. Thales Augusto Tomé',
+    name: 'Thales Augusto Tomé',
     imageUrl: '/thales-augusto.webp',
     description: [
       'Cirurgia da Mão e Microcirurgia (IOT-HCFMUSP)',
@@ -59,7 +58,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 6,
-    name: 'Dr. Felippi Guisard Cordeiro',
+    name: 'Felippi Guizardi Cordeiro',
     imageUrl: '/felippi-guisard.webp',
     description: [
       'Ortopedia Pediátrica (IOT-HCFMUSP)',
@@ -69,9 +68,10 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 7,
-    name: 'Dr. João Victor Belfort',
+    name: 'João Victor Belfort',
     imageUrl: '/joao-victor.webp',
     description: [
+      '4° lugar TEOT 2025',
       'Cirurgia do Joelho (IOT-HCFMUSP)',
       'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
       'Médico pela Faculdade de Medicina da UFPE',
@@ -79,7 +79,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 8,
-    name: 'Dr. Vinícius Antônio Santos Aragão',
+    name: 'Vinícius Antônio Santos Aragão',
     imageUrl: '/vinicius-antonio.webp',
     description: [
       'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)',
@@ -89,7 +89,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 9,
-    name: 'Dr. Gil Goulart Choi',
+    name: 'Gil Goulart Choi',
     imageUrl: '/gil-goulart.webp',
     description: [
       'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)',
@@ -99,7 +99,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 10,
-    name: 'Dr. Gustavo Lage',
+    name: 'Gustavo Lage',
     imageUrl: '/gustavo-lage.webp',
     description: [
       'Cirurgia do Quadril (IOT-HCFMUSP)',
@@ -109,7 +109,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 11,
-    name: 'Dr. Lucas Capello Smarieri',
+    name: 'Lucas Capello Smarieri',
     imageUrl: '/lucas-capello.webp',
     description: [
       'Cirurgia do Ombro e Cotovelo (IOT-HCFMUSP)',
@@ -119,7 +119,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 12,
-    name: 'Dr. Giovanni Fornino',
+    name: 'Giovanni Fornino',
     imageUrl: '/giovanni-fornino.webp',
     description: [
       'Cirurgia do Pé e Tornozelo (IOT-HCFMUSP)',
@@ -144,10 +144,17 @@ function StaffCard({ member }: { member: StaffMember }) {
       <div className="p-3 sm:p-4">
         <h3 className="text-brand-blue mb-2 text-base sm:text-lg font-semibold">{member.name}</h3>
         <ul className="list-disc space-y-1 pl-4 text-xs text-gray-600">
-          {member.description.map((point, i) => (
-            <li key={i}>{point}</li>
-          ))}
-        </ul>
+        {member.description.map((point, i) => (
+                  <li key={i}>
+                    {(i === 0 && [1, 2, 7].includes(member.id)) ? (
+                      <strong className="text-gray-900">{point}</strong>
+                    ) : (
+                      point
+                    )}
+                  </li>
+        ))}</ul>
+
+
       </div>
     </div>
   );
