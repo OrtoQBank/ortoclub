@@ -6,7 +6,7 @@ export default function Cta1Section() {
         <div className="container mx-auto">
           <div className="mx-auto max-w-7xl">
             <div className="grid items-center gap-6 md:gap-8 md:grid-cols-3">
-              {/* CARD IMAGEM ESQUERDA */}
+              {/* CARD IMAGE ESQUERDA */}
               <div className="md:col-span-1">
                 <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
                   <div className="aspect-3/4 relative">
