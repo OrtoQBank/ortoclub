@@ -25,7 +25,7 @@ export default function Cta1Section() {
               </div> 
               
   
-              {/* CTA CENTRAL */}
+              {/* CTA CENTRL */}
               <div className="md:col-span-1 flex flex-col items-center justify-center text-center py-8">
                 
                 <div className="mt-8">
@@ -58,7 +58,7 @@ export default function Cta1Section() {
               </div>
             </div>
   
-            {/* espacinho final como no wireframe */}
+            {/* aaaaespacinho final como no wireframe */}
             <div className="mt-10 h-px w-full bg-border" />
           </div>
         </div>
