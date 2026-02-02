@@ -90,36 +90,37 @@ export default function ProductsSection() {
                         <span className="text-brand-blue">Nossos Produtos</span>
                     </h2>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 gap-6">
-                        {products.map((product, index) => (
-                            <div key={index} className="flex flex-col gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+                            {products.map((product, index) => (
+                                <div key={index} className="flex flex-col gap-3 md:gap-4">
                                 <Card className="overflow-hidden hover:shadow-lg transition-shadow p-0 border-0">
-                                    <div className="relative w-full aspect-3/4">
-                                        <Image
-                                            src={product.image}
-                                            alt={product.title}
-                                            fill
-                                            className="object-cover"
-                                        />
+                                    <div className="relative w-full aspect-[4/5] sm:aspect-3/4">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.title}
+                                        fill
+                                        className="object-cover"
+                                    />
                                     </div>
                                 </Card>
+
                                 {isVipOnly(product.href) ? (
                                     <Button
-                                        className="w-full  text-white font-semibold bg-brand-blue hover:bg-brand-blue/90"
-                                        onClick={() => handleVipClick(product.title)}
+                                    className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90"
+                                    onClick={() => handleVipClick(product.title)}
                                     >
-                                        ENTRAR PARA A LISTA VIP
+                                    ENTRAR PARA A LISTA VIP
                                     </Button>
                                 ) : (
                                     <Link href={product.href}>
-                                        <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90">
-                                            Comprar Acesso
-                                        </Button>
+                                    <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90">
+                                        Comprar Acesso
+                                    </Button>
                                     </Link>
                                 )}
+                                </div>
+                            ))}
                             </div>
-                        ))}
-                    </div>
                 </div>
             </div>
 
