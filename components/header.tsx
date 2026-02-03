@@ -39,7 +39,7 @@ export default function Header() {
     ];
 
     return (
-        <header className="bg-brand-blue sticky top-0 z-50 text-white ">
+        <header className="fixed w-full bg-brand-blue z-10 text-white mb-200">
             <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
                 {/* Logo e Nome - Lado Esquerdo */}
                 <Link href="/" className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export default function Header() {
                     <Button
                         asChild
                         variant="outline"
-                        className="border border-white  text-white bg-transparent hover:bg-white hover:text-(--blue-brand) transition-colors rounded-full"
+                        className="border border-white  text-white bg-transparent hover:bg-white hover:text-brand-blue transition-colors rounded-full"
                     >
                         <Link href="#aluno">Área do Aluno</Link>
                     </Button>

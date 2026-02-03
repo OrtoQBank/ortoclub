@@ -33,7 +33,7 @@ export default function Cta1Section() {
                 href="/orto-qbank"
               className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-primary-foreground font-semibold text-lg shadow-md hover:opacity-95 transition"
             >
-              Comprar Produto Ortoqbank
+              Garantir Acesso OrtoqBank
           </Link>
                 </div>
 

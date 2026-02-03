@@ -17,13 +17,13 @@ const staffMembers: StaffMember[] = [
     name: 'Daniel Duarte Perini',
     imageUrl: '/medico1.jpg',
     description: [
-      '7° lugar TEOT 2025','Médico - USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia da Coluna'],
+      '7° lugar TEOT 2025','Cirurgia da Coluna Vertebral (IOT-HCFMUSP)', '⁠Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
   },
   {
     id: 2,
     name: 'Vitor Ricardo Moraes',
     imageUrl: '/medico2.jpg',
-    description: ['1° lugar TEOT 2025','Médico - FMRP-USP', 'Ortopedista - IOT HC-FMUSP', 'Fellowship Cirurgia do Joelho'],
+    description: ['1° lugar TEOT 2025','Cirurgia do Joelho (IOT-HCFMUSP)', 'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP','Médico pela Faculdade de Medicina da USP'],
   },
   {
     id: 3,
@@ -79,7 +79,7 @@ const staffMembers: StaffMember[] = [
   },
   {
     id: 8,
-    name: 'Vinícius Antônio Santos Aragão',
+    name: 'Vinícius Santos Aragão',
     imageUrl: '/vinicius-antonio.webp',
     description: [
       'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)',
@@ -141,20 +141,26 @@ function StaffCard({ member }: { member: StaffMember }) {
           className="h-[240px] w-[240px] sm:h-[280px] sm:w-[280px] object-cover"
         />
       </div>
-      <div className="p-3 sm:p-4">
-        <h3 className="text-brand-blue mb-2 text-base sm:text-lg font-semibold">{member.name}</h3>
+      <div className="space-y-1 p-3 sm:p-4">
+        <h2 className="text-lg  text-brand-blue font-semibold">{member.name}</h2>
+        {(member.id === 1 || member.id === 2 || member.id === 7) && (
+          <p className="text-sm font-semibold text-gray-900">
+            {member.description[0]}
+          </p>
+        )}
+
         <ul className="list-disc space-y-1 pl-4 text-xs text-gray-600">
-        {member.description.map((point, i) => (
-                  <li key={i}>
-                    {(i === 0 && [1, 2, 7].includes(member.id)) ? (
-                      <strong className="text-gray-900">{point}</strong>
-                    ) : (
-                      point
-                    )}
-                  </li>
-        ))}</ul>
+          {member.description.map((point, i) => {
+            if (
+              (member.id === 1 || member.id === 2 || member.id === 7) &&
+              i === 0
+            ) {
+              return null // remove da lista
+            }
 
-
+            return <li key={i}>{point}</li>
+          })}
+        </ul>
       </div>
     </div>
   );
@@ -226,9 +232,10 @@ export default function StaffSection() {
   return (
     <section className="py-12 md:py-16">
       <div className="container mx-auto px-4">
-        <h2 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
+        <h1 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
           Nossa Equipe
-        </h2>
+        </h1>
+        <h2 className="text-black mb-8 md:mb-12 text-center text-lg sm:text-3xl font-bold md:text-2xl">Fundadores</h2>
 
         <div className="relative space-y-6 md:space-y-8">
           {/* Primeira fila - estática (1,2,3) */}
@@ -239,7 +246,9 @@ export default function StaffSection() {
               ))}
             </div>
           </div>
+          
 
+          <h2 className="text-black mb-8 md:mb-12 text-center text-lg sm:text-3xl font-bold md:text-2xl">Professores</h2>
           {/* Segunda fila - carrossel infinito */}
           <div className="relative overflow-hidden">
             {/* setas só para a segunda fila */}

@@ -11,7 +11,7 @@ export default function HeroSection() {
                         {/* Lado Esquerdo - Imagem */}
                         <div className="rounded-2xl overflow-hidden w-full md:h-[400px] md:w-[700px] h-[250px] flex-shrink-0">
                             <Image
-                                src="/turma-ortoclub.jpeg"
+                                src="/hero-image.webp"
                                 alt="OrtoClub TEOT"
                                 width={700}
                                 height={400}
@@ -24,7 +24,15 @@ export default function HeroSection() {
                         <div className="relative md:h-[400px] flex flex-col justify-center w-full md:max-w-sm space-y-6 md:space-y-0">
                             <div className="space-y-4">
                                 <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center md:text-left">
-                                    Transformando a educação ortodôntica com métodos inovadores e uma equipe de especialistas dedicados ao seu crescimento profissional.
+                                Extensivo 2027
+
+                                    Preparação completa para o Seu TEOT e TEPOT 2027!
+
+                                    Tenha acesso integral às plataformas OrtoQBank e OrtoClub TEOT e domine a prova de título.
+
+                                    Aprenda todo o conhecimento necessário com nossas aulas focadas na prova e treine os fundamentos no melhor banco de questões ortopedia do Brasil.
+
+                                    Quero o acesso completo..
                                 </p>
 
                                 <div className="flex gap-3 items-center justify-center md:justify-start">
