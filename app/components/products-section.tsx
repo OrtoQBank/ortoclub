@@ -57,13 +57,13 @@ export default function ProductsSection() {
         {
             title: 'SBCJ Qbank',
             description: 'Base sólida em ortodontia convencional',
-            image: '/mao-qbank.jpeg',
+            image: '/SBCJQBank.webp',
             href: '/sbcj-qbank'
         },
         {
             title: 'Mão Qbank',
             description: 'Base sólida em ortodontia convencional',
-            image: '/mao-qbank.jpeg',
+            image: '/MaqBan.webp',
             href: '/mao-qbank'
         }
     ];
@@ -86,9 +86,10 @@ export default function ProductsSection() {
         <section className="py-12 md:py-20 px-4 ">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
+                    <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
                         <span className="text-brand-blue">Nossos Produtos</span>
-                    </h2>
+                    </h1>
+                    <h2 className="text-black mb-8 md:mb-12 text-center text-lg sm:text-3xl font-bold md:text-2xl">TEOT/TPOT</h2>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
                             {products.map((product, index) => (
@@ -109,12 +110,12 @@ export default function ProductsSection() {
                                     className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90"
                                     onClick={() => handleVipClick(product.title)}
                                     >
-                                    ENTRAR PARA A LISTA VIP
+                                    Lista de Espera
                                     </Button>
                                 ) : (
                                     <Link href={product.href}>
                                     <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90">
-                                        Comprar Acesso
+                                        Garantir Acesso
                                     </Button>
                                     </Link>
                                 )}

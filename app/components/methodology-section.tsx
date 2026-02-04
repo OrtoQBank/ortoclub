@@ -20,7 +20,7 @@ export default function HeroSection() {
                     <div className="grid items-center justify-center gap-6 md:gap-8 lg:grid-cols-12">
                         <div className="flex flex-col justify-center space-y-4 md:space-y-6 lg:col-span-4">
                             <h1 className="text-brand-blue text-center text-2xl font-bold sm:text-3xl md:text-start md:text-4xl lg:text-5xl">
-                                A melhor preparação para o seu TEOT e TEPOT
+                            O melhor e mais completo banco de questões de ortopedia.
                             </h1>
                             <ul className="space-y-3 md:space-y-4 text-sm text-gray-700 sm:text-base md:text-lg md:text-start">
                                 {[
@@ -30,7 +30,7 @@ export default function HeroSection() {
                                     'Feedback detalhado de acordo com cada matéria',
                                 ].map(text => (
                                     <li key={text} className="flex items-center gap-2 md:gap-3">
-                                        <CircleCheckIcon className="text-brand-blue h-5 w-5 md:h-6 md:w-6 shrink-0" />
+                                        <CircleCheckIcon className="whtie h-5 w-5 md:h-6 md:w-6 shrink-0" />
                                         <span className="flex-1">{text}</span>
                                     </li>
                                 ))}
