@@ -164,7 +164,7 @@ export default function Header() {
                                         </Button>
                                     </a>
                                 ) : isVipOnly(product.href) ? (
-                                    <Button 
+                                    <Button
                                         className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90 text-sm"
                                         onClick={() => handleWaitlistClick(product.title)}
                                     >

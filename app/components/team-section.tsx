@@ -39,7 +39,7 @@ const staffMembers: StaffMember[] = [
   {
     id: 4,
     name: 'Diogo Kenzo Takazono',
-    imageUrl: '/diogo-kenzo.webp',
+    imageUrl: '/diogo-kenzo.png',
     description: [
       'Cirurgia da Mão e Microcirurgia (IOT-HCFMUSP)',
       'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
@@ -49,7 +49,7 @@ const staffMembers: StaffMember[] = [
   {
     id: 5,
     name: 'Thales Augusto Tomé',
-    imageUrl: '/thales-augusto.webp',
+    imageUrl: '/thales-augusto.png',
     description: [
       'Cirurgia da Mão e Microcirurgia (IOT-HCFMUSP)',
       'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
@@ -90,7 +90,7 @@ const staffMembers: StaffMember[] = [
   {
     id: 9,
     name: 'Gil Goulart Choi',
-    imageUrl: '/gil-goulart.webp',
+    imageUrl: '/gil-goulart.png',
     description: [
       'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)',
       'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
@@ -100,7 +100,7 @@ const staffMembers: StaffMember[] = [
   {
     id: 10,
     name: 'Gustavo Lage',
-    imageUrl: '/gustavo-lage.webp',
+    imageUrl: '/gustavo-lage.png',
     description: [
       'Cirurgia do Quadril (IOT-HCFMUSP)',
       'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
@@ -110,7 +110,7 @@ const staffMembers: StaffMember[] = [
   {
     id: 11,
     name: 'Lucas Capello Smarieri',
-    imageUrl: '/lucas-capello.webp',
+    imageUrl: '/lucas-capello.png',
     description: [
       'Cirurgia do Ombro e Cotovelo (IOT-HCFMUSP)',
       'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP',
@@ -151,7 +151,7 @@ function StaffCard({ member, fullWidth = false, smallMobile = false }: { member:
           alt={`Foto de ${member.name}`}
           width={280}
           height={280}
-          className={`object-cover ${imageSize}`}
+          className={`object-cover ${smallMobile ? 'object-top' : ''} ${imageSize}`}
         />
       </div>
       <div className="space-y-1 p-2 sm:p-4">

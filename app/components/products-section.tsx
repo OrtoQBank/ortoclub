@@ -115,7 +115,7 @@ export default function ProductsSection() {
                                 {section.products.map((product, index) => (
                                     <div key={index} className="flex flex-col gap-3 md:gap-4 w-[calc(50%-0.5rem)] md:w-[calc(33.333%-1rem)]">
                                         <Card className="overflow-hidden hover:shadow-lg transition-shadow p-0 border-0">
-                                            <div className="relative w-full aspect-[3/4] sm:aspect-[4/5]">
+                                            <div className="relative w-full aspect-[3/4]">
                                                 <Image
                                                     src={product.image}
                                                     alt={product.title}
