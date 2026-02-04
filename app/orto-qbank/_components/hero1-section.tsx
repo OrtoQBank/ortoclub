@@ -14,12 +14,15 @@ export default function Hero1Section() {
                     Preparação TEOT
                   </span>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-                    OrtoClub QBank
+                  OrtoQBank - Preparação que aprova
                   </h1>
                 </div>
   
                 <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl">
-                  Banco de questões comentadas com foco total na prova TEOT. Treine com questões no padrão da banca, revisão inteligente e análise de desempenho para aumentar suas chances de aprovação.
+                Banco de questões 100% focado na prova do TEOT/TEPOT, desenvolvido por especialistas da USP que já se diferenciaram na prova!
+
+                Treine em uma plataforma própria e interativa, com comentários aprofundados, análise de desempenho e testes personalizados.
+
                 </p>
 
                 {/* Benefícios em bullets */}
@@ -29,8 +32,8 @@ export default function Hero1Section() {
                       <BookOpen className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium">+2.000 questões</h3>
-                      <p className="text-sm text-muted-foreground">Comentadas por especialistas</p>
+                      <h3 className="font-medium">+4.000 questões comentadas</h3>
+                      <p className="text-sm text-muted-foreground">Comentários didáticos, completos e ilustrados, elaborados por especialistas da USP</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -38,8 +41,8 @@ export default function Hero1Section() {
                       <Target className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Padrão da banca</h3>
-                      <p className="text-sm text-muted-foreground">Questões no formato TEOT</p>
+                      <h3 className="font-medium">Plataforma própria interativa</h3>
+                      <p className="text-sm text-muted-foreground">Experiência fluida no computador, tablet ou celular, com métricas reais de desempenho</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -47,8 +50,8 @@ export default function Hero1Section() {
                       <BarChart3 className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Análise de desempenho</h3>
-                      <p className="text-sm text-muted-foreground">Acompanhe sua evolução</p>
+                      <h3 className="font-medium">Análise de desempenho avançada</h3>
+                      <p className="text-sm text-muted-foreground">Identifique pontos fracos!</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -56,21 +59,19 @@ export default function Hero1Section() {
                       <Clock className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Revisão inteligente</h3>
-                      <p className="text-sm text-muted-foreground">Foco nos pontos fracos</p>
+                      <h3 className="font-medium">Resultado comprovado</h3>
+                      <p className="text-sm text-muted-foreground">Método validado por aprovação em 1º lugar no TEOT 2025</p>
                     </div>
                   </div>
                 </div>
   
-                <div className="flex flex-col items-center"></div>
                 <a
                     href="https://ortoqbank.ortoclub.com/"
                     target="_blank" 
-                    className="font-semibold bg-brand-blue text-white border-4 border-brand-blue py-2 px-6 rounded-lg hover:bg-brand-blue/90"
+                    className="inline-flex items-center justify-center font-semibold bg-brand-blue text-white py-3 px-8 rounded-lg hover:bg-brand-blue/90 transition"
                   >
-                 Garantir Acesso
-                      </a>
-                      <div className="mt-4 flex flex-col items-center"></div>
+                    Quero assinar o OrtoQBank
+                </a>
                 
               </div>
   

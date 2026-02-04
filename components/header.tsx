@@ -72,7 +72,7 @@ export default function Header() {
     ];
 
     return (
-        <header className="fixed w-full bg-brand-blue z-10 text-white mb-200">
+        <header className="fixed w-full bg-brand-blue z-10 text-white">
             <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
                 {/* Logo e Nome - Lado Esquerdo */}
                 <Link href="/" className="flex items-center gap-2">
