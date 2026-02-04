@@ -18,7 +18,7 @@ export default function HeroSection() {
             <div className="container mx-auto px-4 md:px-6">
                 <div className="mx-auto max-w-7xl">
                     <div className="grid items-center justify-center gap-6 md:gap-8 lg:grid-cols-12">
-                        <div className="flex flex-col justify-center space-y-4 md:space-y-6 lg:col-span-5">
+                        <div className="flex flex-col justify-center space-y-4 md:space-y-6 lg:col-span-5 px-4 md:px-0">
                             <h1 className="text-brand-blue text-center text-2xl font-bold sm:text-3xl md:text-start md:text-4xl lg:text-5xl">
                                 O que está incluso no Extensivo 2027
 
