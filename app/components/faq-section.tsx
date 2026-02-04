@@ -8,6 +8,97 @@ import {
 export default function FAQ() {
     const faqs = [
         {
+            question: 'O que é o OrtoClub TEOT?',
+            answer: (
+                <div className="space-y-2">
+                    <p>
+                        O OrtoClub TEOT é a nossa plataforma de ortopedia, desenvolvida para
+                        apoiar o residente em toda sua formação.
+                    </p>
+                    <p>
+                        As aulas são ministradas por um time com mais de 10 especialistas
+                        da USP, professores com experiência em ensino médico e formação de
+                        residentes, unindo base teórica sólida, prática clínica e foco em
+                        prova.
+                    </p>
+                </div>
+            ),
+        },
+        {
+            question: 'Qual a diferença entre OrtoClub TEOT, OrtoQBank e o Extensivo?',
+            answer: (
+                <div className="space-y-2">
+                    <p>
+                        <strong>OrtoQBank:</strong> treinamento por questões comentadas, com
+                        foco em repetição, revisão e desempenho.
+                    </p>
+                    <p>
+                        <strong>OrtoClub TEOT:</strong> formação teórica completa em aulas,
+                        organizada por temas e subespecialidades.
+                    </p>
+                    <p>
+                        <strong>Extensivo TEOT:</strong> programa completo que integra aulas
+                        + questões + método, ideal para quem quer uma preparação estruturada
+                        e contínua até a prova.
+                    </p>
+                    <p className="font-medium text-brand-blue">
+                        👉 O Extensivo é a forma mais completa de se preparar para o TEOT.
+                    </p>
+                </div>
+            ),
+        },
+        {
+            question: 'Para quem o Extensivo TEOT é indicado?',
+            answer: (
+                <div className="space-y-2">
+                    <p>
+                        O Extensivo TEOT é indicado para residentes de Ortopedia (R1, R2 e
+                        R3) e médicos que desejam uma preparação de longo prazo, com método,
+                        consistência e foco total na aprovação.
+                    </p>
+                    <p>É especialmente recomendado para quem:</p>
+                    <ul className="list-disc space-y-1 pl-5">
+                        <li>quer evitar estudo desorganizado ou tardio</li>
+                        <li>busca acompanhamento por desempenho</li>
+                        <li>deseja chegar no dia da prova com segurança e alto rendimento</li>
+                    </ul>
+                </div>
+            ),
+        },
+        {
+            question: 'O método do Extensivo realmente funciona?',
+            answer: (
+                <div className="space-y-2">
+                    <p>
+                        Sim. O método foi construído a partir da experiência prática e
+                        acadêmica dos fundadores e professores do OrtoClub, com resultados
+                        comprovados na prova, incluindo 1º, 4º e 7º lugares no TEOT.
+                    </p>
+                    <p>
+                        Além disso, o Extensivo une formação teórica, treino intensivo por
+                        questões e análise de desempenho, exatamente no formato exigido pela
+                        banca — o que torna o estudo mais eficiente e direcionado.
+                    </p>
+                </div>
+            ),
+        },
+        {
+            question: 'Quais são as formas de pagamento?',
+            answer: (
+                <div className="space-y-2">
+                    <p>
+                        Todos os nossos cursos podem ser pagos à vista ou parcelados em até
+                        12x sem juros no cartão de crédito.
+                    </p>
+                    <p>
+                        Isso permite que você invista na sua preparação de forma planejada,
+                        diluindo o valor ao longo do ano, sem custo adicional, enquanto já
+                        tem acesso completo a todo o conteúdo desde o primeiro dia.
+                    </p>
+                </div>
+            ),
+        },
+        {
             question: 'Como é organizado o banco de questões?',
             answer: (
                 <div className="space-y-2">
@@ -56,11 +147,8 @@ export default function FAQ() {
             question: 'As questões são atualizadas com que frequência?',
             answer: (
                 <ul className="list-disc space-y-1 pl-5">
-                    <li>
-                        Temos um cronograma de lançamento mensal de trilhas de estudo
-                        baseado em áreas do conhecimento
-                    </li>
-                    <li>Questões atualizadas semanalmente com gabaritos completos</li>
+
+                    <li>As questões são atualizadas semanalmente com novos gabaritos completos.</li>
                 </ul>
             ),
         },
@@ -69,10 +157,10 @@ export default function FAQ() {
             answer: (
                 <div className="space-y-2">
                     <p>
-                        O OrtoQBank é para todos os residentes de ortopedia que desejam uma
+                        O OrtoClub é para todos os residentes de ortopedia que desejam uma
                         preparação diferenciada e com método validado para o TEOT.
                     </p>
-                    <p>Direcionado para R1, R2 e R3.</p>
+                    <p>Direcionado para R1, R2, R3 e TEOT/TEPOT.</p>
                 </div>
             ),
         },
@@ -104,21 +192,10 @@ export default function FAQ() {
             question: 'Qual a duração do acesso?',
             answer: (
                 <div className="space-y-2">
-                    <p>A duração do acesso depende do plano adquirido:</p>
-                    <ul className="list-disc space-y-1 pl-5">
-                        <li>
-                            Plano TEOT 2026: direcionado para R3, acesso até a data da 2a fase
-                            do TEOT 2026.
-                        </li>
-                        <li>
-                            Plano TEOT 2027: direcionado para R2, acesso até a data da 2a fase
-                            do TEOT 2027.
-                        </li>
-                        <li>
-                            Plano TEOT 2028: direcionado para R1, acesso até a data da 2a fase
-                            do TEOT 2028.
-                        </li>
-                    </ul>
+                    <p>A duração do acesso é anual.</p>
+                    <p>
+                        Ao adquirir um plano, você terá acesso completo ao conteúdo até a próxima edição do TEOT/TEPOT correspondente ao seu ciclo de preparação.
+                    </p>
                 </div>
             ),
         },
@@ -140,7 +217,7 @@ export default function FAQ() {
                 <div className="space-y-2">
                     <p>
                         Sim, junte seus colegas e entre em contato conosco pelo instagram
-                        (@ortoqbank) ou e-mail oficial (ortoqbank@gmail.com) para adquirir
+                        (@orto.club) ou e-mail oficial (ortoqbank@gmail.com) para adquirir
                         condições especiais.
                     </p>
                 </div>
