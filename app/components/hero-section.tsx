@@ -1,61 +1,73 @@
 import { Button } from '@/components/ui/button';
-import { Users } from 'lucide-react';
 import Image from 'next/image';
 
 export default function HeroSection() {
     return (
-        <section className=" pt-20 md:pt-32 pb-12 md:pb-20 px-4">
+        <section className="pt-24 md:pt-32 pb-16 md:pb-24 px-4 bg-blue-50">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
-                    <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
-                        {/* Lado Esquerdo - Imagem */}
-                        <div className="rounded-2xl overflow-hidden w-full md:h-[400px] md:w-[700px] h-[250px] flex-shrink-0">
+                    <div className="inline-block bg-brand-blue text-white px-4 max-w-[400px] py-1 text-center rounded-full text-sm font-medium mb-6">
+                        Extensivo 2027
+                    </div>
+                    {/* Título */}
+                    <h2 className=" md:text-xl font-bold text-brand-blue mb-8">
+                        PREPARAÇÃO COMPLETA PARA QUEM QUER CHEGAR PRONTO NO TEOT/TEPOT!
+                    </h2>
+
+                    {/* Container principal */}
+                    <div className="grid grid-cols-1 lg:grid-cols-[900px_auto_300px] gap-4 lg:gap-6">
+                        {/* Linha 1: Imagens */}
+                        {/* Primeira imagem - OrtoClub TEOT */}
+                        <div className="w-full h-[400px] lg:h-[450px]">
                             <Image
                                 src="/hero-image.webp"
                                 alt="OrtoClub TEOT"
-                                width={700}
+                                width={600}
                                 height={400}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover rounded-lg"
                             />
                         </div>
 
+                        {/* Sinal de + centralizado */}
+                        <div className="hidden lg:flex items-center justify-center w-12">
+                            <span className="text-5xl font-light text-brand-blue">
+                                +
+                            </span>
+                        </div>
 
-                        {/* Lado Direito - texto e botão "EM BREVE TURMAS"*/}
-                        <div className="relative md:h-[400px] flex flex-col justify-center w-full md:max-w-sm space-y-6 md:space-y-0">
-                            <div className="space-y-4">
-                                <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center md:text-left">
-                                Extensivo 2027
+                        {/* Segunda imagem - OrtoQBank */}
+                        <div className="w-full h-[400px] lg:h-[450px]">
+                            <Image
+                                src="/ortoqbank.jpeg"
+                                alt="OrtoQBank"
+                                width={250}
+                                height={400}
+                                className="w-full h-full object-cover rounded-lg"
+                            />
+                        </div>
 
-                                    Preparação completa para o Seu TEOT e TEPOT 2027!
+                        {/* Linha 2: Texto descritivo (abaixo da imagem 1) */}
+                        <div className="space-y-4 pt-4">
+                            <p className="text-lg text-gray-700 font-medium">
+                                O Extensivo 2027 é o programa mais completo do OrtoClub.
+                            </p>
+                            <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                                Ele une formação teórica sólida, treinamento intensivo por questões e um método de estudo validado por resultado, pensado para quem quer estudar com estratégia desde agora e chegar na prova com segurança, consistência e alto desempenho.
+                            </p>
+                        </div>
 
-                                    Tenha acesso integral às plataformas OrtoQBank e OrtoClub TEOT e domine a prova de título.
+                        {/* Espaço vazio para alinhar com o + */}
+                        <div className="hidden lg:block"></div>
 
-                                    Aprenda todo o conhecimento necessário com nossas aulas focadas na prova e treine os fundamentos no melhor banco de questões ortopedia do Brasil.
+                        {/* CTA (abaixo da imagem 2) */}
+                        <div className="flex flex-col items-center justify-start text-center space-y-5 pt-12">
 
-                                    Quero o acesso completo..
-                                </p>
-
-                                <div className="flex gap-3 items-center justify-center md:justify-start">
-                                    <div className="flex -space-x-3">
-                                        {[1, 2, 3, 4, 5, 6, 7].map((person) => (
-                                            <div
-                                                key={person}
-                                                className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white bg-brand-blue flex items-center justify-center"
-                                            >
-                                                <Users className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <span className="text-sm text-gray-600">+200 alunos</span>
-                                </div>
-                            </div>
-
-                            {/* Box "EM BREVE TURMAS" */}
-                            <div className="md:absolute md:bottom-0 md:pl-2 flex justify-center md:justify-start w-full mt-4 md:mt-0">
-                                <Button variant="default" className="bg-brand-blue text-white hover:bg-brand-blue/90 w-full md:w-auto">
-                                    EM BREVE TURMAS
-                                </Button>
-                            </div>
+                            <Button
+                                variant="default"
+                                className="bg-brand-blue text-white hover:bg-brand-blue/90 text-base px-10 py-6 leading-tight"
+                            >
+                                QUERO ACESSO COMPLETO
+                            </Button>
                         </div>
                     </div>
                 </div>
