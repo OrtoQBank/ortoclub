@@ -17,13 +17,13 @@ const staffMembers: StaffMember[] = [
     name: 'Daniel Duarte Perini',
     imageUrl: '/medico1.jpg',
     description: [
-      '7° lugar TEOT 2025','Cirurgia da Coluna Vertebral (IOT-HCFMUSP)', '⁠Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
+      '7° lugar TEOT 2025', 'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)', '⁠Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
   },
   {
     id: 2,
     name: 'Vitor Ricardo Moraes',
     imageUrl: '/medico2.jpg',
-    description: ['1° lugar TEOT 2025','Cirurgia do Joelho (IOT-HCFMUSP)', 'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP','Médico pela Faculdade de Medicina da USP'],
+    description: ['1° lugar TEOT 2025', 'Cirurgia do Joelho (IOT-HCFMUSP)', 'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
   },
   {
     id: 3,
@@ -246,7 +246,7 @@ export default function StaffSection() {
               ))}
             </div>
           </div>
-          
+
 
           <h2 className="text-black mb-8 md:mb-12 text-center text-lg sm:text-3xl font-bold md:text-2xl">Professores</h2>
           {/* Segunda fila - carrossel infinito */}

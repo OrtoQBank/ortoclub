@@ -1,19 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from '@/components/ui/sheet';
+import SidebarMobile from './sidebar-mobile';
 import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
 } from '@/components/ui/navigation-menu';
-import { Menu, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import {
     DropdownMenu,
@@ -21,8 +18,28 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from '@/components/ui/dialog';
+import EmailCollectionForm from '@/app/components/email-collection-form';
+
+// Produtos que ainda não têm acesso disponível (lista de espera)
+const VIP_ONLY_PRODUCTS = [
+    '/mentoria-video',
+    '/sbcj-qbank',
+    '/mao-qbank',
+    '/gestao-video',
+    '/teot-video',
+];
 
 export default function Header() {
+    const [isStudentAreaOpen, setIsStudentAreaOpen] = useState(false);
+    const [waitlistProduct, setWaitlistProduct] = useState<string | null>(null);
+
     const products = [
         { title: 'OrtoQbank', href: '/orto-qbank' },
         { title: 'TEOT Aulas', href: '/teot-video' },
@@ -31,6 +48,22 @@ export default function Header() {
         { title: 'SBCJ Qbank', href: '/sbcj-qbank' },
         { title: 'Mão Qbank', href: '/mao-qbank' },
     ];
+
+    const studentAreaProducts = [
+        { title: 'OrtoQbank', image: '/ortoqbank.jpeg', href: 'https://ortoqbank.com.br', external: true },
+        { title: 'TEOT Aulas', image: '/teot-aulas.jpeg', href: '/teot-video', external: false },
+        { title: 'Mentoria Aulas', image: '/mentoria-aulas.jpeg', href: '/mentoria-video', external: false },
+        { title: 'Gestão Aulas', image: '/gestao-aulas.jpeg', href: '/gestao-video', external: false },
+        { title: 'SBCJ Qbank', image: '/SBCJQBank.webp', href: '/sbcj-qbank', external: false },
+        { title: 'Mão Qbank', image: '/MaqBan.webp', href: '/mao-qbank', external: false },
+    ];
+
+    const isVipOnly = (href: string) => VIP_ONLY_PRODUCTS.includes(href);
+
+    const handleWaitlistClick = (productTitle: string) => {
+        setIsStudentAreaOpen(false);
+        setWaitlistProduct(productTitle);
+    };
 
     const menuItems = [
         { href: '#metodologia', label: 'Metodologia' },
@@ -84,58 +117,91 @@ export default function Header() {
                     </NavigationMenu>
 
                     <Button
-                        asChild
                         variant="outline"
-                        className="border border-white  text-white bg-transparent hover:bg-white hover:text-brand-blue transition-colors rounded-full"
+                        className="border border-white text-brand-blue bg-white hover:bg-brand-blue/50 hover:border-brand-white hover:text-white transition-colors rounded-full"
+                        onClick={() => setIsStudentAreaOpen(true)}
                     >
-                        <Link href="#aluno">Área do Aluno</Link>
+                        Área do Aluno
                     </Button>
                 </div>
 
                 {/* Mobile Navigation */}
-                <Sheet>
-                    <SheetTrigger asChild className="md:hidden">
-                        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-                            <Menu className="h-5 w-5 md:h-6 md:w-6" />
-                            <span className="sr-only">Toggle menu</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="right" className="w-[280px] sm:w-[350px]">
-                        <div className="flex flex-col gap-4 mt-8">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger className="text-base md:text-lg font-medium hover:text-brand-blue transition-colors py-2 flex items-center justify-between">
-                                    Produtos
-                                    <ChevronDown className="h-4 w-4" />
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="bg-white w-full">
-                                    {products.map((product) => (
-                                        <DropdownMenuItem key={product.href} asChild>
-                                            <Link href={product.href} className="cursor-pointer">
-                                                {product.title}
-                                            </Link>
-                                        </DropdownMenuItem>
-                                    ))}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                            {menuItems.map((item) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className="text-base md:text-lg font-medium hover:text-brand-blue transition-colors py-2"
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
-                            <Button
-                                asChild
-                                className="bg-brand-blue hover:bg-brand-blue/90 mt-4"
-                            >
-                                <Link href="#aluno">Área do Aluno</Link>
-                            </Button>
-                        </div>
-                    </SheetContent>
-                </Sheet>
+                <SidebarMobile
+                    products={products}
+                    menuItems={menuItems}
+                    onStudentAreaClick={() => setIsStudentAreaOpen(true)}
+                    onWaitlistClick={(productTitle) => setWaitlistProduct(productTitle)}
+                />
             </div>
+
+            {/* Modal Área do Aluno */}
+            <Dialog open={isStudentAreaOpen} onOpenChange={setIsStudentAreaOpen}>
+                <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="text-center">
+                        <DialogTitle className="text-2xl font-bold text-brand-blue text-center">
+                            Área do Aluno
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+                        {studentAreaProducts.map((product) => (
+                            <div key={product.title} className="flex flex-col gap-2">
+                                <div className="relative w-full aspect-3/4 rounded-lg overflow-hidden">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.title}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+                                {product.external ? (
+                                    <a
+                                        href={product.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90 text-sm">
+                                            Acessar
+                                        </Button>
+                                    </a>
+                                ) : isVipOnly(product.href) ? (
+                                    <Button 
+                                        className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90 text-sm"
+                                        onClick={() => handleWaitlistClick(product.title)}
+                                    >
+                                        Lista de Espera
+                                    </Button>
+                                ) : (
+                                    <Link href={product.href} onClick={() => setIsStudentAreaOpen(false)}>
+                                        <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90 text-sm">
+                                            Acessar
+                                        </Button>
+                                    </Link>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* Modal Lista de Espera */}
+            <Dialog open={waitlistProduct !== null} onOpenChange={(open) => !open && setWaitlistProduct(null)}>
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="text-center">
+                        <DialogTitle className="text-xl font-bold text-gray-900 text-center">
+                            Preencha os campos para confirmar sua vaga!
+                        </DialogTitle>
+                        <DialogDescription className="text-center">
+                            Seus dados estão seguros.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <EmailCollectionForm
+                        productName={waitlistProduct || undefined}
+                        onSuccess={() => {
+                            setTimeout(() => setWaitlistProduct(null), 2000);
+                        }}
+                    />
+                </DialogContent>
+            </Dialog>
         </header>
     );
 }
