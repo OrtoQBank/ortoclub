@@ -204,7 +204,7 @@ export default function FAQ() {
             answer: (
                 <div className="space-y-2">
                     <p>
-                        O OrtoQBank é um curso individual. A plataforma dá feedback baseado
+                        O OrtoClub contém um cursos individual. A plataforma dá feedback baseado
                         no desempenho do aluno, e portanto não é recomendado ou permitido o
                         compartilhamento de acesso.
                     </p>

@@ -9,12 +9,10 @@ import { NextRequest, NextResponse } from "next/server";
  * Configuration:
  * - ASAAS_WEBHOOK_SECRET: The secret token for webhook validation
  * - ASAAS_APP_ROUTES: JSON mapping of app slugs to webhook URLs
- *   Example: {"ortoqbank":"https://deploy1.convex.site/webhooks/asaas","teot":"https://deploy1.convex.site/webhooks/asaas","derma":"https://deploy2.convex.site/webhooks/asaas"}
+ *   Example: {"ortoclub":"https://deploy1.convex.site/webhooks/asaas","ortoclub":"https://deploy1.convex.site/webhooks/asaas","derma":"https://deploy2.convex.site/webhooks/asaas"}
  *
  * Or use individual environment variables:
- * - WEBHOOK_URL_ortoqbank: Webhook URL for ortoqbank app
- * - WEBHOOK_URL_teot: Webhook URL for teot app (same deployment as ortoqbank)
- * - WEBHOOK_URL_derma: Webhook URL for derma app (different deployment)
+ * - WEBHOOK_URL_ortoclub: Webhook URL for ortoclub app
  */
 
 // Map app slugs to their Convex webhook URLs
