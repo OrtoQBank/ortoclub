@@ -19,7 +19,7 @@ export default function Hero2Section() {
                                     OrtoClub TEOT - Formação que aprova
                                 </h1>
                             </div>
-                            
+
                             {/* Descrição introdutória */}
                             <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl">
                                 A plataforma de aulas que forma ortopedistas de excelência e aprova no TEOT. Estruturada por quem vive a prática, ensina e conquistou 1º, 4º e 7º lugares no TEOT — unindo método, prática e aprovação.
@@ -79,12 +79,12 @@ export default function Hero2Section() {
                         {/* Lado Direito - Imagem do Produto */}
                         <div className="md:col-span-2">
                             <div className="flex justify-center">
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[375px]">
                                     <Image
                                         src="/teot-aulas.jpeg"
                                         alt="OrtoClub TEOT - Plataforma de Aulas"
                                         width={500}
-                                        height={375}
+                                        height={300}
                                         priority
                                         className="w-full h-auto rounded-2xl shadow-xl"
                                     />

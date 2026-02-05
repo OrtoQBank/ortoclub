@@ -14,7 +14,7 @@ const scrollToPricing = () => {
 
 export default function HeroSection() {
     return (
-        <section className="w-full  py-12 md:py-18 bg-blue-50">
+        <section id="metodologia" className="w-full py-12 md:py-18 bg-blue-50">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="mx-auto max-w-7xl">
                     <div className="grid items-center justify-center gap-6 md:gap-8 lg:grid-cols-12">

@@ -226,7 +226,7 @@ export default function FAQ() {
     ];
 
     return (
-        <section className=" py-12 md:py-16 bg-blue-50">
+        <section id="faq" className="py-12 md:py-16 bg-blue-50">
             <div className="container mx-auto  px-4">
                 <h2 className="text-3xl font-bold md:text-4xl mb-8 md:mb-12 text-center text-brand-blue">
                     Perguntas Frequentes
