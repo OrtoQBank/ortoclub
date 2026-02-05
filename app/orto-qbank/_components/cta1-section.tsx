@@ -3,19 +3,20 @@ import Link from "next/link";
 
 export default function Cta1Section() {
   return (
-    <section className="py-12 md:py-20 px-4 bg-white">
+    <section className="py-12 md:py-16 px-4 bg-white">
       <div className="container mx-auto">
         <div className="mx-auto max-w-6xl">
           {/* Headline */}
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">
             Você escolhe como estudar. O OrtoClub cuida do resto.
           </h2>
 
-          {/* BLOCO 1 - Crie testes personalizados */}
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center mb-16">
-            {/* Imagem */}
-            <div className="w-full md:w-2/5 shrink-0">
-              <div className="aspect-[3/4] relative">
+          {/* Grid horizontal com os dois blocos lado a lado */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-10">
+            {/* BLOCO 1 - Crie testes personalizados */}
+            <div className="bg-gray-50 rounded-2xl p-6 flex flex-col">
+              {/* Imagem */}
+              <div className="w-full h-48 md:h-56 relative mb-5">
                 <Image
                   src="/B.png"
                   alt="Crie testes personalizados"
@@ -23,37 +24,35 @@ export default function Cta1Section() {
                   className="object-contain"
                 />
               </div>
+              {/* Conteúdo */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Crie testes personalizados em segundos
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Monte seus treinos escolhendo entre mais de 4000 questões:
+                </p>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-brand-blue rounded-full shrink-0"></span>
+                    Temas, subtemas e grupos
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-brand-blue rounded-full shrink-0"></span>
+                    Quantidade de questões
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-brand-blue rounded-full shrink-0"></span>
+                    Modo estudo ou simulado
+                  </li>
+                </ul>
+              </div>
             </div>
-            {/* Conteúdo */}
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Crie testes personalizados em segundos
-              </h3>
-              <p className="text-gray-600 mb-5 text-lg">
-                Monte seus treinos escolhendo entre mais de 4000 questões:
-              </p>
-              <ul className="space-y-3 text-gray-700 text-lg">
-                <li className="flex items-center gap-3">
-                  <span className="w-2 h-2 bg-brand-blue rounded-full shrink-0"></span>
-                  Temas, subtemas e grupos
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="w-2 h-2 bg-brand-blue rounded-full shrink-0"></span>
-                  Quantidade de questões
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="w-2 h-2 bg-brand-blue rounded-full shrink-0"></span>
-                  Modo estudo ou simulado
-                </li>
-              </ul>
-            </div>
-          </div>
 
-          {/* BLOCO 2 - Simulados e trilhas */}
-          <div className="flex flex-col md:flex-row-reverse gap-8 md:gap-12 items-center mb-12">
-            {/* Imagem */}
-            <div className="w-full md:w-2/5 shrink-0">
-              <div className="aspect-[3/4] relative">
+            {/* BLOCO 2 - Simulados e trilhas */}
+            <div className="bg-gray-50 rounded-2xl p-6 flex flex-col">
+              {/* Imagem */}
+              <div className="w-full h-48 md:h-56 relative mb-5">
                 <Image
                   src="/c.png"
                   alt="Simulados e trilhas inteligentes"
@@ -61,26 +60,26 @@ export default function Cta1Section() {
                   className="object-contain"
                 />
               </div>
-            </div>
-            {/* Conteúdo */}
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Simulados e trilhas inteligentes de estudo
-              </h3>
-              <p className="text-gray-600 mb-2 text-lg">
-                Não sabe por onde começar?
-              </p>
-              <p className="font-medium text-gray-800 mb-6 text-lg">
-                O OrtoQBank organiza o caminho para você.
-              </p>
-              <div className="space-y-5">
-                <div>
-                  <h4 className="font-semibold text-gray-900 text-lg">Simulados completos no formato TEOT</h4>
-                  <p className="text-gray-500">Treine tempo, estratégia e tomada de decisão.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900 text-lg">Trilhas por subespecialidade e temas</h4>
-                  <p className="text-gray-500">Avance de forma lógica, progressiva e orientada.</p>
+              {/* Conteúdo */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Simulados e trilhas inteligentes de estudo
+                </h3>
+                <p className="text-gray-600 mb-1">
+                  Não sabe por onde começar?
+                </p>
+                <p className="font-medium text-gray-800 mb-4">
+                  O OrtoQBank organiza o caminho para você.
+                </p>
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Simulados completos no formato TEOT</h4>
+                    <p className="text-gray-500 text-sm">Treine tempo, estratégia e tomada de decisão.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Trilhas por subespecialidade e temas</h4>
+                    <p className="text-gray-500 text-sm">Avance de forma lógica, progressiva e orientada.</p>
+                  </div>
                 </div>
               </div>
             </div>
