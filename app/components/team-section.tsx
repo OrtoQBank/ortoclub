@@ -385,7 +385,7 @@ export default function StaffSection() {
   }, [scrollFirstRow]);
 
   return (
-    <section className="py-12 md:py-16">
+    <section id="equipe" className="py-12 md:py-16">
       <div className="container mx-auto px-4">
         <h1 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
           Nossa Equipe
