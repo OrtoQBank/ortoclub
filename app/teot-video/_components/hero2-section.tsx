@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Hero2Section() {
     return (
-        <section className="pt-20 md:pt-32 pb-12 md:pb-20 px-4">
+        <section className="mt-20 py-12 md:pt-32 pb-12 md:pb-20 px-4">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <div className="grid items-start gap-10 md:grid-cols-5">
