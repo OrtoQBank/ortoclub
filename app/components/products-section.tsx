@@ -113,8 +113,8 @@ export default function ProductsSection() {
 
                             <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
                                 {section.products.map((product, index) => (
-                                    <div key={index} className="flex flex-col gap-3 md:gap-4 w-[calc(50%-0.5rem)] md:w-[calc(33.333%-1rem)]">
-                                        <Card className="overflow-hidden hover:shadow-lg transition-shadow p-0 border-0">
+                                    <div key={index} className="group flex flex-col w-[calc(50%-0.5rem)] md:w-[calc(33.333%-1rem)] rounded-xl transition-all duration-300 hover:bg-brand-blue hover:shadow-xl hover:shadow-brand-blue/30 p-2 -m-2 hover:scale-105">
+                                        <Card className="overflow-hidden transition-shadow group-hover:shadow-lg p-0 border-0">
                                             <div className="relative w-full aspect-[3/4]">
                                                 <Image
                                                     src={product.image}
@@ -125,20 +125,22 @@ export default function ProductsSection() {
                                             </div>
                                         </Card>
 
-                                        {isVipOnly(product.href) ? (
-                                            <Button
-                                                className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90"
-                                                onClick={() => handleVipClick(product.title)}
-                                            >
-                                                Lista de Espera
-                                            </Button>
-                                        ) : (
-                                            <Link href={product.href}>
-                                                <Button className="w-full text-white font-semibold bg-brand-blue hover:bg-brand-blue/90">
-                                                    Garantir Acesso
+                                        <div className="mt-3 md:mt-4">
+                                            {isVipOnly(product.href) ? (
+                                                <Button
+                                                    className="w-full font-semibold bg-brand-blue text-white hover:bg-brand-blue/90 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-black/30"
+                                                    onClick={() => handleVipClick(product.title)}
+                                                >
+                                                    Lista de Espera
                                                 </Button>
-                                            </Link>
-                                        )}
+                                            ) : (
+                                                <Link href={product.href}>
+                                                    <Button className="w-full font-semibold bg-brand-blue text-white hover:bg-brand-blue/90 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-black/30">
+                                                        Garantir Acesso
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
