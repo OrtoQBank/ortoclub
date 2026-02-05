@@ -1,33 +1,100 @@
-import { Button } from '@/components/ui/button';
+import { CheckCircle2 } from 'lucide-react';
+import Link from "next/link";
 
 export default function Cta2Section() {
     return (
-        <section className="py-12 md:py-20 px-4">
-            <div className="container mx-auto">
-                <div className="mx-auto max-w-7xl">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center">
-                        {/* Imagem A */}
-                        <div className="rounded-2xl overflow-hidden w-full aspect-square bg-gray-200 flex items-center justify-center border-2 border-gray-300">
-                            <span className="text-5xl md:text-6xl font-bold text-gray-600">A</span>
-                        </div>
+      <section className="py-12 md:py-20 px-4 bg-[#f8fafc]">
+        <div className="container mx-auto">
+          <div className="mx-auto max-w-4xl">
+            {/* Headline */}
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
+              Por que o OrtoClub TEOT é diferente?
+            </h2>
 
-                        {/* Botão Central */}
-                        <div className="flex justify-center items-center">
-                            <Button
-                                size="lg"
-                                className="bg-brand-blue text-white hover:bg-brand-blue/90 text-base md:text-lg px-6 md:px-8 py-6 md:py-8 h-auto w-full md:w-auto rounded-full"
-                            >
-                                QUERO ESTUDAR COM O PRODUTO 2!
-                            </Button>
-                        </div>
-
-                        {/* Imagem B */}
-                        <div className="rounded-2xl overflow-hidden w-full aspect-square bg-gray-200 flex items-center justify-center border-2 border-gray-300">
-                            <span className="text-5xl md:text-6xl font-bold text-gray-600">B</span>
-                        </div>
-                    </div>
+            {/* Diferenciais */}
+            <div className="space-y-6">
+              {/* Diferencial 1 */}
+              <div className="flex items-start gap-4">
+                <CheckCircle2 className="text-green-500 w-6 h-6 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Time com mais de 10 especialistas da USP
+                  </h3>
+                  <p className="text-gray-600">
+                    Professores que atuam na assistência, na pesquisa e no ensino médico — e sabem como ensinar Ortopedia.
+                  </p>
                 </div>
+              </div>
+
+              {/* Diferencial 2 */}
+              <div className="flex items-start gap-4">
+                <CheckCircle2 className="text-green-500 w-6 h-6 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Cobertura completa de todos os temas do TEOT
+                  </h3>
+                  <p className="text-gray-600">
+                    Do básico ao avançado, sem lacunas e sem excesso irrelevante.
+                  </p>
+                </div>
+              </div>
+
+              {/* Diferencial 3 */}
+              <div className="flex items-start gap-4">
+                <CheckCircle2 className="text-green-500 w-6 h-6 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Método orientado à prática e à prova
+                  </h3>
+                  <p className="text-gray-600">
+                    Aulas objetivas, com foco no que realmente cai e como a banca pensa.
+                  </p>
+                </div>
+              </div>
+
+              {/* Diferencial 4 */}
+              <div className="flex items-start gap-4">
+                <CheckCircle2 className="text-green-500 w-6 h-6 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Formação + treinamento para aprovação
+                  </h3>
+                  <p className="text-gray-600">
+                    Conteúdo que prepara você para ser um ortopedista melhor e, ao mesmo tempo, passar no TEOT.
+                  </p>
+                </div>
+              </div>
+
+              {/* Diferencial 5 */}
+              <div className="flex items-start gap-4">
+                <CheckCircle2 className="text-green-500 w-6 h-6 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Resultado comprovado
+                  </h3>
+                  <p className="text-gray-600">
+                    Método validado com 1º, 4º e 7º lugares no TEOT.
+                  </p>
+                </div>
+              </div>
             </div>
-        </section>
+
+            {/* CTA Button */}
+            <div className="mt-12 text-center">
+              <Link
+                href="https://pay.hotmart.com/W98444880C?checkoutMode=10"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
+              >
+                Garantir minha aprovação
+              </Link>
+            </div>
+
+            {/* Linha divisória */}
+            <div className="mt-12 h-px w-full bg-border" />
+          </div>
+        </div>
+      </section>
     );
 }
