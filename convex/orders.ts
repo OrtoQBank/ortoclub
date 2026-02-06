@@ -403,11 +403,13 @@ export const confirmPayment = internalMutation({
       if (coupon) {
         await ctx.db.insert("couponUsage", {
           couponId: coupon._id,
-          couponCode: order.couponCode,
+          couponCode: order.couponCode!,
           orderId: args.orderId,
           userEmail: order.email,
           userCpf: order.cpf,
           discountAmount: order.couponDiscount || 0,
+          originalPrice: order.originalPrice,
+          finalPrice: order.finalPrice,
           usedAt: Date.now(),
         });
 

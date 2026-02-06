@@ -48,7 +48,7 @@ export const validateAndApplyCoupon = query({
       };
     }
 
-    if (!coupon.isActive) {
+    if (!coupon.active) {
       return {
         isValid: false as const,
         errorMessage: "Cupom inativo",
@@ -72,40 +72,11 @@ export const validateAndApplyCoupon = query({
     }
 
     // Check max uses
-    if (coupon.maxUses && coupon.currentUses >= coupon.maxUses) {
+    if (coupon.maxUses && (coupon.currentUses ?? 0) >= coupon.maxUses) {
       return {
         isValid: false as const,
         errorMessage: "Cupom esgotado",
       };
-    }
-
-    // Check per-user limit
-    if (coupon.maxUsesPerUser && args.userCpf) {
-      const userUsages = await ctx.db
-        .query("couponUsage")
-        .withIndex("by_user_cpf", (q) => q.eq("userCpf", args.userCpf!))
-        .collect();
-
-      const userUsageCount = userUsages.filter(
-        (u) => u.couponId === coupon._id
-      ).length;
-
-      if (userUsageCount >= coupon.maxUsesPerUser) {
-        return {
-          isValid: false as const,
-          errorMessage: "Você já atingiu o limite de uso deste cupom",
-        };
-      }
-    }
-
-    // Check product restriction
-    if (coupon.productIds && coupon.productIds.length > 0 && args.productId) {
-      if (!coupon.productIds.includes(args.productId)) {
-        return {
-          isValid: false as const,
-          errorMessage: "Cupom não válido para este produto",
-        };
-      }
     }
 
     // Calculate discount
@@ -113,23 +84,23 @@ export const validateAndApplyCoupon = query({
     let finalPrice = args.originalPrice;
     let description = "";
 
-    switch (coupon.discountType) {
+    switch (coupon.type) {
       case "percentage": {
-        discountAmount = (args.originalPrice * coupon.discountValue) / 100;
+        discountAmount = (args.originalPrice * coupon.value) / 100;
         finalPrice = args.originalPrice - discountAmount;
-        description = `${coupon.discountValue}% de desconto`;
+        description = `${coupon.value}% de desconto`;
         break;
       }
       case "fixed": {
-        discountAmount = Math.min(coupon.discountValue, args.originalPrice);
+        discountAmount = Math.min(coupon.value, args.originalPrice);
         finalPrice = args.originalPrice - discountAmount;
-        description = `R$ ${coupon.discountValue.toFixed(2)} de desconto`;
+        description = `R$ ${coupon.value.toFixed(2)} de desconto`;
         break;
       }
       case "fixed_price": {
-        discountAmount = args.originalPrice - coupon.discountValue;
-        finalPrice = coupon.discountValue;
-        description = `Preço fixo: R$ ${coupon.discountValue.toFixed(2)}`;
+        discountAmount = args.originalPrice - coupon.value;
+        finalPrice = coupon.value;
+        description = `Preço fixo: R$ ${coupon.value.toFixed(2)}`;
         break;
       }
     }
@@ -147,8 +118,8 @@ export const validateAndApplyCoupon = query({
       coupon: {
         _id: coupon._id,
         code: coupon.code,
-        type: coupon.discountType,
-        value: coupon.discountValue,
+        type: coupon.type,
+        value: coupon.value,
         description,
       },
     };

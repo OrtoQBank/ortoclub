@@ -13,10 +13,14 @@ import type * as coupons from "../coupons.js";
 import type * as deployments from "../deployments.js";
 import type * as http from "../http.js";
 import type * as leads from "../leads.js";
+import type * as lib_rateLimits from "../lib/rateLimits.js";
 import type * as orders from "../orders.js";
 import type * as payments from "../payments.js";
+import type * as pricingPlans from "../pricingPlans.js";
 import type * as products from "../products.js";
+import type * as promoCoupons from "../promoCoupons.js";
 import type * as seed from "../seed.js";
+import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
 
 import type {
@@ -31,10 +35,14 @@ declare const fullApi: ApiFromModules<{
   deployments: typeof deployments;
   http: typeof http;
   leads: typeof leads;
+  "lib/rateLimits": typeof lib_rateLimits;
   orders: typeof orders;
   payments: typeof payments;
+  pricingPlans: typeof pricingPlans;
   products: typeof products;
+  promoCoupons: typeof promoCoupons;
   seed: typeof seed;
+  users: typeof users;
   waitlist: typeof waitlist;
 }>;
 

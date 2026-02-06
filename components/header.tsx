@@ -26,6 +26,7 @@ import {
     DialogDescription,
 } from '@/components/ui/dialog';
 import EmailCollectionForm from '@/app/components/email-collection-form';
+import { UserButton, SignedIn } from '@clerk/nextjs';
 
 // Produtos que ainda não têm acesso disponível (lista de espera)
 const VIP_ONLY_PRODUCTS = [
@@ -123,6 +124,10 @@ export default function Header() {
                     >
                         Área do Aluno
                     </Button>
+
+                    <SignedIn>
+                        <UserButton afterSignOutUrl="/" />
+                    </SignedIn>
                 </div>
 
                 {/* Mobile Navigation */}

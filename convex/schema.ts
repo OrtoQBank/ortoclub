@@ -2,6 +2,109 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  users: defineTable({
+    clerkUserId: v.string(),
+    email: v.string(),
+    firstName: v.string(),
+    lastName: v.string(),
+    imageUrl: v.optional(v.string()),
+    onboardingCompleted: v.boolean(),
+    role: v.union(
+      v.literal("user"),
+      v.literal("admin"),
+      v.literal("superadmin"),
+    ),
+    status: v.union(
+      v.literal("active"),
+      v.literal("inactive"),
+      v.literal("suspended"),
+    ),
+    hasActiveYearAccess: v.boolean(),
+    paid: v.boolean(),
+    paymentDate: v.optional(v.number()),
+    paymentId: v.optional(v.string()),
+    paymentStatus: v.union(
+      v.literal("pending"),
+      v.literal("completed"),
+      v.literal("failed"),
+      v.literal("refunded"),
+    ),
+    testeId: v.optional(v.string()),
+  })
+    .index("by_clerkUserId", ["clerkUserId"])
+    .index("by_email", ["email"])
+    .index("by_status", ["status"])
+    .index("by_hasActiveYearAccess", ["hasActiveYearAccess"]),
+
+    coupons: defineTable({
+      code: v.string(), // store uppercase
+      type: v.union(
+        v.literal("percentage"),
+        v.literal("fixed"),
+        v.literal("fixed_price"),
+      ),
+      value: v.number(),
+      description: v.string(),
+      active: v.boolean(),
+      validFrom: v.optional(v.number()), // epoch ms
+      validUntil: v.optional(v.number()), // epoch ms
+      // Usage limits
+      currentUses: v.optional(v.number()), // Current total usage count
+      maxUses: v.optional(v.number()), // Maximum total uses allowed
+    })
+      .index("by_code", ["code"]),
+  
+    // Coupon usage tracking
+    couponUsage: defineTable({
+      couponId: v.id("coupons"),
+      couponCode: v.string(),
+      orderId: v.id("orders"),
+      userEmail: v.string(),
+      userCpf: v.string(),
+      discountAmount: v.number(),
+      originalPrice: v.number(),
+      finalPrice: v.number(),
+      usedAt: v.number(),
+    })
+      .index("by_coupon", ["couponId"])
+      .index("by_coupon_user", ["couponCode", "userCpf"])
+      .index("by_email", ["userEmail"])
+      .index("by_cpf", ["userCpf"]),
+  
+    // Pricing plans
+    pricingPlans: defineTable({
+      name: v.string(),
+      badge: v.string(),
+      originalPrice: v.optional(v.string()), // Marketing strikethrough price
+      price: v.string(),
+      installments: v.string(),
+      installmentDetails: v.string(),
+      description: v.string(),
+      features: v.array(v.string()),
+      buttonText: v.string(),
+      // Extended fields for product identification and access control
+      productId: v.string(), // e.g., "Ortoclub_2025", "Ortoclub_2026", "premium_pack" - REQUIRED
+      category: v.optional(
+        v.union(
+          v.literal("year_access"),
+          v.literal("premium_pack"),
+          v.literal("addon"),
+        ),
+      ),
+      year: v.optional(v.number()), // 2025, 2026, 2027, etc. - kept for productId naming/identification
+      // Pricing (converted to numbers for calculations)
+      regularPriceNum: v.optional(v.number()),
+      pixPriceNum: v.optional(v.number()),
+      // Access control - year-based
+      accessYears: v.optional(v.array(v.number())), // Array of years user gets access to (e.g., [2026, 2027])
+      isActive: v.optional(v.boolean()),
+      displayOrder: v.optional(v.number()),
+    })
+      .index("by_product_id", ["productId"])
+      .index("by_category", ["category"])
+      .index("by_year", ["year"])
+      .index("by_active", ["isActive"]),
+
   // Existing waitlist table
   waitlist: defineTable({
     productName: v.optional(v.string()),
@@ -163,36 +266,8 @@ export default defineSchema({
     .index("by_status", ["status"])
     .index("by_asaas_payment", ["asaasPaymentId"]),
 
-  // Promo coupons
-  coupons: defineTable({
-    code: v.string(),
-    discountType: v.union(
-      v.literal("percentage"),
-      v.literal("fixed"),
-      v.literal("fixed_price")
-    ),
-    discountValue: v.number(),
-    maxUses: v.optional(v.number()),
-    currentUses: v.number(),
-    maxUsesPerUser: v.optional(v.number()),
-    validFrom: v.optional(v.number()),
-    validUntil: v.optional(v.number()),
-    isActive: v.boolean(),
-    productIds: v.optional(v.array(v.id("products"))), // Limit to specific products
-  }).index("by_code", ["code"]),
-
-  // Coupon usage tracking
-  couponUsage: defineTable({
-    couponId: v.id("coupons"),
-    couponCode: v.string(),
-    orderId: v.id("orders"),
-    userEmail: v.string(),
-    userCpf: v.string(),
-    discountAmount: v.number(),
-    usedAt: v.number(),
-  })
-    .index("by_coupon", ["couponId"])
-    .index("by_user_cpf", ["userCpf"]),
+ 
+ 
 
   // Invoice tracking
   invoices: defineTable({
