@@ -2,34 +2,17 @@
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  FolderIcon,
-  LayersIcon,
-  ArrowRightIcon,
   DollarSignIcon,
   PercentIcon,
   UsersIcon,
   BookIcon,
-  MessageSquareIcon,
-  PaletteIcon,
+  ArrowRightIcon,
 } from "lucide-react";
 import Link from "next/link";
 
 export function AdminHub() {
   const adminPages = [
-    {
-      title: "Categorias",
-      icon: FolderIcon,
-      href: "/admin/categories",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-    },
-    {
-      title: "Unidades e Aulas",
-      icon: LayersIcon,
-      href: "/admin/units-lessons",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-    },
+
     {
       title: "Planos de Preços",
       icon: DollarSignIcon,
@@ -59,25 +42,18 @@ export function AdminHub() {
       bgColor: "bg-blue-50",
     },
     {
-      title: "Feedbacks e Avaliações",
-      icon: MessageSquareIcon,
-      href: "/admin/feedback",
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
-    },
-    {
-      title: "Customização",
-      icon: PaletteIcon,
-      href: "/admin/customization",
-      color: "text-pink-600",
-      bgColor: "bg-pink-50",
+      title: "Leads",
+      icon: UsersIcon,
+      href: "/admin/leads",
+      color: "text-green-600",
+      bgColor: "bg-green-50",
     },
   ];
 
   return (
     <div className="min-h-screen relative">
       {/* Header */}
-      <div className="border-b ">
+      <div className="border-b pt-12">
         <div className="p-4 pt-12 flex items-center pl-14 gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Administração</h1>

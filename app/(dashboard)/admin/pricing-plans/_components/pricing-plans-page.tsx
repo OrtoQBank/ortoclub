@@ -161,7 +161,7 @@ export function PricingPlansPage() {
 
   return (
     <div className="min-h-screen relative">
-      <div className="border-b">
+      <div className="border-b pt-12">
         <div className="p-4 pt-12 flex items-center justify-between pr-12 pl-14 gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
