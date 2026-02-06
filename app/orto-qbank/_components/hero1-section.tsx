@@ -1,5 +1,6 @@
 import { BookOpen, Target, BarChart3, Clock } from 'lucide-react';
 import Image from 'next/image';
+import LeadFormDialog from '@/app/components/lead-form-dialog';
 
 export default function Hero1Section() {
   return (
@@ -65,13 +66,12 @@ export default function Hero1Section() {
                 </div>
               </div>
 
-              <a
-                href="https://ortoqbank.ortoclub.com/"
-                target="_blank"
-                className="inline-flex items-center justify-center font-semibold bg-brand-blue text-white py-3 px-8 rounded-lg hover:bg-brand-blue/90 transition"
-              >
-                Quero assinar o OrtoQBank
-              </a>
+              <LeadFormDialog
+                productSlug="orto-qbank"
+                productDisplayName="OrtoQBank"
+                buttonText="Quero assinar o OrtoQBank"
+                buttonClassName="inline-flex items-center justify-center font-semibold bg-brand-blue text-white py-3 px-8 rounded-lg hover:bg-brand-blue/90 transition"
+              />
 
             </div>
 

@@ -1,6 +1,7 @@
 import { v } from "convex/values";
+import { makeFunctionReference } from "convex/server";
 
-import { api } from "./_generated/api";
+import type { Id } from "./_generated/dataModel";
 import { action } from "./_generated/server";
 
 // Asaas API Types
@@ -38,6 +39,7 @@ interface AsaasPayment {
   description?: string;
   externalReference?: string;
   invoiceUrl?: string;
+  creditCardToken?: string;
 }
 
 interface AsaasCreditCardData {
@@ -64,6 +66,19 @@ interface AsaasInvoice {
   xmlUrl?: string;
   effectiveDate?: string;
 }
+
+// Typed function reference to avoid circular type dependency with api
+interface OrderForPayment {
+  finalPrice: number;
+  productName: string;
+  couponCode?: string;
+}
+
+const getOrderById = makeFunctionReference<
+  "query",
+  { orderId: Id<"orders"> },
+  OrderForPayment | null
+>("orders:getOrderById");
 
 // AsaaS API Client
 class AsaasClient {
@@ -246,7 +261,7 @@ export const createPixPayment = action({
   }),
   handler: async (ctx, args) => {
     // Get the order to get the final price
-    const order = await ctx.runQuery(api.orders.getOrderById, {
+    const order = await ctx.runQuery(getOrderById, {
       orderId: args.orderId,
     });
 
@@ -310,7 +325,7 @@ export const createPixPayment = action({
 /**
  * Create Credit Card payment for transparent checkout
  */
-export const createCreditCardPayment = action({
+export const createCreditCardPayment = action({ 
   args: {
     customerId: v.string(),
     orderId: v.id("orders"),
@@ -343,7 +358,7 @@ export const createCreditCardPayment = action({
   }),
   handler: async (ctx, args) => {
     // Get the order to get the final price
-    const order = await ctx.runQuery(api.orders.getOrderById, {
+    const order = await ctx.runQuery(getOrderById, {
       orderId: args.orderId,
     });
 
@@ -416,7 +431,7 @@ export const createCreditCardPayment = action({
       paymentId: payment.id,
       value: finalPrice,
       status: payment.status,
-      creditCardToken: (payment as any).creditCardToken,
+      creditCardToken: payment.creditCardToken,
       invoiceUrl: payment.invoiceUrl,
     };
   },

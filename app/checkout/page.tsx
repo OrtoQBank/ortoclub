@@ -5,7 +5,7 @@ import cardValidator from "card-validator";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { Loader2, Tag } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -110,7 +110,11 @@ type CheckoutForm = z.infer<typeof checkoutSchema>;
 
 function CheckoutPageContent() {
   const router = useRouter();
-  const productSlug = useSearchParams().get("product");
+  const searchParams = useSearchParams();
+  const productSlug = searchParams.get("product");
+  const prefillName = searchParams.get("name") || "";
+  const prefillEmail = searchParams.get("email") || "";
+  const prefillPhone = searchParams.get("phone") || "";
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -141,6 +145,17 @@ function CheckoutPageContent() {
     productSlug ? { slug: productSlug } : "skip"
   );
 
+  // For combo products, fetch individual items for the order summary breakdown
+  const isCombo = productSlug === "extensivo-2027";
+  const comboItemTeot = useQuery(
+    api.products.getBySlug,
+    isCombo ? { slug: "teot-video" } : "skip"
+  );
+  const comboItemOrtoQBank = useQuery(
+    api.products.getBySlug,
+    isCombo ? { slug: "orto-qbank" } : "skip"
+  );
+
   const {
     register,
     handleSubmit,
@@ -153,6 +168,13 @@ function CheckoutPageContent() {
       paymentMethod: "PIX",
     },
   });
+
+  // Pre-fill form with lead data from URL params
+  useEffect(() => {
+    if (prefillName) setValue("name", prefillName);
+    if (prefillEmail) setValue("email", prefillEmail);
+    if (prefillPhone) setValue("phone", prefillPhone);
+  }, [prefillName, prefillEmail, prefillPhone, setValue]);
 
   const name = watch("name") || "";
   const cardNumber = watch("cardNumber") || "";
@@ -239,10 +261,18 @@ function CheckoutPageContent() {
     );
   }
 
-  if (!product) {
+  if (product === undefined) {
     return (
       <div className="flex min-h-screen items-center justify-center py-8">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  if (product === null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center py-8">
+        <p className="text-red-600">Produto não encontrado: &quot;{productSlug}&quot;</p>
       </div>
     );
   }
@@ -353,7 +383,7 @@ function CheckoutPageContent() {
   };
 
   return (
-    <div className="min-h-screen py-8">
+    <div className="min-h-screen pt-28 pb-8">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Main Form */}
@@ -516,11 +546,10 @@ function CheckoutPageContent() {
                     <Label>Forma de Pagamento</Label>
                     <div className="grid grid-cols-2 gap-3">
                       <div
-                        className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
-                          selectedPaymentMethod === "PIX"
+                        className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${selectedPaymentMethod === "PIX"
                             ? "border-blue-600 bg-blue-50"
                             : "border-gray-200 hover:border-gray-300"
-                        }`}
+                          }`}
                         onClick={() => {
                           setSelectedPaymentMethod("PIX");
                           setValue("paymentMethod", "PIX");
@@ -535,11 +564,10 @@ function CheckoutPageContent() {
                         </div>
                       </div>
                       <div
-                        className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
-                          selectedPaymentMethod === "CREDIT_CARD"
+                        className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${selectedPaymentMethod === "CREDIT_CARD"
                             ? "border-blue-600 bg-blue-50"
                             : "border-gray-200 hover:border-gray-300"
-                        }`}
+                          }`}
                         onClick={() => {
                           setSelectedPaymentMethod("CREDIT_CARD");
                           setValue("paymentMethod", "CREDIT_CARD");
@@ -761,38 +789,92 @@ function CheckoutPageContent() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{product.name}</span>
-                      <span className="font-medium">
-                        {selectedPaymentMethod === "PIX" ? (
-                          <>
-                            <span className="mr-2 text-gray-400 line-through">
-                              R$ {regularPrice.toFixed(2)}
-                            </span>
-                            <span>R$ {pixPrice.toFixed(2)}</span>
-                          </>
-                        ) : (
-                          <span>R$ {regularPrice.toFixed(2)}</span>
-                        )}
-                      </span>
-                    </div>
-
-                    {selectedPaymentMethod === "PIX" &&
-                      pixSavings > 0 &&
-                      !appliedCoupon && (
-                        <div className="flex items-center justify-between text-sm text-blue-600">
-                          <span>💰 Desconto PIX</span>
-                          <span>- R$ {pixSavings.toFixed(2)}</span>
+                    {/* Combo breakdown */}
+                    {isCombo && comboItemTeot && comboItemOrtoQBank ? (
+                      <>
+                        <div className="text-sm font-semibold text-gray-800">
+                          {product.name}
                         </div>
-                      )}
+                        <div className="space-y-2 pl-2 border-l-2 border-blue-200">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600">
+                              {comboItemTeot.name}
+                            </span>
+                            <span className="font-medium">
+                              R$ {comboItemTeot.price.toFixed(2)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600">
+                              {comboItemOrtoQBank.name}
+                            </span>
+                            <span className="font-medium">
+                              R$ {comboItemOrtoQBank.price.toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between border-t pt-2 text-sm">
+                          <span className="text-gray-600">Subtotal</span>
+                          <span className="font-medium">
+                            R$ {regularPrice.toFixed(2)}
+                          </span>
+                        </div>
 
-                    {appliedCoupon && (
-                      <div className="flex items-center justify-between text-sm text-green-600">
-                        <span>🎟️ Cupom ({couponCode})</span>
-                        <span>
-                          - R$ {appliedCoupon.discountAmount.toFixed(2)}
-                        </span>
-                      </div>
+                        {selectedPaymentMethod === "PIX" &&
+                          pixSavings > 0 &&
+                          !appliedCoupon && (
+                            <div className="flex items-center justify-between text-sm text-blue-600">
+                              <span>💰 Desconto PIX</span>
+                              <span>- R$ {pixSavings.toFixed(2)}</span>
+                            </div>
+                          )}
+
+                        {appliedCoupon && (
+                          <div className="flex items-center justify-between text-sm text-green-600">
+                            <span>🎟️ Cupom ({couponCode})</span>
+                            <span>
+                              - R$ {appliedCoupon.discountAmount.toFixed(2)}
+                            </span>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {/* Single product */}
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600">{product.name}</span>
+                          <span className="font-medium">
+                            {selectedPaymentMethod === "PIX" ? (
+                              <>
+                                <span className="mr-2 text-gray-400 line-through">
+                                  R$ {regularPrice.toFixed(2)}
+                                </span>
+                                <span>R$ {pixPrice.toFixed(2)}</span>
+                              </>
+                            ) : (
+                              <span>R$ {regularPrice.toFixed(2)}</span>
+                            )}
+                          </span>
+                        </div>
+
+                        {selectedPaymentMethod === "PIX" &&
+                          pixSavings > 0 &&
+                          !appliedCoupon && (
+                            <div className="flex items-center justify-between text-sm text-blue-600">
+                              <span>💰 Desconto PIX</span>
+                              <span>- R$ {pixSavings.toFixed(2)}</span>
+                            </div>
+                          )}
+
+                        {appliedCoupon && (
+                          <div className="flex items-center justify-between text-sm text-green-600">
+                            <span>🎟️ Cupom ({couponCode})</span>
+                            <span>
+                              - R$ {appliedCoupon.discountAmount.toFixed(2)}
+                            </span>
+                          </div>
+                        )}
+                      </>
                     )}
 
                     <div className="flex items-center justify-between border-t pt-4 text-lg font-bold">

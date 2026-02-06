@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from "next/link";
+import LeadFormDialog from '@/app/components/lead-form-dialog';
 
 export default function Cta1Section() {
   return (
@@ -87,14 +87,12 @@ export default function Cta1Section() {
 
           {/* CTA Button */}
           <div className="text-center">
-            <Link
-              href="https://ortoqbank.ortoclub.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
-            >
-              Quero fazer parte
-            </Link>
+            <LeadFormDialog
+              productSlug="orto-qbank"
+              productDisplayName="OrtoQBank"
+              buttonText="Quero fazer parte"
+              buttonClassName="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
+            />
           </div>
 
           {/* Linha divisória */}

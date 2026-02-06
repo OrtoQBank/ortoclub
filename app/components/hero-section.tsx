@@ -1,5 +1,7 @@
-import { Button } from '@/components/ui/button';
+'use client';
+
 import Image from 'next/image';
+import LeadFormDialog from '@/app/components/lead-form-dialog';
 
 export default function HeroSection() {
     return (
@@ -60,12 +62,12 @@ export default function HeroSection() {
 
                         {/* CTA (abaixo da imagem 2) */}
                         <div className="flex flex-col items-center justify-start text-center space-y-5 pt-8">
-                            <Button
-                                variant="default"
-                                className="bg-brand-blue text-white hover:bg-brand-blue/90 text-base px-10 py-6 leading-tight"
-                            >
-                                QUERO ACESSO COMPLETO
-                            </Button>
+                            <LeadFormDialog
+                                productSlug="extensivo-2027"
+                                productDisplayName="Extensivo 2027"
+                                buttonText="QUERO ACESSO COMPLETO"
+                                buttonClassName="inline-flex items-center justify-center rounded-lg bg-brand-blue px-10 py-6 text-base text-white font-semibold shadow-md hover:bg-brand-blue/90 transition leading-tight"
+                            />
                         </div>
                     </div>
 
@@ -113,12 +115,12 @@ export default function HeroSection() {
 
                         {/* CTA */}
                         <div className="flex justify-center pt-4">
-                            <Button
-                                variant="default"
-                                className="bg-brand-blue text-white hover:bg-brand-blue/90 text-base px-8 py-5"
-                            >
-                                QUERO ACESSO COMPLETO
-                            </Button>
+                            <LeadFormDialog
+                                productSlug="extensivo-2027"
+                                productDisplayName="Extensivo 2027"
+                                buttonText="QUERO ACESSO COMPLETO"
+                                buttonClassName="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-5 text-base text-white font-semibold shadow-md hover:bg-brand-blue/90 transition"
+                            />
                         </div>
                     </div>
                 </div>

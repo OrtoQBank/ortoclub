@@ -1,4 +1,5 @@
 import { CheckCircle2, FileText, Smartphone, Lightbulb, BarChart3, BookOpen } from 'lucide-react';
+import LeadFormDialog from '@/app/components/lead-form-dialog';
 
 export default function Video1Section() {
   return (
@@ -42,14 +43,12 @@ export default function Video1Section() {
                 <p className="text-center text-sm text-gray-900 mb-4">
                   Assista e entenda como o QBank vai transformar sua preparação
                 </p>
-                <a
-                  href="https://ortoqbank.ortoclub.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-brand-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-blue/90 transition"
-                >
-                  Quero começar minha preparação para o TEOT
-                </a>
+                <LeadFormDialog
+                  productSlug="orto-qbank"
+                  productDisplayName="OrtoQBank"
+                  buttonText="Quero começar minha preparação para o TEOT"
+                  buttonClassName="bg-brand-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-blue/90 transition"
+                />
               </div>
             </div>
 

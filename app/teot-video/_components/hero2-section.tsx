@@ -1,6 +1,6 @@
 import { Users, BookOpen, Target, Trophy } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import LeadFormDialog from '@/app/components/lead-form-dialog';
 
 export default function Hero2Section() {
     return (
@@ -66,14 +66,12 @@ export default function Hero2Section() {
                             </div>
 
                             {/* CTA Button */}
-                            <Link
-                                href="https://pay.hotmart.com/W98444880C?checkoutMode=10"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-3 text-white font-semibold shadow-md hover:opacity-95 transition"
-                            >
-                                Quero estudar com o OrtoClub TEOT
-                            </Link>
+                            <LeadFormDialog
+                                productSlug="teot-video"
+                                productDisplayName="TEOT Aulas"
+                                buttonText="Quero estudar com o OrtoClub TEOT"
+                                buttonClassName="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-3 text-white font-semibold shadow-md hover:opacity-95 transition"
+                            />
                         </div>
 
                         {/* Lado Direito - Imagem do Produto */}

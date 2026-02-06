@@ -8,6 +8,15 @@
  * @module
  */
 
+import type * as asaas from "../asaas.js";
+import type * as coupons from "../coupons.js";
+import type * as deployments from "../deployments.js";
+import type * as http from "../http.js";
+import type * as leads from "../leads.js";
+import type * as orders from "../orders.js";
+import type * as payments from "../payments.js";
+import type * as products from "../products.js";
+import type * as seed from "../seed.js";
 import type * as waitlist from "../waitlist.js";
 
 import type {
@@ -17,6 +26,15 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  asaas: typeof asaas;
+  coupons: typeof coupons;
+  deployments: typeof deployments;
+  http: typeof http;
+  leads: typeof leads;
+  orders: typeof orders;
+  payments: typeof payments;
+  products: typeof products;
+  seed: typeof seed;
   waitlist: typeof waitlist;
 }>;
 

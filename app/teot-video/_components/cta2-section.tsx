@@ -1,5 +1,5 @@
 import { CheckCircle2 } from 'lucide-react';
-import Link from "next/link";
+import LeadFormDialog from '@/app/components/lead-form-dialog';
 
 export default function Cta2Section() {
   return (
@@ -81,14 +81,12 @@ export default function Cta2Section() {
 
           {/* CTA Button */}
           <div className="mt-12 text-center">
-            <Link
-              href="https://pay.hotmart.com/W98444880C?checkoutMode=10"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
-            >
-              Garantir minha aprovação
-            </Link>
+            <LeadFormDialog
+              productSlug="teot-video"
+              productDisplayName="TEOT Aulas"
+              buttonText="Garantir minha aprovação"
+              buttonClassName="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
+            />
           </div>
 
           {/* Linha divisória */}
