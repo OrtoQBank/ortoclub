@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { makeFunctionReference } from "convex/server";
 
+import { internal } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
 import { action } from "./_generated/server";
 
@@ -427,6 +428,29 @@ export const createCreditCardPayment = action({
     // Create Credit Card payment
     const payment = await asaas.createCharge(paymentRequest);
 
+    // For credit card payments, Asaas often confirms immediately
+    // If confirmed, update order status right away without waiting for webhook
+    if (payment.status === "CONFIRMED" || payment.status === "RECEIVED") {
+      console.log(
+        `✅ Credit card payment ${payment.id} confirmed immediately (status: ${payment.status})`
+      );
+
+      // Confirm the payment in the database
+      await ctx.runMutation(internal.orders.confirmPayment, {
+        orderId: args.orderId,
+        asaasPaymentId: payment.id,
+      });
+
+      // Schedule provisioning (same as webhook flow)
+      await ctx.scheduler.runAfter(
+        0,
+        internal.payments.processPaymentConfirmed,
+        {
+          orderId: args.orderId,
+        }
+      );
+    }
+
     return {
       paymentId: payment.id,
       value: finalPrice,
@@ -434,6 +458,52 @@ export const createCreditCardPayment = action({
       creditCardToken: payment.creditCardToken,
       invoiceUrl: payment.invoiceUrl,
     };
+  },
+});
+
+/**
+ * Poll Asaas and confirm payment if confirmed (fallback for when webhook doesn't arrive)
+ */
+export const pollAndConfirmPayment = action({
+  args: {
+    orderId: v.id("orders"),
+    asaasPaymentId: v.string(),
+  },
+  returns: v.object({
+    status: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    const asaas = new AsaasClient();
+    const payment = await asaas.getPayment(args.asaasPaymentId);
+
+    if (payment.status === "CONFIRMED" || payment.status === "RECEIVED") {
+      console.log(
+        `✅ Polling fallback: Payment ${args.asaasPaymentId} confirmed (status: ${payment.status})`
+      );
+
+      // Confirm the payment in the database
+      await ctx.runMutation(internal.orders.confirmPayment, {
+        orderId: args.orderId,
+        asaasPaymentId: args.asaasPaymentId,
+      });
+
+      // Schedule provisioning
+      await ctx.scheduler.runAfter(
+        0,
+        internal.payments.processPaymentConfirmed,
+        {
+          orderId: args.orderId,
+        }
+      );
+
+      return { status: "confirmed" };
+    }
+
+    if (payment.status === "PENDING") {
+      return { status: "pending" };
+    }
+
+    return { status: "failed" };
   },
 });
 

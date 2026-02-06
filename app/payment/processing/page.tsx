@@ -1,9 +1,9 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useCallback, useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,12 +21,34 @@ function ProcessingContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const orderIdParam = searchParams.get("order");
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const hasRedirected = useRef(false);
 
-  // Real-time payment status
+  // Real-time payment status from Convex (reactive)
   const paymentStatus = useQuery(
     api.orders.checkPaymentStatus,
     orderIdParam ? { orderId: orderIdParam as Id<"orders"> } : "skip"
   );
+
+  // Action to check Asaas payment status directly and confirm if needed (fallback)
+  const pollAndConfirm = useAction(api.asaas.pollAndConfirmPayment);
+
+  // Get the order to find the asaasPaymentId
+  const order = useQuery(
+    api.orders.getOrderById,
+    orderIdParam ? { orderId: orderIdParam as Id<"orders"> } : "skip"
+  );
+
+  const handleRedirectToSuccess = useCallback(() => {
+    if (!hasRedirected.current) {
+      hasRedirected.current = true;
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+        pollingRef.current = null;
+      }
+      router.push(`/checkout/success?order=${orderIdParam}`);
+    }
+  }, [router, orderIdParam]);
 
   useEffect(() => {
     if (!orderIdParam) {
@@ -35,13 +57,56 @@ function ProcessingContent() {
     }
   }, [orderIdParam, router]);
 
+  // Redirect when Convex detects confirmed status (reactive, instant)
   useEffect(() => {
-    if (paymentStatus) {
-      if (paymentStatus.status === "confirmed") {
-        router.push(`/checkout/success?order=${orderIdParam}`);
-      }
+    if (paymentStatus?.status === "confirmed") {
+      handleRedirectToSuccess();
     }
-  }, [paymentStatus, router, orderIdParam]);
+  }, [paymentStatus, handleRedirectToSuccess]);
+
+  // Fallback: poll Asaas directly every 5s in case webhook didn't arrive
+  useEffect(() => {
+    if (
+      !order?.asaasPaymentId ||
+      !orderIdParam ||
+      hasRedirected.current
+    )
+      return;
+
+    const asaasPaymentId = order.asaasPaymentId;
+    const orderId = orderIdParam as Id<"orders">;
+
+    const pollAsaas = async () => {
+      try {
+        const result = await pollAndConfirm({
+          orderId,
+          asaasPaymentId,
+        });
+        if (result.status === "confirmed") {
+          console.log("✅ Payment confirmed via polling fallback");
+          // The reactive useQuery will detect the DB change and trigger redirect
+          // but also call redirect directly as safety
+          handleRedirectToSuccess();
+        }
+      } catch (err) {
+        console.warn("Fallback poll error:", err);
+      }
+    };
+
+    // Start polling after 5 seconds (give webhook/reactive update time to arrive first)
+    const timeout = setTimeout(() => {
+      pollAsaas(); // First check
+      pollingRef.current = setInterval(pollAsaas, 5000);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeout);
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+        pollingRef.current = null;
+      }
+    };
+  }, [order?.asaasPaymentId, orderIdParam, pollAndConfirm, handleRedirectToSuccess]);
 
   if (!orderIdParam) {
     return (

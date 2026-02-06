@@ -195,6 +195,7 @@ export const getOrderById = query({
       pixDiscount: v.optional(v.number()),
       paymentMethod: v.string(),
       status: v.string(),
+      asaasPaymentId: v.optional(v.string()),
       installmentCount: v.optional(v.number()),
       pixData: v.optional(
         v.object({
@@ -225,6 +226,7 @@ export const getOrderById = query({
       pixDiscount: order.pixDiscount,
       paymentMethod: order.paymentMethod,
       status: order.status,
+      asaasPaymentId: order.asaasPaymentId,
       installmentCount: order.installmentCount,
       pixData: order.pixData,
     };
