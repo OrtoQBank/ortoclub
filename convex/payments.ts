@@ -7,8 +7,12 @@ import {
   internalQuery,
 } from "./_generated/server";
 
+// ──────────────────────────────────────────────────────
+// Queries
+// ──────────────────────────────────────────────────────
+
 /**
- * Get order details for provisioning (internal)
+ * Get order details for provisioning.
  */
 export const getOrderForProvisioning = internalQuery({
   args: {
@@ -49,8 +53,12 @@ export const getOrderForProvisioning = internalQuery({
   },
 });
 
+// ──────────────────────────────────────────────────────
+// Provisioning
+// ──────────────────────────────────────────────────────
+
 /**
- * Process payment confirmation and provision to all target deployments
+ * Process payment confirmation and provision to all target deployments.
  */
 export const processPaymentConfirmed = internalAction({
   args: {
@@ -58,7 +66,7 @@ export const processPaymentConfirmed = internalAction({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    console.log(`🚀 Processing payment confirmed for order ${args.orderId}`);
+    console.log(`Processing payment confirmed for order ${args.orderId}`);
 
     // Get order details
     const order = await ctx.runQuery(
@@ -95,7 +103,7 @@ export const processPaymentConfirmed = internalAction({
     );
 
     console.log(
-      `📦 Provisioning to ${deployments.length} deployment(s):`,
+      `Provisioning to ${deployments.length} deployment(s):`,
       deployments.map((d) => d.name)
     );
 
@@ -108,7 +116,7 @@ export const processPaymentConfirmed = internalAction({
 
     const provisioningResults = await Promise.allSettled(
       deployments.map(async (deployment) => {
-        console.log(`📤 Provisioning to ${deployment.name}...`);
+        console.log(`Provisioning to ${deployment.name}...`);
 
         const response = await fetch(
           `${deployment.provisionUrl}/api/provision-access`,
@@ -138,7 +146,7 @@ export const processPaymentConfirmed = internalAction({
           );
         }
 
-        console.log(`✅ Provisioned to ${deployment.name}`);
+        console.log(`Provisioned to ${deployment.name}`);
         return { deployment, success: true };
       })
     );
@@ -178,13 +186,17 @@ export const processPaymentConfirmed = internalAction({
       primaryDeploymentId: primaryDeployment?._id,
     });
 
-    console.log(`✅ Completed processing for order ${args.orderId}`);
+    console.log(`Completed processing for order ${args.orderId}`);
     return null;
   },
 });
 
+// ──────────────────────────────────────────────────────
+// Clerk Invitations
+// ──────────────────────────────────────────────────────
+
 /**
- * Send Clerk invitation email
+ * Send Clerk invitation email.
  */
 export const sendClerkInvitation = internalAction({
   args: {
@@ -214,7 +226,7 @@ export const sendClerkInvitation = internalAction({
       }
     );
 
-    console.log(`📧 Sending Clerk invitation to ${args.email}`);
+    console.log(`Sending Clerk invitation to ${args.email}`);
 
     // Determine redirect URL
     let redirectUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ortoclub.com";
@@ -241,7 +253,7 @@ export const sendClerkInvitation = internalAction({
 
       if (!response.ok) {
         const error = await response.text();
-        console.error(`❌ Failed to send invitation:`, error);
+        console.error("Failed to send invitation:", error);
 
         await ctx.runMutation(internal.payments.updateEmailInvitationFailure, {
           invitationId,
@@ -251,14 +263,14 @@ export const sendClerkInvitation = internalAction({
       }
 
       const invitation = await response.json();
-      console.log(`✅ Invitation sent: ${invitation.id}`);
+      console.log(`Invitation sent: ${invitation.id}`);
 
       await ctx.runMutation(internal.payments.updateEmailInvitationSuccess, {
         invitationId,
         clerkInvitationId: invitation.id,
       });
     } catch (error) {
-      console.error("❌ Error sending invitation:", error);
+      console.error("Error sending invitation:", error);
 
       await ctx.runMutation(internal.payments.updateEmailInvitationFailure, {
         invitationId,
@@ -271,7 +283,7 @@ export const sendClerkInvitation = internalAction({
 });
 
 /**
- * Create email invitation tracking record
+ * Create email invitation tracking record.
  */
 export const createEmailInvitation = internalMutation({
   args: {
@@ -294,7 +306,7 @@ export const createEmailInvitation = internalMutation({
 });
 
 /**
- * Update email invitation to success status
+ * Update email invitation to success status.
  */
 export const updateEmailInvitationSuccess = internalMutation({
   args: {
@@ -313,7 +325,7 @@ export const updateEmailInvitationSuccess = internalMutation({
 });
 
 /**
- * Update email invitation to failure status
+ * Update email invitation to failure status.
  */
 export const updateEmailInvitationFailure = internalMutation({
   args: {

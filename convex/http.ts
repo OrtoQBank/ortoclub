@@ -2,6 +2,11 @@ import { httpRouter } from "convex/server";
 
 import { internal } from "./_generated/api";
 import { httpAction } from "./_generated/server";
+import { confirmAndProvision } from "./asaas";
+import {
+  ASAAS_WEBHOOK_EVENTS,
+  type AsaasWebhookPayload,
+} from "./asaas/types";
 
 const http = httpRouter();
 
@@ -43,12 +48,21 @@ http.route({
         });
       }
 
-      console.log("✅ Webhook authentication successful");
+      console.log("Webhook authentication successful");
 
       const body = JSON.parse(rawBody);
-      const { event, payment } = body;
+      const eventName = body?.event as string | undefined;
 
-      console.log(`📥 Asaas webhook received: ${event}`, {
+      // Runtime guard: reject unknown events early
+      const knownEvents = new Set<string>(ASAAS_WEBHOOK_EVENTS);
+      if (!eventName || !knownEvents.has(eventName)) {
+        console.warn(`Unknown Asaas webhook event: ${eventName}, acknowledging`);
+        return new Response("OK", { status: 200 });
+      }
+
+      const { event, payment } = body as AsaasWebhookPayload;
+
+      console.log(`Asaas webhook received: ${event}`, {
         paymentId: payment?.id,
         externalReference: payment?.externalReference,
       });
@@ -65,7 +79,7 @@ http.route({
           return new Response("Missing order reference", { status: 400 });
         }
 
-        console.log(`📦 Processing payment for order: ${orderId}`);
+        console.log(`Processing payment for order: ${orderId}`);
 
         // Verify payment amount matches order (security check)
         const order = await ctx.runQuery(
@@ -95,7 +109,7 @@ http.route({
             const expectedInstallmentValue =
               order.finalPrice / installmentCount;
             if (Math.abs(paidAmount - expectedInstallmentValue) > tolerance) {
-              console.error(`🚨 Installment amount mismatch!`, {
+              console.error("Installment amount mismatch!", {
                 orderId,
                 expected: expectedInstallmentValue,
                 paid: paidAmount,
@@ -107,14 +121,14 @@ http.route({
           // Only process on first installment
           if (payment.installmentNumber !== 1) {
             console.log(
-              `⏭️ Skipping installment ${payment.installmentNumber} - order processed on first installment`
+              `Skipping installment ${payment.installmentNumber} - order processed on first installment`
             );
             return new Response("OK - Subsequent installment", { status: 200 });
           }
         } else {
           // For single payments, verify full amount
           if (Math.abs(paidAmount - order.finalPrice) > tolerance) {
-            console.error(`🚨 Payment amount mismatch!`, {
+            console.error("Payment amount mismatch!", {
               orderId,
               expected: order.finalPrice,
               paid: paidAmount,
@@ -123,31 +137,19 @@ http.route({
           }
         }
 
-        console.log(`✅ Payment amount verified: R$ ${paidAmount}`);
+        console.log(`Payment amount verified: R$ ${paidAmount}`);
 
-        // Confirm payment and update order status
-        await ctx.runMutation(internal.orders.confirmPayment, {
-          orderId: order._id,
-          asaasPaymentId: payment.id,
-        });
+        // Confirm payment and schedule provisioning
+        await confirmAndProvision(ctx, order._id, payment.id);
 
-        // Schedule provisioning to all target deployments
-        await ctx.scheduler.runAfter(
-          0,
-          internal.payments.processPaymentConfirmed,
-          {
-            orderId: order._id,
-          }
-        );
-
-        console.log(`✅ Payment confirmed, provisioning scheduled`);
+        console.log("Payment confirmed, provisioning scheduled");
       } else {
-        console.log(`ℹ️ Ignoring event: ${event} (status: ${payment?.status})`);
+        console.log(`Ignoring event: ${event} (status: ${payment?.status})`);
       }
 
       return new Response("OK", { status: 200 });
     } catch (error) {
-      console.error("❌ Webhook processing error:", error);
+      console.error("Webhook processing error:", error);
       return new Response("Webhook processing failed", { status: 500 });
     }
   }),

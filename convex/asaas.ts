@@ -3,70 +3,40 @@ import { makeFunctionReference } from "convex/server";
 
 import { internal } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
+import type { ActionCtx } from "./_generated/server";
 import { action } from "./_generated/server";
 
-// Asaas API Types
-interface AsaasCustomer {
-  id: string;
-  name: string;
-  email: string;
-  cpfCnpj: string;
-  phone?: string;
-  mobilePhone?: string;
-}
+import { AsaasClient } from "./asaas/client";
+import type { AsaasPixQrCode } from "./asaas/types";
 
-interface AsaasPayment {
-  id: string;
-  status:
-    | "PENDING"
-    | "CONFIRMED"
-    | "RECEIVED"
-    | "OVERDUE"
-    | "REFUNDED"
-    | "RECEIVED_IN_CASH_UNDONE"
-    | "CHARGEBACK_REQUESTED"
-    | "CHARGEBACK_DISPUTE"
-    | "AWAITING_CHARGEBACK_REVERSAL"
-    | "DUNNING_REQUESTED"
-    | "DUNNING_RECEIVED"
-    | "AWAITING_RISK_ANALYSIS";
-  value: number;
-  netValue?: number;
-  paymentDate?: string;
-  confirmedDate?: string;
-  dueDate: string;
-  billingType: "PIX" | "CREDIT_CARD";
-  customer: string;
-  description?: string;
-  externalReference?: string;
-  invoiceUrl?: string;
-  creditCardToken?: string;
-}
+// Re-export types used by other modules (e.g. http.ts)
+export {
+  ASAAS_PAYMENT_STATUSES,
+  ASAAS_BILLING_TYPES,
+  ASAAS_WEBHOOK_EVENTS,
+  type AsaasWebhookEvent,
+  type AsaasWebhookPayload,
+} from "./asaas/types";
 
-interface AsaasCreditCardData {
-  holderName: string;
-  number: string;
-  expiryMonth: string;
-  expiryYear: string;
-  ccv: string;
-}
+// ──────────────────────────────────────────────────────
+// Constants
+// ──────────────────────────────────────────────────────
 
-interface AsaasPixQrCode {
-  encodedImage: string;
-  payload: string;
-  expirationDate: string;
-}
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+const PIX_QR_RETRY_DELAY_MS = 1_000;
+const MAX_INSTALLMENTS = 21;
 
-interface AsaasInvoice {
-  id: string;
-  status: string;
-  customer: string;
-  serviceDescription: string;
-  observations?: string;
-  pdfUrl?: string;
-  xmlUrl?: string;
-  effectiveDate?: string;
-}
+/** Maps Asaas payment statuses to internal status strings. */
+const ASAAS_STATUS_MAP: Record<string, string> = {
+  CONFIRMED: "confirmed",
+  RECEIVED: "confirmed",
+  PENDING: "pending",
+  OVERDUE: "expired",
+};
+
+// ──────────────────────────────────────────────────────
+// Shared Helpers
+// ──────────────────────────────────────────────────────
 
 // Typed function reference to avoid circular type dependency with api
 interface OrderForPayment {
@@ -81,135 +51,71 @@ const getOrderById = makeFunctionReference<
   OrderForPayment | null
 >("orders:getOrderById");
 
-// AsaaS API Client
-class AsaasClient {
-  private baseUrl: string;
-  private apiKey: string;
+/**
+ * Fetch an order and validate it has a positive price.
+ * Throws if the order is not found or the price is invalid.
+ */
+async function fetchAndValidateOrder(
+  ctx: ActionCtx,
+  orderId: Id<"orders">
+): Promise<OrderForPayment> {
+  const order = await ctx.runQuery(getOrderById, { orderId });
 
-  constructor() {
-    // Use ASAAS_ENVIRONMENT to determine sandbox vs production
-    const isProduction = process.env.ASAAS_ENVIRONMENT === "production";
-    this.baseUrl = isProduction
-      ? "https://api.asaas.com/v3"
-      : "https://api-sandbox.asaas.com/v3";
-    this.apiKey = process.env.ASAAS_API_KEY!;
-
-    console.log("AsaaS Environment:", isProduction ? "production" : "sandbox");
-    console.log("AsaaS Base URL:", this.baseUrl);
+  if (!order) {
+    throw new Error("Order not found");
   }
 
-  async makeRequest<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        access_token: this.apiKey,
-        ...options.headers,
-      },
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`AsaaS API Error: ${response.status} - ${errorBody}`);
-    }
-
-    return response.json();
+  if (order.finalPrice <= 0) {
+    throw new Error("Invalid order price");
   }
 
-  async createCustomer(customer: {
-    name: string;
-    email: string;
-    cpfCnpj: string;
-    phone?: string;
-    mobilePhone?: string;
-    postalCode?: string;
-    address?: string;
-    addressNumber?: string;
-  }): Promise<AsaasCustomer> {
-    return this.makeRequest<AsaasCustomer>("/customers", {
-      method: "POST",
-      body: JSON.stringify(customer),
-    });
-  }
-
-  async createCharge(charge: {
-    customer: string;
-    billingType: "PIX" | "CREDIT_CARD";
-    value?: number;
-    totalValue?: number;
-    installmentCount?: number;
-    installmentValue?: number;
-    dueDate: string;
-    description?: string;
-    externalReference?: string;
-    creditCard?: AsaasCreditCardData;
-    creditCardHolderInfo?: {
-      name: string;
-      email: string;
-      cpfCnpj: string;
-      postalCode?: string;
-      address?: string;
-      addressNumber?: string;
-      phone?: string;
-      mobilePhone?: string;
-    };
-    remoteIp?: string;
-  }): Promise<AsaasPayment> {
-    return this.makeRequest<AsaasPayment>("/payments", {
-      method: "POST",
-      body: JSON.stringify(charge),
-    });
-  }
-
-  async getPixQrCode(chargeId: string): Promise<AsaasPixQrCode> {
-    return this.makeRequest<AsaasPixQrCode>(`/payments/${chargeId}/pixQrCode`);
-  }
-
-  async getPayment(paymentId: string): Promise<AsaasPayment> {
-    return this.makeRequest<AsaasPayment>(`/payments/${paymentId}`);
-  }
-
-  async scheduleInvoice(params: {
-    payment: string;
-    serviceDescription: string;
-    value?: number;
-    municipalServiceId?: string;
-    municipalServiceCode?: string;
-    municipalServiceName: string;
-    observations?: string;
-    taxes?: {
-      retainIss?: boolean;
-      iss?: number;
-      cofins?: number;
-      csll?: number;
-      inss?: number;
-      ir?: number;
-      pis?: number;
-    };
-  }): Promise<AsaasInvoice> {
-    return this.makeRequest<AsaasInvoice>("/invoices", {
-      method: "POST",
-      body: JSON.stringify({
-        payment: params.payment,
-        serviceDescription: params.serviceDescription,
-        value: params.value,
-        municipalServiceId: params.municipalServiceId || null,
-        municipalServiceCode: params.municipalServiceCode || null,
-        municipalServiceName: params.municipalServiceName,
-        observations: params.observations,
-        ...(params.taxes && { taxes: params.taxes }),
-      }),
-    });
-  }
+  return order;
 }
 
 /**
- * Create AsaaS customer for transparent checkout
+ * Build a human-readable payment description string.
+ */
+function buildDescription(
+  productName: string,
+  billingLabel: string,
+  couponCode?: string,
+  installments?: number
+): string {
+  let description = `${productName} - ${billingLabel}`;
+  if (couponCode) {
+    description += ` (Cupom: ${couponCode})`;
+  }
+  if (installments && installments > 1) {
+    description += ` (${installments}x)`;
+  }
+  return description;
+}
+
+/**
+ * Confirm a payment and schedule provisioning.
+ * Shared by credit card action, polling fallback, and webhook handler.
+ */
+export async function confirmAndProvision(
+  ctx: ActionCtx,
+  orderId: Id<"orders">,
+  asaasPaymentId: string
+): Promise<void> {
+  await ctx.runMutation(internal.orders.confirmPayment, {
+    orderId,
+    asaasPaymentId,
+  });
+
+  await ctx.scheduler.runAfter(0, internal.payments.processPaymentConfirmed, {
+    orderId,
+  });
+}
+
+// ──────────────────────────────────────────────────────
+// Actions
+// ──────────────────────────────────────────────────────
+
+/**
+ * Create Asaas customer for transparent checkout.
  */
 export const createAsaasCustomer = action({
   args: {
@@ -239,14 +145,12 @@ export const createAsaasCustomer = action({
       addressNumber: args.addressNumber || "SN",
     });
 
-    return {
-      customerId: customer.id,
-    };
+    return { customerId: customer.id };
   },
 });
 
 /**
- * Create PIX payment for transparent checkout
+ * Create PIX payment for transparent checkout.
  */
 export const createPixPayment = action({
   args: {
@@ -261,50 +165,35 @@ export const createPixPayment = action({
     expirationDate: v.optional(v.string()),
   }),
   handler: async (ctx, args) => {
-    // Get the order to get the final price
-    const order = await ctx.runQuery(getOrderById, {
-      orderId: args.orderId,
-    });
-
-    if (!order) {
-      throw new Error("Order not found");
-    }
-
-    const finalPrice = order.finalPrice;
-
-    if (finalPrice <= 0) {
-      throw new Error("Invalid order price");
-    }
-
+    const order = await fetchAndValidateOrder(ctx, args.orderId);
     const asaas = new AsaasClient();
 
-    // Build description
-    let description = `${order.productName} - PIX`;
-    if (order.couponCode) {
-      description += ` (Cupom: ${order.couponCode})`;
-    }
+    const description = buildDescription(
+      order.productName,
+      "PIX",
+      order.couponCode
+    );
 
-    // Create PIX payment with orderId as externalReference
+    const tomorrow = new Date(Date.now() + ONE_DAY_MS)
+      .toISOString()
+      .split("T")[0];
+
     const payment = await asaas.createCharge({
       customer: args.customerId,
       billingType: "PIX",
-      value: finalPrice,
-      dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split("T")[0], // Tomorrow
+      value: order.finalPrice,
+      dueDate: tomorrow,
       description,
       externalReference: args.orderId,
     });
 
-    // Get PIX QR Code
+    // Fetch PIX QR Code with a single retry
     let pixData: AsaasPixQrCode | null = null;
     try {
       pixData = await asaas.getPixQrCode(payment.id);
     } catch (error) {
       console.warn("Failed to get PIX QR code immediately, will retry:", error);
-
-      // Sometimes the QR code is not immediately available, wait a bit and retry
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, PIX_QR_RETRY_DELAY_MS));
 
       try {
         pixData = await asaas.getPixQrCode(payment.id);
@@ -315,7 +204,7 @@ export const createPixPayment = action({
 
     return {
       paymentId: payment.id,
-      value: finalPrice,
+      value: order.finalPrice,
       qrPayload: pixData?.payload,
       qrCodeBase64: pixData?.encodedImage,
       expirationDate: pixData?.expirationDate,
@@ -324,9 +213,9 @@ export const createPixPayment = action({
 });
 
 /**
- * Create Credit Card payment for transparent checkout
+ * Create Credit Card payment for transparent checkout.
  */
-export const createCreditCardPayment = action({ 
+export const createCreditCardPayment = action({
   args: {
     customerId: v.string(),
     orderId: v.id("orders"),
@@ -358,111 +247,80 @@ export const createCreditCardPayment = action({
     invoiceUrl: v.optional(v.string()),
   }),
   handler: async (ctx, args) => {
-    // Get the order to get the final price
-    const order = await ctx.runQuery(getOrderById, {
-      orderId: args.orderId,
-    });
-
-    if (!order) {
-      throw new Error("Order not found");
-    }
-
-    const finalPrice = order.finalPrice;
-
-    if (finalPrice <= 0) {
-      throw new Error("Invalid order price");
-    }
-
+    const order = await fetchAndValidateOrder(ctx, args.orderId);
     const asaas = new AsaasClient();
 
-    // Build description
-    let description = `${order.productName} - Cartão de Crédito`;
-    if (order.couponCode) {
-      description += ` (Cupom: ${order.couponCode})`;
-    }
-
-    // Handle installments
+    // Validate installments range
     let installmentCount: number | undefined;
     let isInstallmentPayment = false;
 
-    if (args.installments && args.installments > 1) {
-      if (args.installments < 1 || args.installments > 21) {
+    if (args.installments !== undefined) {
+      if (args.installments < 1 || args.installments > MAX_INSTALLMENTS) {
         throw new Error(
-          `Invalid installment count: ${args.installments}. Must be between 1 and 21.`
+          `Invalid installment count: ${args.installments}. Must be between 1 and ${MAX_INSTALLMENTS}.`
         );
       }
 
-      installmentCount = args.installments;
-      isInstallmentPayment = true;
-      description += ` (${installmentCount}x)`;
+      if (args.installments > 1) {
+        installmentCount = args.installments;
+        isInstallmentPayment = true;
 
-      console.log(`💳 INSTALLMENT PAYMENT:`, {
-        installmentCount,
-        totalValue: finalPrice,
-      });
+        console.log("Installment payment:", {
+          installmentCount,
+          totalValue: order.finalPrice,
+        });
+      }
     }
 
+    const description = buildDescription(
+      order.productName,
+      "Cartão de Crédito",
+      order.couponCode,
+      installmentCount
+    );
+
     // Build payment request
-    const paymentRequest: Parameters<typeof asaas.createCharge>[0] = {
+    // Single (1x): use `value` only | Installment (2x+): use `totalValue` + `installmentCount`
+    const baseRequest = {
       customer: args.customerId,
-      billingType: "CREDIT_CARD",
+      billingType: "CREDIT_CARD" as const,
       dueDate: new Date().toISOString().split("T")[0],
       description,
       externalReference: args.orderId,
       creditCard: args.creditCard,
       creditCardHolderInfo: args.creditCardHolderInfo,
+      ...(args.remoteIp && { remoteIp: args.remoteIp }),
     };
 
-    // Use different field based on payment type
-    if (isInstallmentPayment && installmentCount !== undefined) {
-      paymentRequest.totalValue = finalPrice;
-      paymentRequest.installmentCount = installmentCount;
-    } else {
-      paymentRequest.value = finalPrice;
-    }
+    const paymentRequest =
+      isInstallmentPayment && installmentCount !== undefined
+        ? { ...baseRequest, totalValue: order.finalPrice, installmentCount }
+        : { ...baseRequest, value: order.finalPrice };
 
-    if (args.remoteIp) {
-      paymentRequest.remoteIp = args.remoteIp;
-    }
-
-    // Create Credit Card payment
     const payment = await asaas.createCharge(paymentRequest);
 
-    // For credit card payments, Asaas often confirms immediately
-    // If confirmed, update order status right away without waiting for webhook
+    // Credit card payments are often confirmed immediately by Asaas.
+    // If so, update the order right away instead of waiting for the webhook.
     if (payment.status === "CONFIRMED" || payment.status === "RECEIVED") {
       console.log(
-        `✅ Credit card payment ${payment.id} confirmed immediately (status: ${payment.status})`
+        `Credit card payment ${payment.id} confirmed immediately (status: ${payment.status})`
       );
-
-      // Confirm the payment in the database
-      await ctx.runMutation(internal.orders.confirmPayment, {
-        orderId: args.orderId,
-        asaasPaymentId: payment.id,
-      });
-
-      // Schedule provisioning (same as webhook flow)
-      await ctx.scheduler.runAfter(
-        0,
-        internal.payments.processPaymentConfirmed,
-        {
-          orderId: args.orderId,
-        }
-      );
+      await confirmAndProvision(ctx, args.orderId, payment.id);
     }
 
     return {
       paymentId: payment.id,
-      value: finalPrice,
+      value: order.finalPrice,
       status: payment.status,
-      creditCardToken: payment.creditCardToken,
+      creditCardToken: payment.creditCard?.creditCardToken,
       invoiceUrl: payment.invoiceUrl,
     };
   },
 });
 
 /**
- * Poll Asaas and confirm payment if confirmed (fallback for when webhook doesn't arrive)
+ * Poll Asaas and confirm payment if confirmed.
+ * Fallback for when the webhook doesn't arrive in time.
  */
 export const pollAndConfirmPayment = action({
   args: {
@@ -478,24 +336,9 @@ export const pollAndConfirmPayment = action({
 
     if (payment.status === "CONFIRMED" || payment.status === "RECEIVED") {
       console.log(
-        `✅ Polling fallback: Payment ${args.asaasPaymentId} confirmed (status: ${payment.status})`
+        `Polling fallback: Payment ${args.asaasPaymentId} confirmed (status: ${payment.status})`
       );
-
-      // Confirm the payment in the database
-      await ctx.runMutation(internal.orders.confirmPayment, {
-        orderId: args.orderId,
-        asaasPaymentId: args.asaasPaymentId,
-      });
-
-      // Schedule provisioning
-      await ctx.scheduler.runAfter(
-        0,
-        internal.payments.processPaymentConfirmed,
-        {
-          orderId: args.orderId,
-        }
-      );
-
+      await confirmAndProvision(ctx, args.orderId, args.asaasPaymentId);
       return { status: "confirmed" };
     }
 
@@ -508,7 +351,7 @@ export const pollAndConfirmPayment = action({
 });
 
 /**
- * Get payment status from AsaaS
+ * Get payment status from Asaas.
  */
 export const getPaymentStatus = action({
   args: {
@@ -525,36 +368,16 @@ export const getPaymentStatus = action({
   }),
   handler: async (ctx, args) => {
     const asaas = new AsaasClient();
-
     const payment = await asaas.getPayment(args.paymentId);
 
-    // Map AsaaS status to our status
-    let status = "pending";
-    switch (payment.status) {
-      case "CONFIRMED":
-      case "RECEIVED": {
-        status = "confirmed";
-        break;
-      }
-      case "PENDING": {
-        status = "pending";
-        break;
-      }
-      case "OVERDUE": {
-        status = "expired";
-        break;
-      }
-      default: {
-        status = "failed";
-      }
-    }
+    const status = ASAAS_STATUS_MAP[payment.status] ?? "failed";
 
     return {
       status,
       paymentId: payment.id,
       value: payment.value,
-      paymentDate: payment.paymentDate,
-      confirmedDate: payment.confirmedDate,
+      paymentDate: payment.paymentDate ?? undefined,
+      confirmedDate: payment.confirmedDate ?? undefined,
       dueDate: payment.dueDate,
       asaasStatus: payment.status,
     };
@@ -562,7 +385,7 @@ export const getPaymentStatus = action({
 });
 
 /**
- * Schedule invoice generation for a paid order
+ * Schedule invoice generation for a paid order.
  */
 export const scheduleInvoice = action({
   args: {
@@ -592,7 +415,7 @@ export const scheduleInvoice = action({
   handler: async (ctx, args) => {
     const asaas = new AsaasClient();
 
-    console.log(`📄 Scheduling invoice for payment ${args.asaasPaymentId}`);
+    console.log(`Scheduling invoice for payment ${args.asaasPaymentId}`);
 
     const invoice = await asaas.scheduleInvoice({
       payment: args.asaasPaymentId,
@@ -605,9 +428,7 @@ export const scheduleInvoice = action({
       taxes: args.taxes,
     });
 
-    console.log(
-      `✅ Invoice scheduled: ${invoice.id} (status: ${invoice.status})`
-    );
+    console.log(`Invoice scheduled: ${invoice.id} (status: ${invoice.status})`);
 
     return {
       invoiceId: invoice.id,
