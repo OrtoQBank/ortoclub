@@ -129,6 +129,7 @@ export const processPaymentConfirmed = internalAction({
             body: JSON.stringify({
               email: order.email,
               clerkUserId: order.clerkUserId,
+              tenantSlug: deployment.slug,
               productName: order.productName,
               orderId: order._id,
               purchasePrice: order.finalPrice,
