@@ -1,6 +1,7 @@
 import type {
   AsaasCreateChargeRequest,
   AsaasCustomer,
+  AsaasFiscalService,
   AsaasInvoice,
   AsaasPaymentResponse,
   AsaasPixQrCode,
@@ -89,12 +90,33 @@ export class AsaasClient {
     return this.makeRequest<AsaasPixQrCode>(`/payments/${chargeId}/pixQrCode`);
   }
 
+  // ── Fiscal Services ────────────────────────────────────
+
+  async listFiscalServices(params?: {
+    description?: string;
+    offset?: number;
+    limit?: number;
+  }): Promise<{ data: AsaasFiscalService[]; totalCount: number }> {
+    const queryParams = new URLSearchParams();
+    if (params?.description)
+      queryParams.append("description", params.description);
+    if (params?.offset) queryParams.append("offset", params.offset.toString());
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const endpoint = `/fiscalInfo/services${queryParams.toString() ? "?" + queryParams.toString() : ""}`;
+    return this.makeRequest<{ data: AsaasFiscalService[]; totalCount: number }>(
+      endpoint,
+    );
+  }
+
   // ── Invoices ─────────────────────────────────────────
 
   async scheduleInvoice(params: {
     payment: string;
     serviceDescription: string;
     value?: number;
+    deductions?: number;
+    effectiveDate?: string; // "YYYY-MM-DD", defaults to today
     municipalServiceId?: string;
     municipalServiceCode?: string;
     municipalServiceName: string;
@@ -115,6 +137,10 @@ export class AsaasClient {
         payment: params.payment,
         serviceDescription: params.serviceDescription,
         value: params.value,
+        deductions: params.deductions ?? 0,
+        effectiveDate:
+          params.effectiveDate ??
+          new Date().toISOString().split("T")[0], // Today if not specified
         municipalServiceId: params.municipalServiceId || null,
         municipalServiceCode: params.municipalServiceCode || null,
         municipalServiceName: params.municipalServiceName,

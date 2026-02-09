@@ -387,9 +387,82 @@ export const getPaymentStatus = action({
 });
 
 /**
+ * Get fiscal service ID by searching for the service description.
+ * For software services, use: "02964 | 1.09"
+ */
+export const getFiscalServiceId = action({
+  args: {
+    serviceDescription: v.string(),
+  },
+  returns: v.union(
+    v.object({
+      serviceId: v.string(),
+      description: v.string(),
+      issTax: v.number(),
+    }),
+    v.null(),
+  ),
+  handler: async (ctx, args) => {
+    const asaas = new AsaasClient();
+
+    try {
+      console.log(
+        `Searching for fiscal service: ${args.serviceDescription}`,
+      );
+
+      const result = await asaas.listFiscalServices({
+        description: args.serviceDescription,
+        limit: 10,
+      });
+
+      if (!result.data || result.data.length === 0) {
+        console.warn(
+          `Fiscal service not found for: ${args.serviceDescription}`,
+        );
+        return null;
+      }
+
+      console.log(`Found ${result.data.length} fiscal service(s):`);
+      for (const svc of result.data) {
+        console.log(
+          `  - ID: ${svc.id} | ISS: ${svc.issTax}% | Desc: ${svc.description}`,
+        );
+      }
+
+      // Skip known expired service IDs
+      const EXPIRED_SERVICE_IDS = new Set(["306562"]);
+
+      const service =
+        result.data.find((svc) => !EXPIRED_SERVICE_IDS.has(svc.id)) ||
+        result.data[0];
+
+      if (EXPIRED_SERVICE_IDS.has(service.id)) {
+        console.warn(
+          `WARNING: Using expired service ID ${service.id}. All available services are expired!`,
+        );
+      }
+
+      console.log(
+        `Using fiscal service: ${service.id} - ${service.description}`,
+      );
+
+      return {
+        serviceId: service.id,
+        description: service.description,
+        issTax: service.issTax,
+      };
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      console.error(`Failed to fetch fiscal service:`, errorMsg);
+      return null;
+    }
+  },
+});
+
+/**
  * Schedule invoice generation for a paid order.
  */
-export const scheduleInvoice = action({
+export const createInvoice = action({
   args: {
     asaasPaymentId: v.string(),
     serviceDescription: v.string(),

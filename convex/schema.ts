@@ -272,11 +272,29 @@ export default defineSchema({
   // Invoice tracking
   invoices: defineTable({
     orderId: v.id("orders"),
+    asaasPaymentId: v.string(),
     asaasInvoiceId: v.optional(v.string()),
-    status: v.string(), // "pending" | "scheduled" | "generated" | "failed"
-    totalValue: v.number(),
-    generatedAt: v.optional(v.number()),
-    error: v.optional(v.string()),
+    status: v.string(), // "pending" | "processing" | "issued" | "failed"
+    municipalServiceId: v.string(),
+    serviceDescription: v.string(),
+    value: v.number(), // Total invoice value
+    // Installment info (for reference only)
+    installmentNumber: v.optional(v.number()),
+    totalInstallments: v.optional(v.number()),
+    // Customer info (denormalized for invoice generation)
+    customerName: v.string(),
+    customerEmail: v.string(),
+    customerCpfCnpj: v.string(),
+    customerPhone: v.optional(v.string()),
+    customerMobilePhone: v.optional(v.string()),
+    customerPostalCode: v.optional(v.string()),
+    customerAddress: v.optional(v.string()),
+    customerAddressNumber: v.optional(v.string()),
+    // Timestamps
+    createdAt: v.number(),
+    issuedAt: v.optional(v.number()),
+    // Error tracking
+    errorMessage: v.optional(v.string()),
   }).index("by_order", ["orderId"]),
 
   // Clerk invitation tracking

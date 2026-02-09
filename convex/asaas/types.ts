@@ -203,16 +203,48 @@ export interface AsaasPixQrCode {
   expirationDate: string;
 }
 
-// Invoice Response
-export interface AsaasInvoice {
+// Fiscal Service Response
+export interface AsaasFiscalService {
   id: string;
-  status: string;
+  description: string;
+  issTax: number;
+}
+
+// Invoice Response (from POST /v3/invoices and GET /v3/invoices/{id})
+export interface AsaasInvoice {
+  object: string;
+  id: string;
+  status: string; // "SCHEDULED" | "SYNCHRONIZED" | "AUTHORIZED" | "PROCESSING_CANCELLATION" | "CANCELED" | "CANCELLATION_DENIED" | "ERROR"
   customer: string;
+  type: string; // "NFS-e"
+  statusDescription: string | null;
   serviceDescription: string;
-  observations?: string;
-  pdfUrl?: string;
-  xmlUrl?: string;
-  effectiveDate?: string;
+  pdfUrl: string | null;
+  xmlUrl: string | null;
+  rpsSerie: string | null;
+  rpsNumber: string | null;
+  number: string | null;
+  validationCode: string | null;
+  value: number;
+  deductions: number | null;
+  effectiveDate: string; // "YYYY-MM-DD"
+  observations: string | null;
+  estimatedTaxesDescription: string | null;
+  payment: string; // Payment ID
+  installment: string | null;
+  externalReference: string | null;
+  taxes: {
+    retainIss: boolean;
+    iss: number;
+    pis: number;
+    cofins: number;
+    csll: number;
+    inss: number;
+    ir: number;
+  };
+  municipalServiceId: string;
+  municipalServiceCode: string | null;
+  municipalServiceName: string;
 }
 
 // ──────────────────────────────────────────────────────

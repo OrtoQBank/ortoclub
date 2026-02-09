@@ -14,6 +14,7 @@ import type * as asaas_types from "../asaas/types.js";
 import type * as coupons from "../coupons.js";
 import type * as deployments from "../deployments.js";
 import type * as http from "../http.js";
+import type * as invoices from "../invoices.js";
 import type * as leads from "../leads.js";
 import type * as lib_rateLimits from "../lib/rateLimits.js";
 import type * as orders from "../orders.js";
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   coupons: typeof coupons;
   deployments: typeof deployments;
   http: typeof http;
+  invoices: typeof invoices;
   leads: typeof leads;
   "lib/rateLimits": typeof lib_rateLimits;
   orders: typeof orders;
