@@ -57,7 +57,7 @@ const getOrderById = makeFunctionReference<
  */
 async function fetchAndValidateOrder(
   ctx: ActionCtx,
-  orderId: Id<"orders">
+  orderId: Id<"orders">,
 ): Promise<OrderForPayment> {
   const order = await ctx.runQuery(getOrderById, { orderId });
 
@@ -79,7 +79,7 @@ function buildDescription(
   productName: string,
   billingLabel: string,
   couponCode?: string,
-  installments?: number
+  installments?: number,
 ): string {
   let description = `${productName} - ${billingLabel}`;
   if (couponCode) {
@@ -98,7 +98,7 @@ function buildDescription(
 export async function confirmAndProvision(
   ctx: ActionCtx,
   orderId: Id<"orders">,
-  asaasPaymentId: string
+  asaasPaymentId: string,
 ): Promise<void> {
   await ctx.runMutation(internal.orders.confirmPayment, {
     orderId,
@@ -171,7 +171,7 @@ export const createPixPayment = action({
     const description = buildDescription(
       order.productName,
       "PIX",
-      order.couponCode
+      order.couponCode,
     );
 
     const tomorrow = new Date(Date.now() + ONE_DAY_MS)
@@ -193,7 +193,9 @@ export const createPixPayment = action({
       pixData = await asaas.getPixQrCode(payment.id);
     } catch (error) {
       console.warn("Failed to get PIX QR code immediately, will retry:", error);
-      await new Promise((resolve) => setTimeout(resolve, PIX_QR_RETRY_DELAY_MS));
+      await new Promise((resolve) =>
+        setTimeout(resolve, PIX_QR_RETRY_DELAY_MS),
+      );
 
       try {
         pixData = await asaas.getPixQrCode(payment.id);
@@ -257,7 +259,7 @@ export const createCreditCardPayment = action({
     if (args.installments !== undefined) {
       if (args.installments < 1 || args.installments > MAX_INSTALLMENTS) {
         throw new Error(
-          `Invalid installment count: ${args.installments}. Must be between 1 and ${MAX_INSTALLMENTS}.`
+          `Invalid installment count: ${args.installments}. Must be between 1 and ${MAX_INSTALLMENTS}.`,
         );
       }
 
@@ -276,7 +278,7 @@ export const createCreditCardPayment = action({
       order.productName,
       "Cartão de Crédito",
       order.couponCode,
-      installmentCount
+      installmentCount,
     );
 
     // Build payment request
@@ -303,7 +305,7 @@ export const createCreditCardPayment = action({
     // If so, update the order right away instead of waiting for the webhook.
     if (payment.status === "CONFIRMED" || payment.status === "RECEIVED") {
       console.log(
-        `Credit card payment ${payment.id} confirmed immediately (status: ${payment.status})`
+        `Credit card payment ${payment.id} confirmed immediately (status: ${payment.status})`,
       );
       await confirmAndProvision(ctx, args.orderId, payment.id);
     }
@@ -336,7 +338,7 @@ export const pollAndConfirmPayment = action({
 
     if (payment.status === "CONFIRMED" || payment.status === "RECEIVED") {
       console.log(
-        `Polling fallback: Payment ${args.asaasPaymentId} confirmed (status: ${payment.status})`
+        `Polling fallback: Payment ${args.asaasPaymentId} confirmed (status: ${payment.status})`,
       );
       await confirmAndProvision(ctx, args.orderId, args.asaasPaymentId);
       return { status: "confirmed" };
@@ -399,13 +401,13 @@ export const scheduleInvoice = action({
     taxes: v.optional(
       v.object({
         retainIss: v.boolean(),
-        iss: v.optional(v.number()),
+        iss: v.number(),
         cofins: v.optional(v.number()),
         csll: v.optional(v.number()),
         inss: v.optional(v.number()),
         ir: v.optional(v.number()),
         pis: v.optional(v.number()),
-      })
+      }),
     ),
   },
   returns: v.object({

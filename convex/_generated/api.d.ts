@@ -9,6 +9,8 @@
  */
 
 import type * as asaas from "../asaas.js";
+import type * as asaas_client from "../asaas/client.js";
+import type * as asaas_types from "../asaas/types.js";
 import type * as coupons from "../coupons.js";
 import type * as deployments from "../deployments.js";
 import type * as http from "../http.js";
@@ -31,6 +33,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   asaas: typeof asaas;
+  "asaas/client": typeof asaas_client;
+  "asaas/types": typeof asaas_types;
   coupons: typeof coupons;
   deployments: typeof deployments;
   http: typeof http;

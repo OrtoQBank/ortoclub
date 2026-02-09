@@ -31,7 +31,7 @@ export class AsaasClient {
 
   private async makeRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
 
@@ -73,7 +73,7 @@ export class AsaasClient {
   // ── Payments ─────────────────────────────────────────
 
   async createCharge(
-    charge: AsaasCreateChargeRequest
+    charge: AsaasCreateChargeRequest,
   ): Promise<AsaasPaymentResponse> {
     return this.makeRequest<AsaasPaymentResponse>("/payments", {
       method: "POST",
@@ -86,9 +86,7 @@ export class AsaasClient {
   }
 
   async getPixQrCode(chargeId: string): Promise<AsaasPixQrCode> {
-    return this.makeRequest<AsaasPixQrCode>(
-      `/payments/${chargeId}/pixQrCode`
-    );
+    return this.makeRequest<AsaasPixQrCode>(`/payments/${chargeId}/pixQrCode`);
   }
 
   // ── Invoices ─────────────────────────────────────────
@@ -103,7 +101,7 @@ export class AsaasClient {
     observations?: string;
     taxes?: {
       retainIss?: boolean;
-      iss?: number;
+      iss: number;
       cofins?: number;
       csll?: number;
       inss?: number;
