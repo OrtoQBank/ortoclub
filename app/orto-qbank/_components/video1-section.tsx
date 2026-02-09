@@ -3,12 +3,12 @@ import { CheckCircle2, FileText, Smartphone, Lightbulb, BarChart3, BookOpen } fr
 export default function Video1Section() {
   return (
     <>
-      <section className="py-12 md:py-20 px-4 bg-white">
+      <section className="py-8 md:py-12 px-4 bg-white">
         <div className="container mx-auto">
           <div className="mx-auto max-w-5xl">
             {/* Título e introdução */}
-            <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-blue mb-4">
                 Estudo estratégico baseado em questões reais do TEOT
               </h2>
               <div className="max-w-3xl mx-auto space-y-4">
@@ -19,13 +19,13 @@ export default function Video1Section() {
                   Você treina com questões no padrão oficial da banca SBOT, organizadas por tema e subespecialidade, em uma plataforma própria interativa, criada para acelerar aprendizado e evitar desperdício de tempo.
                 </p>
                 <p className="text-gray-900/90 leading-relaxed">
-                  Cada etapa do estudo foi desenhada por quem viveu a prova e ficou em 1º lugar no TEOT 2025.
+                  Cada etapa do estudo foi desenhada por quem viveu a prova e ficou em <span className="text-brand-blue font-semibold">1º lugar no TEOT 2025</span>.
                 </p>
               </div>
             </div>
 
             {/* VIDEO */}
-            <div className="max-w-3xl mx-auto mb-10">
+            <div className="max-w-3xl mx-auto mb-8">
               <div className="aspect-video overflow-hidden rounded-xl shadow-xl drop-shadow-2xl bg-card">
                 <iframe
                   width="100%"
@@ -55,7 +55,7 @@ export default function Video1Section() {
 
             {/* Pilares da metodologia */}
             <div className="max-w-4xl mx-auto">
-              <h3 className="text-xl md:text-2xl font-bold text-white text-center mb-8">
+              <h3 className="text-xl md:text-2xl font-bold text-brand-blue text-center mb-6">
                 Pilares da metodologia OrtoClub
               </h3>
               <div className="grid gap-6 md:grid-cols-2">
@@ -109,7 +109,7 @@ export default function Video1Section() {
       </section>
 
       {/* SEÇÃO DE CARDS */}
-      <section className="py-12 md:py-20 px-4 bg-blue-50">
+      <section className="py-8 md:py-12 px-4 bg-blue-50">
         <div className="container mx-auto">
           <div className="mx-auto max-w-6xl">
             {/* Primeira linha - 3 cards */}
@@ -120,7 +120,7 @@ export default function Video1Section() {
                   <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                     <FileText className="w-7 h-7 text-blue-500" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Banco de Questões Completo</h3>
+                  <h3 className="text-lg font-bold text-brand-blue mb-3">Banco de Questões Completo</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Um banco de questões completo com gabaritos direcionados por especialistas da USP, baseados na bibliografia da SBOT mas com os insights diferenciais dos professores.
                   </p>
@@ -133,7 +133,7 @@ export default function Video1Section() {
                   <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-4">
                     <Smartphone className="w-7 h-7 text-blue-500" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Plataforma Responsiva</h3>
+                  <h3 className="text-lg font-bold text-brand-blue mb-3">Plataforma Responsiva</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Plataforma responsiva para computador, tablet e celular, permitindo que você estude em qualquer lugar e a qualquer momento.
                   </p>
@@ -146,7 +146,7 @@ export default function Video1Section() {
                   <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                     <Lightbulb className="w-7 h-7 text-blue-500" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Desempenho Garantido</h3>
+                  <h3 className="text-lg font-bold text-brand-blue mb-3">Desempenho Garantido</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Aprenda enquanto faz questões e alcance o desempenho de 80% na prova do TEOT e TEPOT!
                   </p>
@@ -162,7 +162,7 @@ export default function Video1Section() {
                   <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                     <BarChart3 className="w-7 h-7 text-blue-500" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Análise de Desempenho</h3>
+                  <h3 className="text-lg font-bold text-brand-blue mb-3">Análise de Desempenho</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Acompanhe seu progresso com estatísticas detalhadas e identifique áreas que precisam de mais atenção para maximizar seu aprendizado.
                   </p>
@@ -175,7 +175,7 @@ export default function Video1Section() {
                   <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                     <BookOpen className="w-7 h-7 text-blue-500" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Conteúdo Atualizado</h3>
+                  <h3 className="text-lg font-bold text-brand-blue mb-3">Conteúdo Atualizado</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Material constantemente atualizado de acordo com as referências bibliográficas da SBOT e com as novas provas.
                   </p>

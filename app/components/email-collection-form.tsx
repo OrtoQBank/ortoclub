@@ -162,12 +162,12 @@ export default function EmailCollectionForm({
       </Select>
       <Button
         type="submit"
-        className="hover:bg-opacity-90 bg-brand-blue text-white font-semibold py-3"
+        className="hover:bg-white/90 bg-white text-brand-blue font-semibold py-3"
         disabled={isLoading}
       >
         {isLoading ? 'Cadastrando...' : 'ENTRAR PARA LISTA VIP'}
       </Button>
-      <p className="text-xs text-center text-gray-500">
+      <p className="text-xs text-center text-white/70">
         Política de Privacidade e Termos de Uso
       </p>
       {message && (

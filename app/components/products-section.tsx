@@ -34,19 +34,19 @@ export default function ProductsSection() {
             sectionTitle: 'TEOT/TEPOT',
             products: [
                 {
-                    title: 'OrtoQbank',
+                    title: 'OrtoQBank',
                     description: 'Técnica exclusiva de ortodontia com resultados comprovados',
                     image: '/ortoqbank.jpeg',
                     href: '/orto-qbank'
                 },
                 {
-                    title: 'TEOT Aulas',
+                    title: 'OrtoClub TEOT',
                     description: 'Construa sua marca pessoal no mercado ortodôntico',
                     image: '/teot-aulas.jpeg',
                     href: '/teot-video'
                 },
                 {
-                    title: 'Mentoria Aulas',
+                    title: 'Mentoria TEOT',
                     description: 'Acompanhamento personalizado com especialistas',
                     image: '/mentoria-aulas.jpeg',
                     href: '/mentoria-video'
@@ -57,13 +57,13 @@ export default function ProductsSection() {
             sectionTitle: 'R+ / Subespecialidades',
             products: [
                 {
-                    title: 'SBCJ Qbank',
+                    title: 'SBCJQBank',
                     description: 'Base sólida em ortodontia convencional',
                     image: '/SBCJQBank.webp',
                     href: '/sbcj-qbank'
                 },
                 {
-                    title: 'Mão Qbank',
+                    title: 'MãoQBank',
                     description: 'Base sólida em ortodontia convencional',
                     image: '/MaqBan.webp',
                     href: '/mao-qbank'
@@ -74,7 +74,7 @@ export default function ProductsSection() {
             sectionTitle: 'Consultório',
             products: [
                 {
-                    title: 'Gestão Aulas',
+                    title: 'Gestão de Consultório',
                     description: 'Base sólida em ortodontia convencional',
                     image: '/gestao-aulas.jpeg',
                     href: '/gestao-video'
@@ -98,7 +98,7 @@ export default function ProductsSection() {
     };
 
     return (
-        <section className="py-8 md:py-12 px-4">
+        <section className="py-6 md:py-8 px-4">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-8">
@@ -106,7 +106,7 @@ export default function ProductsSection() {
                     </h1>
 
                     {productSections.map((section, sectionIndex) => (
-                        <div key={sectionIndex} className="mb-12 md:mb-16">
+                        <div key={sectionIndex} className="mb-8 md:mb-10">
                             <h2 className="text-gray-600 mb-6 md:mb-8 text-center text-lg sm:text-2xl font-bold md:text-xl">
                                 {section.sectionTitle}
                             </h2>
@@ -150,12 +150,12 @@ export default function ProductsSection() {
             </div>
 
             <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
-                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto bg-brand-blue border-brand-blue text-white **:data-[slot=dialog-close]:text-white">
                     <DialogHeader className="text-center">
-                        <DialogTitle className="text-xl font-bold text-gray-900 text-center">
+                        <DialogTitle className="text-xl font-bold text-white text-center">
                             Preencha os campos para confirmar sua vaga!
                         </DialogTitle>
-                        <DialogDescription className="text-center">
+                        <DialogDescription className="text-center text-white/80">
                             Seus dados estão seguros.
                         </DialogDescription>
                     </DialogHeader>

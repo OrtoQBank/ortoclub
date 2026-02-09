@@ -3,30 +3,26 @@ import Image from 'next/image';
 
 export default function Hero1Section() {
   return (
-    <section className="mt-24 py-12 md:py-20 px-4 bg-blue-50">
+    <section className="mt-24 py-8 md:py-12 px-4 bg-blue-50">
       <div className="container mx-auto">
         <div className="mx-auto max-w-7xl">
-          <div className="grid items-start gap-10 md:grid-cols-5">
+          <div className="grid items-start gap-8 md:grid-cols-5">
             {/* ESQUERDA: título + descrição */}
-            <div className="md:col-span-3 space-y-6">
+            <div className="md:col-span-3 space-y-4">
               <div className="space-y-2">
-                <span className="text-sm font-medium text-brand-blue uppercase tracking-wider">
-                  Preparação TEOT
-                </span>
-                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-brand-blue">
                   OrtoQBank - Preparação que aprova
                 </h1>
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl">
-                Banco de questões 100% focado na prova do TEOT/TEPOT, desenvolvido por especialistas da USP que já se diferenciaram na prova!
+                Banco de questões 100% focado na prova do TEOT / TEPOT, desenvolvido por especialistas da USP que já se diferenciaram na prova!
 
                 Treine em uma plataforma própria e interativa, com comentários aprofundados, análise de desempenho e testes personalizados.
-
               </p>
 
               {/* Benefícios em bullets */}
-              <div className="grid gap-4 sm:grid-cols-2 mb-16">
+              <div className="grid gap-4 sm:grid-cols-2 mb-8">
                 <div className="flex items-start gap-3">
                   <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <BookOpen className="w-5 h-5 text-primary" />
@@ -60,7 +56,7 @@ export default function Hero1Section() {
                   </div>
                   <div>
                     <h3 className="font-medium">Resultado comprovado</h3>
-                    <p className="text-sm text-muted-foreground">Método validado por aprovação em 1º lugar no TEOT 2025</p>
+                    <p className="text-sm text-muted-foreground">Método validado por aprovação em <span className="text-brand-blue font-semibold">1º lugar no TEOT 2025</span></p>
                   </div>
                 </div>
               </div>

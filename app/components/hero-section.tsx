@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function HeroSection() {
     return (
-        <section className="pt-24 md:pt-32 pb-16 md:pb-24 px-4 bg-blue-50">
+        <section className="pt-24 md:pt-32 pb-8 md:pb-12 px-4 bg-blue-50">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <div className="inline-block bg-brand-blue text-white px-4 max-w-[400px] py-1 text-center rounded-full text-sm font-medium mb-6">
@@ -11,7 +11,7 @@ export default function HeroSection() {
                     </div>
                     {/* Título */}
                     <h2 className=" md:text-xl font-bold text-brand-blue mb-8">
-                        PREPARAÇÃO COMPLETA PARA QUEM QUER CHEGAR PRONTO NO TEOT/TEPOT!
+                        PREPARAÇÃO COMPLETA PARA QUEM QUER CHEGAR PRONTO NO TEOT / TEPOT!
                     </h2>
 
                     {/* Container principal - Desktop */}
@@ -37,6 +37,7 @@ export default function HeroSection() {
                         {/* Segunda imagem - OrtoQBank */}
                         <div className="w-full h-[450px]">
                             <Image
+                            
                                 src="/ortoqbank.jpeg"
                                 alt="OrtoQBank"
                                 width={300}
