@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export default function Cta1Section() {
   return (
-    <section className="py-12 md:py-16 px-4 bg-white">
+    <section className="py-8 md:py-12 px-4 bg-white">
       <div className="container mx-auto">
         <div className="mx-auto max-w-6xl">
           {/* Headline */}
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-brand-blue mb-8">
             Você escolhe como estudar. O OrtoClub cuida do resto.
           </h2>
 
@@ -26,7 +26,7 @@ export default function Cta1Section() {
               </div>
               {/* Conteúdo */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-brand-blue mb-3">
                   Crie testes personalizados em segundos
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -62,7 +62,7 @@ export default function Cta1Section() {
               </div>
               {/* Conteúdo */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-brand-blue mb-3">
                   Simulados e trilhas inteligentes de estudo
                 </h3>
                 <p className="text-gray-600 mb-1">

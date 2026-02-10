@@ -13,19 +13,6 @@ interface StaffMember {
 
 const staffMembers: StaffMember[] = [
   {
-    id: 1,
-    name: 'Daniel Duarte Perini',
-    imageUrl: '/medico1.jpg',
-    description: [
-      '7° lugar TEOT 2025', 'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)', '⁠Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
-  },
-  {
-    id: 2,
-    name: 'Vitor Ricardo Moraes',
-    imageUrl: '/medico2.jpg',
-    description: ['1° lugar TEOT 2025', 'Cirurgia do Joelho (IOT-HCFMUSP)', 'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
-  },
-  {
     id: 3,
     name: 'Rodrigo Astolfi',
     imageUrl: '/rodrigo-astolfi.webp',
@@ -35,6 +22,19 @@ const staffMembers: StaffMember[] = [
       'Ortopedista pela Faculdade de Medicina da USP',
       'Mestre e Doutor pela Universidade Federal do Ceará',
     ],
+  },
+  {
+    id: 2,
+    name: 'Vitor Ricardo Moraes',
+    imageUrl: '/medico2.jpg',
+    description: ['1° lugar TEOT 2025', 'Cirurgia do Joelho (IOT-HCFMUSP)', 'Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
+  },
+  {
+    id: 1,
+    name: 'Daniel Duarte Perini',
+    imageUrl: '/medico1.jpg',
+    description: [
+      '7° lugar TEOT 2025', 'Cirurgia da Coluna Vertebral (IOT-HCFMUSP)', '⁠Ortopedista pelo Instituto de Ortopedia e Traumatologia do HC-FMUSP', 'Médico pela Faculdade de Medicina da USP'],
   },
   {
     id: 4,
@@ -157,7 +157,7 @@ function StaffCard({ member, fullWidth = false, smallMobile = false }: { member:
       <div className="space-y-1 p-2 sm:p-4">
         <h2 className="text-sm sm:text-lg text-brand-blue font-semibold line-clamp-1">{member.name}</h2>
         {(member.id === 1 || member.id === 2 || member.id === 7) && (
-          <p className="text-xs sm:text-sm font-semibold text-gray-900">
+          <p className="text-xs sm:text-sm font-semibold text-brand-blue">
             {member.description[0]}
           </p>
         )}
@@ -385,7 +385,7 @@ export default function StaffSection() {
   }, [scrollFirstRow]);
 
   return (
-    <section id="equipe" className="py-12 md:py-16">
+    <section id="equipe" className="py-8 md:py-12">
       <div className="container mx-auto px-4">
         <h1 className="text-brand-blue mb-8 md:mb-12 text-center text-2xl sm:text-3xl font-bold md:text-4xl">
           Nossa Equipe
