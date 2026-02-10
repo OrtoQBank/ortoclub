@@ -74,29 +74,29 @@ export default function HeroSection() {
                         {/* Imagens lado a lado com + no meio */}
                         <div className="flex items-center gap-2">
                             {/* Primeira imagem - OrtoClub TEOT */}
-                            <div className="flex-1 h-[180px] sm:h-[220px]">
+                            <div className="flex-2 min-w-0 aspect-2/1 relative overflow-hidden rounded-lg">
                                 <Image
                                     src="/hero-image.webp"
                                     alt="OrtoClub TEOT"
-                                    width={400}
-                                    height={220}
-                                    className="w-full h-full object-cover rounded-lg"
+                                    fill
+                                    sizes="(max-width: 640px) 60vw, 65vw"
+                                    className="object-cover"
                                 />
                             </div>
 
                             {/* Sinal de + */}
-                            <span className="text-3xl sm:text-4xl font-light text-brand-blue shrink-0 px-1">
+                            <span className="text-2xl sm:text-4xl font-light text-brand-blue shrink-0 px-0.5 sm:px-1">
                                 +
                             </span>
 
                             {/* Segunda imagem - OrtoQBank */}
-                            <div className="w-[100px] sm:w-[140px] h-[180px] sm:h-[220px] shrink-0">
+                            <div className="flex-1 min-w-0 aspect-2/3 relative overflow-hidden rounded-lg">
                                 <Image
                                     src="/ortoqbank.jpeg"
                                     alt="OrtoQBank"
-                                    width={140}
-                                    height={220}
-                                    className="w-full h-full object-cover rounded-lg"
+                                    fill
+                                    sizes="(max-width: 640px) 30vw, 28vw"
+                                    className="object-cover"
                                 />
                             </div>
                         </div>
