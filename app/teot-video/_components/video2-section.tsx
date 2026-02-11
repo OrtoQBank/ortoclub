@@ -1,3 +1,5 @@
+import LeadCaptureButton from '@/app/components/lead-capture-button';
+
 export default function Video2Section() {
     return (
         <section className="py-12 md:py-20 px-4 bg-white">
@@ -31,14 +33,13 @@ export default function Video2Section() {
                         <p className="text-center text-sm text-gray-900/80 mb-4">
                             Conheça a plataforma que vai transformar sua preparação
                         </p>
-                        <a
-                            href="https://pay.hotmart.com/W98444880C?checkoutMode=10"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <LeadCaptureButton
+                            produto="TEOT Aulas"
+                            redirectUrl=""
                             className="bg-brand-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-blue/90 transition"
                         >
                             Começar minha formação para o TEOT
-                        </a>
+                        </LeadCaptureButton>
                     </div>
                 </div>
             </div>

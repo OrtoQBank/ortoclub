@@ -1,5 +1,6 @@
 import { BookOpen, Target, BarChart3, Clock } from 'lucide-react';
 import Image from 'next/image';
+import LeadCaptureButton from '@/app/components/lead-capture-button';
 
 export default function Hero1Section() {
   return (
@@ -65,13 +66,13 @@ export default function Hero1Section() {
                 </div>
               </div>
 
-              <a
-                href="https://ortoqbank.ortoclub.com/"
-                target="_blank"
+              <LeadCaptureButton
+                produto="OrtoQbank"
+                redirectUrl="https://ortoqbank.ortoclub.com/"
                 className="inline-flex items-center justify-center font-semibold bg-brand-blue text-white py-3 px-8 rounded-lg hover:bg-brand-blue/90 transition"
               >
                 Quero assinar o OrtoQBank
-              </a>
+              </LeadCaptureButton>
 
             </div>
 

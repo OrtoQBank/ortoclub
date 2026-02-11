@@ -1,5 +1,5 @@
 import { CheckCircle2 } from 'lucide-react';
-import Link from "next/link";
+import LeadCaptureButton from '@/app/components/lead-capture-button';
 
 export default function Cta2Section() {
   return (
@@ -81,14 +81,13 @@ export default function Cta2Section() {
 
           {/* CTA Button */}
           <div className="mt-12 text-center">
-            <Link
-              href="https://pay.hotmart.com/W98444880C?checkoutMode=10"
-              target="_blank"
-              rel="noopener noreferrer"
+            <LeadCaptureButton
+              produto="TEOT Aulas"
+              redirectUrl=""
               className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
             >
               Garantir minha aprovação
-            </Link>
+            </LeadCaptureButton>
           </div>
 
           {/* Linha divisória */}
