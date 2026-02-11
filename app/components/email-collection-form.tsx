@@ -81,7 +81,7 @@ export default function EmailCollectionForm({
     setIsError(false);
 
     try {
-      await createWaitlistEntry({
+      const result = await createWaitlistEntry({
         productName: productName || undefined,
         name,
         email,
@@ -90,6 +90,12 @@ export default function EmailCollectionForm({
         residencyLevel,
         subspecialty,
       });
+
+      if (result.status === 'email_already_exists') {
+        setMessage('Este email já está cadastrado!');
+        setIsError(true);
+        return;
+      }
 
       setMessage('Obrigado! Você foi adicionado à lista VIP!');
       setName('');

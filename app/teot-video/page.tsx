@@ -1,4 +1,3 @@
-'use client';
 
 import Cta2Section from "./_components/cta2-section";
 import Hero2Section from "./_components/hero2-section";

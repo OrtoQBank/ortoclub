@@ -83,7 +83,7 @@ export default function Cta2Section() {
           <div className="mt-12 text-center">
             <LeadCaptureButton
               produto="TEOT Aulas"
-              redirectUrl=""
+              redirectUrl="" // Intentional: no product/checkout page yet; user stays on page with success state
               className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-4 text-white font-semibold text-lg shadow-md hover:opacity-95 transition"
             >
               Garantir minha aprovação

@@ -35,7 +35,7 @@ export default function Video2Section() {
                         </p>
                         <LeadCaptureButton
                             produto="TEOT Aulas"
-                            redirectUrl=""
+                            redirectUrl="" // Intentional: no product/checkout page yet; user stays on page with success state
                             className="bg-brand-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-blue/90 transition"
                         >
                             Começar minha formação para o TEOT

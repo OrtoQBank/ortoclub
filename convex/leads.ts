@@ -3,7 +3,11 @@
 import { v } from 'convex/values';
 
 import { action } from './_generated/server';
-import { appendToSheet, PRODUCT_SHEETS } from './googleSheets';
+import {
+  appendToSheet,
+  emailExistsInSheet,
+  PRODUCT_SHEETS,
+} from './googleSheets';
 
 export const createLead = action({
   args: {
@@ -37,6 +41,12 @@ export const createLead = action({
       );
     }
 
+    // Verifica se o email já existe na planilha (coluna C = Email)
+    const exists = await emailExistsInSheet(sheetId, 'C', args.email);
+    if (exists) {
+      return { ok: true, status: 'email_already_exists' as const };
+    }
+
     await appendToSheet(
       sheetId,
       [
@@ -59,6 +69,6 @@ export const createLead = action({
       ],
     );
 
-    return { ok: true };
+    return { ok: true, status: 'created' as const };
   },
 });

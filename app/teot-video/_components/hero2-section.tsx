@@ -68,7 +68,7 @@ export default function Hero2Section() {
                             {/* CTA Button */}
                             <LeadCaptureButton
                                 produto="TEOT Aulas"
-                                redirectUrl=""
+                                redirectUrl="" // Intentional: no product/checkout page yet; user stays on page with success state
                                 className="inline-flex items-center justify-center rounded-lg bg-brand-blue px-8 py-3 text-white font-semibold shadow-md hover:opacity-95 transition"
                             >
                                 Quero estudar com o OrtoClub TEOT

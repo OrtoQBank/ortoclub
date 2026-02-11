@@ -81,6 +81,46 @@ async function ensureHeaders(
 }
 
 /**
+ * Verifica se um email já existe na planilha.
+ * Lê todos os valores da coluna especificada e compara (case-insensitive).
+ *
+ * @param spreadsheetId - ID da planilha
+ * @param emailColumnLetter - Letra da coluna onde está o email (ex: 'B', 'C')
+ * @param email - Email a ser verificado
+ * @returns true se o email já existe na planilha
+ */
+export async function emailExistsInSheet(
+  spreadsheetId: string,
+  emailColumnLetter: string,
+  email: string,
+): Promise<boolean> {
+  const accessToken = await getGoogleAuthToken();
+  const range = `${emailColumnLetter}:${emailColumnLetter}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`;
+
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Erro ao verificar email na planilha: ${errorText}`);
+  }
+
+  const data = await res.json();
+  const rows: string[][] = data.values ?? [];
+  const normalizedEmail = email.trim().toLowerCase();
+
+  // Pula a primeira linha (cabeçalho) e verifica se o email existe
+  return rows
+    .slice(1)
+    .some(
+      (row: string[]) =>
+        row[0] && row[0].trim().toLowerCase() === normalizedEmail,
+    );
+}
+
+/**
  * Adiciona uma linha na planilha Google Sheets especificada.
  * Garante que o cabeçalho exista antes de inserir os dados.
  */

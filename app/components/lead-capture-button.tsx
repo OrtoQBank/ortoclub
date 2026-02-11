@@ -92,7 +92,7 @@ export default function LeadCaptureButton({
     setIsError(false);
 
     try {
-      await createLead({
+      const result = await createLead({
         nomeCompleto,
         numero: phoneDigits(numero),
         email,
@@ -101,27 +101,32 @@ export default function LeadCaptureButton({
         subspecialty,
       });
 
+      if (result.status === 'email_already_exists') {
+        setMessage('Este email já está cadastrado!');
+        setIsError(true);
+        setIsLoading(false);
+        return;
+      }
+
       setMessage('Obrigado! Redirecionando...');
       setIsError(false);
 
-      // Redirect after a brief delay
-      setTimeout(() => {
-        if (redirectUrl) {
-          window.open(redirectUrl, '_blank');
-        }
-        setOpen(false);
-        // Reset form
-        setNomeCompleto('');
-        setEmail('');
-        setNumero('');
-        setResidencyLevel('');
-        setSubspecialty('');
-        setMessage('');
-      }, 1500);
+      // Redirect immediately (synchronous with user event) to avoid popup blockers.
+      // Loading state is kept until after redirect so the button stays disabled.
+      if (redirectUrl) {
+        window.open(redirectUrl, '_blank');
+      }
+      setOpen(false);
+      setNomeCompleto('');
+      setEmail('');
+      setNumero('');
+      setResidencyLevel('');
+      setSubspecialty('');
+      setMessage('');
+      setIsLoading(false);
     } catch {
       setMessage('Erro ao cadastrar. Tente novamente.');
       setIsError(true);
-    } finally {
       setIsLoading(false);
     }
   };

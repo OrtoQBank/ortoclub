@@ -1,88 +1,17 @@
 'use node';
 
 import { v } from 'convex/values';
-import { JWT } from 'google-auth-library';
 
 import { action } from './_generated/server';
-
-const PRODUCT_SHEETS: Record<string, string> = {
-  OrtoQbank: '1AmAIkOkwRBW83FGKtUfFt6QOttGn8uWr0RBNQutkpSA',
-  'TEOT Aulas': '1TP6gdI4S0Y1obxb2mgac8ZdxzzPVPy4IkegvSnuF54U', // TODO: trocar pelo spreadsheet ID correto do TEOT Aulas
-  'Mentoria Aulas': '1Nk21HhUYuqkD7RuZDOL57sjm3GBzHf5q0WvYWnAJW-I',
-  // 'SBCJ Qbank': 'SPREADSHEET_ID_AQUI',
-  // 'Mão Qbank': 'SPREADSHEET_ID_AQUI',
-  // 'Gestão Aulas': 'SPREADSHEET_ID_AQUI',
-};
-
-async function getGoogleAuthToken(): Promise<string> {
-  const auth = new JWT({
-    email: process.env.GOOGLE_SERVICE_EMAIL,
-    key: process.env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-  const token = await auth.authorize();
-  if (!token.access_token) {
-    throw new Error('Falha ao obter access token do Google');
-  }
-  return token.access_token;
-}
-
-async function ensureHeaders(
-  spreadsheetId: string,
-  headers: string[],
-  accessToken: string,
-) {
-  const readUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1:Z1`;
-  const readRes = await fetch(readUrl, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-  if (!readRes.ok) {
-    const errorText = await readRes.text();
-    throw new Error(`Erro ao ler cabeçalho da planilha: ${errorText}`);
-  }
-  const data = await readRes.json();
-  if (!data.values || data.values.length === 0) {
-    const writeUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1?valueInputOption=RAW`;
-    const writeRes = await fetch(writeUrl, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ values: [headers] }),
-    });
-    if (!writeRes.ok) {
-      const errorText = await writeRes.text();
-      throw new Error(`Erro ao inserir cabeçalho na planilha: ${errorText}`);
-    }
-  }
-}
-
-async function appendToSheet(
-  spreadsheetId: string,
-  headers: string[],
-  row: string[],
-) {
-  const accessToken = await getGoogleAuthToken();
-  await ensureHeaders(spreadsheetId, headers, accessToken);
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1:append?valueInputOption=RAW`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ values: [row] }),
-  });
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Erro ao adicionar linha na planilha: ${errorText}`);
-  }
-}
+import {
+  PRODUCT_SHEETS,
+  appendToSheet,
+  emailExistsInSheet,
+} from './googleSheets';
 
 export const createWaitlistEntry = action({
   args: {
-    productName: v.optional(v.string()),
+    productName: v.string(),
     name: v.string(),
     email: v.string(),
     whatsapp: v.string(),
@@ -105,11 +34,17 @@ export const createWaitlistEntry = action({
     ),
   },
   handler: async (_, args) => {
-    const product = args.productName ?? 'default';
+    const product = args.productName;
     const sheetId = PRODUCT_SHEETS[product];
 
     if (!sheetId) {
       throw new Error(`Planilha não encontrada para o produto: ${product}`);
+    }
+
+    // Verifica se o email já existe na planilha (coluna B = Email)
+    const exists = await emailExistsInSheet(sheetId, 'B', args.email);
+    if (exists) {
+      return { ok: true, status: 'email_already_exists' as const };
     }
 
     await appendToSheet(
@@ -134,6 +69,6 @@ export const createWaitlistEntry = action({
       ],
     );
 
-    return { ok: true };
+    return { ok: true, status: 'created' as const };
   },
 });
