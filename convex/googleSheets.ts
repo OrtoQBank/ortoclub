@@ -7,14 +7,13 @@ import { JWT } from 'google-auth-library';
  * Adicione novos produtos aqui conforme necessário.
  */
 export const PRODUCT_SHEETS: Record<string, string> = {
-  Extensivo: '1cZ4ZIHgQ5vAv5MZlYnozn9z1JEl4IHnXtZrIB8LoqGU',
   OrtoQbank: '1ruCA6A-utwRh_YWmTcbDN9CBgb5HetS2oR_nbQf5RYw',
+  'Extensivo': '1cZ4ZIHgQ5vAv5MZlYnozn9z1JEl4IHnXtZrIB8LoqGU',
   'TEOT Aulas': '1tnbTqTMACz6g6nX6e7DaC9k5n6-TngRMxxZ5LPVq2sE',
   'Mentoria Aulas': '13jLSqTZ_Jz-YhqbXbYh1H1mhKdXBwRteDLKQf1F4WHg',
   'SBCJ Qbank': '115EewaFk6N9qQdbD6PLB0Ay2GdizDIaX0_21Pwo3Blo',
   'Mão Qbank': '10XuTlyh70IlaCHMyBH2kBvvvXhvRqfuVO0Y4e5CoTWA',
   'Gestão Aulas': '1rBmKNT7O9h08En33CvUdssL0Hs9VxVSF4fubdyDiWMg',
-  
 };
 
 /**
@@ -37,15 +36,57 @@ export async function getGoogleAuthToken(): Promise<string> {
 }
 
 /**
+ * Obtém o nome da primeira aba da planilha.
+ * Necessário porque o nome padrão varia conforme o idioma da conta Google
+ * (ex: "Sheet1" em inglês, "Planilha1" em português).
+ */
+async function getFirstSheetName(
+  spreadsheetId: string,
+  accessToken: string,
+): Promise<string> {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=sheets.properties.title`;
+
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Erro ao obter metadados da planilha: ${errorText}`);
+  }
+
+  const data = await res.json();
+
+  if (!data.sheets || data.sheets.length === 0) {
+    throw new Error('A planilha não possui nenhuma aba');
+  }
+
+  return data.sheets[0].properties.title;
+}
+
+/**
+ * Constrói o range em A1 notation com o nome da aba.
+ * Nomes com espaços ou caracteres especiais são envolvidos em aspas simples.
+ */
+function buildRange(sheetName: string, cellRange: string): string {
+  const escapedName = sheetName.replace(/'/g, "''");
+  return `'${escapedName}'!${cellRange}`;
+}
+
+/**
  * Verifica se a planilha já possui cabeçalho (primeira linha).
  * Se não tiver, insere o cabeçalho antes de adicionar dados.
  */
 async function ensureHeaders(
   spreadsheetId: string,
+  sheetName: string,
   headers: string[],
   accessToken: string,
 ): Promise<void> {
-  const readUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1:Z1`;
+  const range = buildRange(sheetName, 'A1:Z1');
+  const readUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`;
 
   const readRes = await fetch(readUrl, {
     headers: {
@@ -62,7 +103,8 @@ async function ensureHeaders(
 
   // Se não há valores na primeira linha, insere o cabeçalho
   if (!data.values || data.values.length === 0) {
-    const writeUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1?valueInputOption=RAW`;
+    const writeRange = buildRange(sheetName, 'A1');
+    const writeUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(writeRange)}?valueInputOption=RAW`;
 
     const writeRes = await fetch(writeUrl, {
       method: 'PUT',
@@ -97,8 +139,9 @@ export async function emailExistsInSheet(
   email: string,
 ): Promise<boolean> {
   const accessToken = await getGoogleAuthToken();
-  const range = `${emailColumnLetter}:${emailColumnLetter}`;
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`;
+  const sheetName = await getFirstSheetName(spreadsheetId, accessToken);
+  const range = buildRange(sheetName, `${emailColumnLetter}:${emailColumnLetter}`);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`;
 
   const res = await fetch(url, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -132,10 +175,12 @@ export async function appendToSheet(
   row: string[],
 ): Promise<void> {
   const accessToken = await getGoogleAuthToken();
+  const sheetName = await getFirstSheetName(spreadsheetId, accessToken);
 
-  await ensureHeaders(spreadsheetId, headers, accessToken);
+  await ensureHeaders(spreadsheetId, sheetName, headers, accessToken);
 
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1:append?valueInputOption=RAW`;
+  const range = buildRange(sheetName, 'A1');
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW`;
 
   const res = await fetch(url, {
     method: 'POST',
