@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useMutation } from 'convex/react';
+import { useAction } from 'convex/react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,6 +34,17 @@ const SUBSPECIALTIES = [
 type ResidencyLevel = (typeof RESIDENCY_LEVELS)[number];
 type Subspecialty = (typeof SUBSPECIALTIES)[number];
 
+function formatPhone(value: string): string {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
+function phoneDigits(value: string): string {
+  return value.replace(/\D/g, '');
+}
+
 export default function EmailCollectionForm({
   productName,
   onSuccess,
@@ -48,13 +59,19 @@ export default function EmailCollectionForm({
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const createWaitlistEntry = useMutation(api.waitlist.createWaitlistEntry);
+  const createWaitlistEntry = useAction(api.waitlist.createWaitlistEntry);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
     if (!residencyLevel || !subspecialty) {
       setMessage('Por favor, preencha todos os campos obrigatórios.');
+      setIsError(true);
+      return;
+    }
+
+    if (phoneDigits(whatsapp).length !== 11) {
+      setMessage('O número de telefone deve ter 11 dígitos (DDD + número).');
       setIsError(true);
       return;
     }
@@ -68,25 +85,26 @@ export default function EmailCollectionForm({
         productName: productName || undefined,
         name,
         email,
-        whatsapp,
+        whatsapp: phoneDigits(whatsapp),
         instagram: instagram || undefined,
         residencyLevel,
         subspecialty,
       });
 
-      if (result === 'email_already_exists') {
+      if (result.status === 'email_already_exists') {
         setMessage('Este email já está cadastrado!');
-        setIsError(false);
-      } else {
-        setMessage('Obrigado! Você foi adicionado à lista VIP!');
-        setName('');
-        setEmail('');
-        setWhatsapp('');
-        setInstagram('');
-        setResidencyLevel('');
-        setSubspecialty('');
-        onSuccess?.();
+        setIsError(true);
+        return;
       }
+
+      setMessage('Obrigado! Você foi adicionado à lista VIP!');
+      setName('');
+      setEmail('');
+      setWhatsapp('');
+      setInstagram('');
+      setResidencyLevel('');
+      setSubspecialty('');
+      onSuccess?.();
     } catch {
       setMessage('Erro ao cadastrar. Tente novamente.');
       setIsError(true);
@@ -115,9 +133,10 @@ export default function EmailCollectionForm({
       />
       <Input
         type="tel"
-        placeholder="* WhatsApp"
+        placeholder="* WhatsApp (DDD + número)"
         value={whatsapp}
-        onChange={e => setWhatsapp(e.target.value)}
+        onChange={e => setWhatsapp(formatPhone(e.target.value))}
+        maxLength={16}
         required
         disabled={isLoading}
       />

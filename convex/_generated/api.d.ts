@@ -8,6 +8,8 @@
  * @module
  */
 
+import type * as googleSheets from "../googleSheets.js";
+import type * as leads from "../leads.js";
 import type * as waitlist from "../waitlist.js";
 
 import type {
@@ -17,6 +19,8 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  googleSheets: typeof googleSheets;
+  leads: typeof leads;
   waitlist: typeof waitlist;
 }>;
 
