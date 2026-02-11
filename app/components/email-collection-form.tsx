@@ -63,7 +63,7 @@ export default function EmailCollectionForm({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    
+
     if (!residencyLevel || !subspecialty) {
       setMessage('Por favor, preencha todos os campos obrigatórios.');
       setIsError(true);
@@ -82,7 +82,7 @@ export default function EmailCollectionForm({
 
     try {
       const result = await createWaitlistEntry({
-        productName: productName || undefined,
+        productName: productName || '',
         name,
         email,
         whatsapp: phoneDigits(whatsapp),
@@ -97,7 +97,7 @@ export default function EmailCollectionForm({
         return;
       }
 
-      setMessage('Obrigado! Você foi adicionado à lista VIP!');
+      setMessage('Obrigado! Você foi adicionado à lista de espera!');
       setName('');
       setEmail('');
       setWhatsapp('');
@@ -184,7 +184,7 @@ export default function EmailCollectionForm({
         className="hover:bg-opacity-90 bg-brand-blue text-white font-semibold py-3"
         disabled={isLoading}
       >
-        {isLoading ? 'Cadastrando...' : 'ENTRAR PARA LISTA VIP'}
+        {isLoading ? 'Cadastrando...' : 'LISTA DE ESPERA'}
       </Button>
       <p className="text-xs text-center text-gray-500">
         Política de Privacidade e Termos de Uso

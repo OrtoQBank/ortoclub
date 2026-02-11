@@ -7,12 +7,14 @@ import { JWT } from 'google-auth-library';
  * Adicione novos produtos aqui conforme necessário.
  */
 export const PRODUCT_SHEETS: Record<string, string> = {
-  OrtoQbank: '1AmAIkOkwRBW83FGKtUfFt6QOttGn8uWr0RBNQutkpSA',
-  'TEOT Aulas': '1TP6gdI4S0Y1obxb2mgac8ZdxzzPVPy4IkegvSnuF54U', // TODO: trocar pelo spreadsheet ID correto do TEOT Aulas
-  'Mentoria Aulas': '1Nk21HhUYuqkD7RuZDOL57sjm3GBzHf5q0WvYWnAJW-I',
-  // 'SBCJ Qbank': 'SPREADSHEET_ID_AQUI',
-  // 'Mão Qbank': 'SPREADSHEET_ID_AQUI',
-  // 'Gestão Aulas': 'SPREADSHEET_ID_AQUI',
+  Extensivo: '1cZ4ZIHgQ5vAv5MZlYnozn9z1JEl4IHnXtZrIB8LoqGU',
+  OrtoQbank: '1ruCA6A-utwRh_YWmTcbDN9CBgb5HetS2oR_nbQf5RYw',
+  'TEOT Aulas': '1tnbTqTMACz6g6nX6e7DaC9k5n6-TngRMxxZ5LPVq2sE',
+  'Mentoria Aulas': '13jLSqTZ_Jz-YhqbXbYh1H1mhKdXBwRteDLKQf1F4WHg',
+  'SBCJ Qbank': '115EewaFk6N9qQdbD6PLB0Ay2GdizDIaX0_21Pwo3Blo',
+  'Mão Qbank': '10XuTlyh70IlaCHMyBH2kBvvvXhvRqfuVO0Y4e5CoTWA',
+  'Gestão Aulas': '1rBmKNT7O9h08En33CvUdssL0Hs9VxVSF4fubdyDiWMg',
+  
 };
 
 /**
