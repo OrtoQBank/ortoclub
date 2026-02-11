@@ -1,7 +1,19 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import Image from 'next/image';
+import EmailCollectionForm from './email-collection-form';
 
 export default function HeroSection() {
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
     return (
         <section className="pt-24 md:pt-32 pb-8 md:pb-12 px-4 bg-blue-50">
             <div className="container mx-auto">
@@ -64,6 +76,7 @@ export default function HeroSection() {
                             <Button
                                 variant="default"
                                 className="bg-brand-blue text-white hover:bg-brand-blue/90 text-base px-10 py-6 leading-tight"
+                                onClick={() => setWaitlistOpen(true)}
                             >
                                 QUERO ACESSO COMPLETO
                             </Button>
@@ -117,6 +130,7 @@ export default function HeroSection() {
                             <Button
                                 variant="default"
                                 className="bg-brand-blue text-white hover:bg-brand-blue/90 text-base px-8 py-5"
+                                onClick={() => setWaitlistOpen(true)}
                             >
                                 QUERO ACESSO COMPLETO
                             </Button>
@@ -124,6 +138,25 @@ export default function HeroSection() {
                     </div>
                 </div>
             </div>
+
+            <Dialog open={waitlistOpen} onOpenChange={setWaitlistOpen}>
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="text-center">
+                        <DialogTitle className="text-xl font-bold text-gray-900 text-center">
+                            Preencha os campos para confirmar sua vaga!
+                        </DialogTitle>
+                        <DialogDescription className="text-center">
+                            Seus dados estão seguros.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <EmailCollectionForm
+                        productName="Extensivo"
+                        onSuccess={() => {
+                            setTimeout(() => setWaitlistOpen(false), 2000);
+                        }}
+                    />
+                </DialogContent>
+            </Dialog>
         </section>
     );
 }
