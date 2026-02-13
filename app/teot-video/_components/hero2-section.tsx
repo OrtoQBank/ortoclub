@@ -4,7 +4,7 @@ import LeadCaptureButton from '@/app/components/lead-capture-button';
 
 export default function Hero2Section() {
     return (
-        <section className="mt-20 py-12 md:pt-32 pb-12 md:pb-20 px-4">
+        <section className="mt-14 py-12 md:pt-18 pb-10 md:pb-12 px-4">
             <div className="container mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <div className="grid items-start gap-10 md:grid-cols-5">
@@ -12,12 +12,11 @@ export default function Hero2Section() {
                         <div className="md:col-span-3 space-y-6">
                             {/* Título principal */}
                             <div className="space-y-2">
-                                <span className="text-sm font-medium text-brand-blue uppercase tracking-wider">
-                                    Plataforma de Aulas
-                                </span>
-                                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-                                    OrtoClub TEOT - Formação que aprova
+
+                                <h1 className="text-4xl md:text-5xl font-semibold text-brand-blue tracking-tight">
+                                    OrtoClub TEOT
                                 </h1>
+                                <p className="text-2xl md:text-2xl font-medium text-brand-blue tracking-tight">Formação que aprova</p>
                             </div>
 
                             {/* Descrição introdutória */}
@@ -32,7 +31,7 @@ export default function Hero2Section() {
                                         <Users className="w-5 h-5 text-primary" />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium">+10 especialistas da USP</h3>
+                                        <h3 className="font-medium text-brand-blue">+10 especialistas da USP</h3>
                                         <p className="text-sm text-muted-foreground">Professores que atuam na assistência, pesquisa e ensino médico</p>
                                     </div>
                                 </div>
@@ -41,7 +40,7 @@ export default function Hero2Section() {
                                         <BookOpen className="w-5 h-5 text-primary" />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium">Cobertura completa do TEOT</h3>
+                                        <h3 className="font-medium text-brand-blue">Cobertura completa do TEOT</h3>
                                         <p className="text-sm text-muted-foreground">Do básico ao avançado, sem lacunas e sem excesso irrelevante</p>
                                     </div>
                                 </div>
@@ -50,7 +49,7 @@ export default function Hero2Section() {
                                         <Target className="w-5 h-5 text-primary" />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium">Método orientado à prova</h3>
+                                        <h3 className="font-medium text-brand-blue">Método orientado à prova</h3>
                                         <p className="text-sm text-muted-foreground">Aulas objetivas, com foco no que realmente cai e como a banca pensa</p>
                                     </div>
                                 </div>
@@ -59,7 +58,7 @@ export default function Hero2Section() {
                                         <Trophy className="w-5 h-5 text-primary" />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium">Resultado comprovado</h3>
+                                        <h3 className="font-medium text-brand-blue">Resultado comprovado</h3>
                                         <p className="text-sm text-muted-foreground">Método validado com 1º, 4º e 7º lugares no TEOT</p>
                                     </div>
                                 </div>

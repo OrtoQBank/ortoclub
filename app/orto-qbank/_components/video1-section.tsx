@@ -54,7 +54,7 @@ export default function Video1Section() {
             </div>
 
             {/* Pilares da metodologia */}
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
               <h3 className="text-xl md:text-2xl font-bold text-brand-blue text-center mb-6">
                 Pilares da metodologia OrtoClub
               </h3>
@@ -63,7 +63,7 @@ export default function Video1Section() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="text-brand-blue w-6 h-6 mt-0.5 shrink-0" />
                   <div>
-                    <h4 className="text-gray-900 font-semibold mb-1">Questões práticas e comentadas em profundidade</h4>
+                    <h4 className="font-semibold text-brand-blue mb-1">Questões práticas e comentadas em profundidade</h4>
                     <p className="text-gray-900/80 text-sm leading-relaxed">
                       Mais de 4.000 questões, com comentários aprofundados, elaborados por especialistas da USP. Aprenda por questões e vença na prova!
                     </p>
@@ -74,7 +74,7 @@ export default function Video1Section() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="text-brand-blue w-6 h-6 mt-0.5 shrink-0" />
                   <div>
-                    <h4 className="text-gray-900 font-semibold mb-1">Simulados no formato real do TEOT</h4>
+                    <h4 className="font-semibold text-brand-blue mb-1">Simulados no formato real do TEOT</h4>
                     <p className="text-gray-900/80 text-sm leading-relaxed">
                       Treine ritmo, tomada de decisão e resistência mental com simulados que reproduzem fielmente a prova.
                     </p>
@@ -85,7 +85,7 @@ export default function Video1Section() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="text-brand-blue w-6 h-6 mt-0.5 shrink-0" />
                   <div>
-                    <h4 className="text-gray-900 font-semibold mb-1">Provas antigas</h4>
+                    <h4 className="font-semibold text-brand-blue mb-1">Provas antigas</h4>
                     <p className="text-gray-900/80 text-sm leading-relaxed">
                       Mais de 20 edições das provas do TARO e TEOT prévias. Conheça o padrão da banca e não seja surpreendido no dia final.
                     </p>
@@ -96,7 +96,7 @@ export default function Video1Section() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="text-brand-blue w-6 h-6 mt-0.5 shrink-0" />
                   <div>
-                    <h4 className="text-gray-900 font-semibold mb-1">Área de feedback e acompanhamento contínuo</h4>
+                    <h4 className="font-semibold text-brand-blue mb-1">Área de feedback e acompanhamento contínuo</h4>
                     <p className="text-gray-900/80 text-sm leading-relaxed">
                       Entenda por que errou, evite repetir padrões de erro e evolua de forma mensurável ao longo da preparação.
                     </p>

@@ -4,16 +4,19 @@ import LeadCaptureButton from '@/app/components/lead-capture-button';
 
 export default function Hero1Section() {
   return (
-    <section className="mt-24 py-8 md:py-12 px-4 bg-blue-50">
+    <section className="mt-16 py-12 md:pt-18 pb-10 md:pb-12 px-4 bg-blue-50">
       <div className="container mx-auto">
         <div className="mx-auto max-w-7xl">
           <div className="grid items-start gap-8 md:grid-cols-5">
             {/* ESQUERDA: título + descrição */}
             <div className="md:col-span-3 space-y-4">
               <div className="space-y-2">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-brand-blue">
-                  OrtoQBank - Preparação que aprova
+                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
+                  <span className="text-brand-blue">Orto</span><span className="text-gray-900/50">QBank</span>
                 </h1>
+                <p className="text-2xl md:text-2xl font-medium text-brand-blue tracking-tight">
+                  Preparação que aprova
+                </p>
               </div>
 
               <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl">
@@ -29,7 +32,7 @@ export default function Hero1Section() {
                     <BookOpen className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium">+4.000 questões comentadas</h3>
+                    <h3 className="font-medium text-brand-blue">+4.000 questões comentadas</h3>
                     <p className="text-sm text-muted-foreground">Comentários didáticos, completos e ilustrados, elaborados por especialistas da USP</p>
                   </div>
                 </div>
@@ -38,7 +41,7 @@ export default function Hero1Section() {
                     <Target className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Plataforma própria interativa</h3>
+                    <h3 className="font-medium text-brand-blue">Plataforma própria interativa</h3>
                     <p className="text-sm text-muted-foreground">Experiência fluida no computador, tablet ou celular, com métricas reais de desempenho</p>
                   </div>
                 </div>
@@ -47,7 +50,7 @@ export default function Hero1Section() {
                     <BarChart3 className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Análise de desempenho avançada</h3>
+                    <h3 className="font-medium text-brand-blue">Análise de desempenho avançada</h3>
                     <p className="text-sm text-muted-foreground">Identifique pontos fracos!</p>
                   </div>
                 </div>
@@ -56,7 +59,7 @@ export default function Hero1Section() {
                     <Clock className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Resultado comprovado</h3>
+                    <h3 className="font-medium text-brand-blue">Resultado comprovado</h3>
                     <p className="text-sm text-muted-foreground">Método validado por aprovação em <span className="text-brand-blue font-semibold">1º lugar no TEOT 2025</span></p>
                   </div>
                 </div>

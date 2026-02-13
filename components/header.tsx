@@ -136,9 +136,9 @@ export default function Header() {
 
             {/* Modal Área do Aluno */}
             <Dialog open={isStudentAreaOpen} onOpenChange={setIsStudentAreaOpen}>
-                <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-brand-blue border-brand-blue text-white **:data-[slot=dialog-close]:text-white">
+                <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-white border-brand-blue  **:data-[slot=dialog-close]:text-brand-blue">
                     <DialogHeader className="text-center">
-                        <DialogTitle className="text-2xl font-bold text-white text-center">
+                        <DialogTitle className="text-2xl font-bold text-brand-blue text-center">
                             Área do Aluno
                         </DialogTitle>
                     </DialogHeader>
@@ -159,20 +159,20 @@ export default function Header() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        <Button className="w-full font-semibold bg-white text-brand-blue hover:bg-white/90 text-sm">
+                                        <Button className="w-full font-semibold bg-brand-blue text-white hover:bg-brand-blue/90 text-sm">
                                             Acessar
                                         </Button>
                                     </a>
                                 ) : isVipOnly(product.href) ? (
                                     <Button
-                                        className="w-full font-semibold bg-white text-brand-blue hover:bg-white/90 text-sm"
+                                        className="w-full font-semibold bg-brand-blue text-white hover:bg-brand-blue/90 text-sm"
                                         onClick={() => handleWaitlistClick(product.title)}
                                     >
                                         Lista de Espera
                                     </Button>
                                 ) : (
                                     <Link href={product.href} onClick={() => setIsStudentAreaOpen(false)}>
-                                        <Button className="w-full font-semibold bg-white text-brand-blue hover:bg-white/90 text-sm">
+                                        <Button className="w-full font-semibold bg-brand-blue text-white hover:bg-brand-blue/90 text-sm">
                                             Acessar
                                         </Button>
                                     </Link>
@@ -185,12 +185,12 @@ export default function Header() {
 
             {/* Modal Lista de Espera */}
             <Dialog open={waitlistProduct !== null} onOpenChange={(open) => !open && setWaitlistProduct(null)}>
-                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto bg-brand-blue border-brand-blue text-white **:data-[slot=dialog-close]:text-white">
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto bg-white  border-brand-blue text-brand-blue **:data-[slot=dialog-close]:text-brand-blue">
                     <DialogHeader className="text-center">
-                        <DialogTitle className="text-xl font-bold text-white text-center">
+                        <DialogTitle className="text-xl font-bold text-brand-blue text-center">
                             Preencha os campos para confirmar sua vaga!
                         </DialogTitle>
-                        <DialogDescription className="text-center text-white/80">
+                        <DialogDescription className="text-center text-brand-blue/80">
                             Seus dados estão seguros.
                         </DialogDescription>
                     </DialogHeader>
