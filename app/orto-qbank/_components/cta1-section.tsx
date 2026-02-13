@@ -73,11 +73,11 @@ export default function Cta1Section() {
                 </p>
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-semibold text-gray-900">Simulados completos no formato TEOT</h4>
+                    <h4 className="font-semibold text-brand-blue">Simulados completos no formato TEOT</h4>
                     <p className="text-gray-500 text-sm">Treine tempo, estratégia e tomada de decisão.</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Trilhas por subespecialidade e temas</h4>
+                    <h4 className="font-semibold text-brand-blue">Trilhas por subespecialidade e temas</h4>
                     <p className="text-gray-500 text-sm">Avance de forma lógica, progressiva e orientada.</p>
                   </div>
                 </div>
@@ -96,8 +96,7 @@ export default function Cta1Section() {
             </LeadCaptureButton>
           </div>
 
-          {/* Linha divisória */}
-          <div className="mt-12 h-px w-full bg-border" />
+
         </div>
       </div>
     </section>

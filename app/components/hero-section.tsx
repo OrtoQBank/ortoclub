@@ -3,17 +3,17 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
 import EmailCollectionForm from './email-collection-form';
 
 export default function HeroSection() {
-  const [waitlistOpen, setWaitlistOpen] = useState(false);
+    const [waitlistOpen, setWaitlistOpen] = useState(false);
     return (
         <section className="pt-24 md:pt-32 pb-8 md:pb-12 px-4 bg-blue-50">
             <div className="container mx-auto">
@@ -49,7 +49,7 @@ export default function HeroSection() {
                         {/* Segunda imagem - OrtoQBank */}
                         <div className="w-full h-[450px]">
                             <Image
-                            
+
                                 src="/ortoqbank.jpeg"
                                 alt="OrtoQBank"
                                 width={300}
@@ -140,9 +140,9 @@ export default function HeroSection() {
             </div>
 
             <Dialog open={waitlistOpen} onOpenChange={setWaitlistOpen}>
-                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto bg-white border-brand-blue text-brand-blue **:data-[slot=dialog-close]:text-brand-blue">
                     <DialogHeader className="text-center">
-                        <DialogTitle className="text-xl font-bold text-gray-900 text-center">
+                        <DialogTitle className="text-xl font-bold text-brand-blue text-center">
                             Preencha os campos para confirmar sua vaga!
                         </DialogTitle>
                         <DialogDescription className="text-center">

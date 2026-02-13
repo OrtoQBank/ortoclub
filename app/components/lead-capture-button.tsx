@@ -210,7 +210,7 @@ export default function LeadCaptureButton({
             </Select>
             <Button
               type="submit"
-              className="hover:bg-opacity-90 bg-brand-blue text-white font-semibold py-3"
+              className="hover:bg-opacity-90 bg-white text-brand-blue font-semibold py-3"
               disabled={isLoading}
             >
               {isLoading ? 'Cadastrando...' : 'Continuar'}

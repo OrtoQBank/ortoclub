@@ -3,11 +3,11 @@ import LeadCaptureButton from '@/app/components/lead-capture-button';
 
 export default function Cta2Section() {
   return (
-    <section className="py-12 md:py-20 px-4 bg-blue-50">
+    <section className="py-12 md:py-14 px-4 bg-blue-50">
       <div className="container mx-auto">
         <div className="mx-auto max-w-4xl">
           {/* Headline */}
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-brand-blue mb-12">
             Por que o OrtoClub TEOT é diferente?
           </h2>
 
@@ -17,7 +17,7 @@ export default function Cta2Section() {
             <div className="flex items-start gap-4">
               <CheckCircle2 className="text-brand-blue w-6 h-6 mt-1 shrink-0" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-brand-blue mb-1">
                   Time com mais de 10 especialistas da USP
                 </h3>
                 <p className="text-gray-600">
@@ -30,7 +30,7 @@ export default function Cta2Section() {
             <div className="flex items-start gap-4">
               <CheckCircle2 className="text-brand-blue w-6 h-6 mt-1 shrink-0" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-brand-blue mb-1">
                   Cobertura completa de todos os temas do TEOT
                 </h3>
                 <p className="text-gray-600">
@@ -43,7 +43,7 @@ export default function Cta2Section() {
             <div className="flex items-start gap-4">
               <CheckCircle2 className="text-brand-blue w-6 h-6 mt-1 shrink-0" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-brand-blue mb-1">
                   Método orientado à prática e à prova
                 </h3>
                 <p className="text-gray-600">
@@ -56,7 +56,7 @@ export default function Cta2Section() {
             <div className="flex items-start gap-4">
               <CheckCircle2 className="text-brand-blue w-6 h-6 mt-1 shrink-0" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-brand-blue mb-1">
                   Formação + treinamento para aprovação
                 </h3>
                 <p className="text-gray-600">
@@ -69,7 +69,7 @@ export default function Cta2Section() {
             <div className="flex items-start gap-4">
               <CheckCircle2 className="text-brand-blue w-6 h-6 mt-1 shrink-0" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-brand-blue mb-1">
                   Resultado comprovado
                 </h3>
                 <p className="text-gray-600">
@@ -90,8 +90,7 @@ export default function Cta2Section() {
             </LeadCaptureButton>
           </div>
 
-          {/* Linha divisória */}
-          <div className="mt-12 h-px w-full bg-border" />
+
         </div>
       </div>
     </section>

@@ -150,12 +150,12 @@ export default function ProductsSection() {
             </div>
 
             <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
-                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto bg-brand-blue border-brand-blue text-white **:data-[slot=dialog-close]:text-white">
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto bg-white border-brand-blue text-brand-blue **:data-[slot=dialog-close]:text-brand-blue">
                     <DialogHeader className="text-center">
-                        <DialogTitle className="text-xl font-bold text-white text-center">
+                        <DialogTitle className="text-xl font-bold text-brand-blue text-center">
                             Preencha os campos para confirmar sua vaga!
                         </DialogTitle>
-                        <DialogDescription className="text-center text-white/80">
+                        <DialogDescription className="text-center text-brand-blue/80">
                             Seus dados estão seguros.
                         </DialogDescription>
                     </DialogHeader>
