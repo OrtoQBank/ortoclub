@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-const WHATSAPP_NUMBER = "5511959121300"; // Substitua pelo número correto
+const WHATSAPP_NUMBER = "5511984380772"; // Substitua pelo número correto
 const WHATSAPP_MESSAGE = "Olá! Gostaria de mais informações sobre o OrtoClub.";
 
 export function WhatsAppButton() {
